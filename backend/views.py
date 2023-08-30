@@ -26,6 +26,19 @@ def create_item(request):
     return JsonResponse({"message": "Item created successfully"})
 
 
+# get data from database
+def get_data(request):
+    items = Item.objects.all()
+    response = []
+    for item in items:
+        response.append({
+            "id": item.id,
+            "name": item.name,
+            "description": item.description,
+            "price": item.price
+        })
+    return JsonResponse(response, safe=False)
+
 
 # @api_view(['POST'])
 # def create_item(request):
