@@ -1,5 +1,7 @@
 # Python bytecode files
 __pycache__/
+backend/__pycache__/
+agsupplements/__pycache__/
 
 # Local development settings
 local_settings.py
@@ -28,3 +30,5 @@ static/
 *.log
 
 frontend/node_modules/
+
+agsupplements/settings.py

@@ -1,4 +1,4 @@
-#!/bin/bash
+@echo off
 
-gnome-terminal -- bash -c "cd frontend && npm run serve"
-gnome-terminal -- bash -c "cd backend && python manage.py runserver"
+start cmd /k "cd frontend && npm run serve"
+start cmd /k "python manage.py runserver"
