@@ -1,2 +1,30 @@
-/db.sqlite3
-/venv
+# Python bytecode files
+__pycache__/
+
+# Local development settings
+local_settings.py
+
+# Compiled Python files
+*.pyc
+*.pyo
+__pycache__/
+
+# Database files
+db.sqlite3
+
+# Virtual environment
+venv/
+
+# Media and static files (if not using a separate storage service)
+media/
+static/
+
+# Editor and IDE specific files
+.vscode/
+.idea/
+*.swp
+
+# Log files
+*.log
+
+frontend/node_modules/
