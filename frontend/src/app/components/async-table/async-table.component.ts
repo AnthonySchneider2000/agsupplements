@@ -23,9 +23,6 @@ export class AsyncTableComponent implements OnInit {
       this.displayedColumns = this.getDisplayedColumns();
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      console.log("In component:");
-      console.log(this.dataSource);
-      console.log(this.displayedColumns);
     });
   }
 

@@ -19,6 +19,7 @@ import { AsyncTableComponent } from './components/async-table/async-table.compon
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { DbManipInputGroupComponent } from './components/db-manip-input-group/db-manip-input-group.component';
+import { FormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import { DbManipInputGroupComponent } from './components/db-manip-input-group/db
     InputClearable,
     MatInputModule,
     MatButtonModule,
+    FormsModule,
   ],
   providers: [
     provideHttpClient(),
