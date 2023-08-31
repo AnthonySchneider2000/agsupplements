@@ -10,9 +10,15 @@ from django.views.decorators.csrf import csrf_exempt
 
 def get_dummy_data(request):
     data = [
-        {'id': 1, 'name': 'Item 1', 'description': 'This is item 1', 'price': 10},
-        {'id': 2, 'name': 'Item 2', 'description': 'This is item 2', 'price': 20},
-        {'id': 3, 'name': 'Item 3', 'description': 'This is item 3', 'price': 30},
+        {'id': 1, 'name': 'Item 1', 'description': 'This is item 1', 'price': 4110},
+        {'id': 2, 'name': 'Item 2', 'description': 'This is item 2', 'price': 200},
+        {'id': 3, 'name': 'Item 3', 'description': 'This is item 3', 'price': 130},
+        {'id': 4, 'name': 'Item 4', 'description': 'This is item 4', 'price': 40},
+        {'id': 5, 'name': 'Item 5', 'description': 'This is item 5', 'price': 1050},
+        {'id': 6, 'name': 'Item 6', 'description': 'This is item 6', 'price': 260},
+        {'id': 7, 'name': 'Item 7', 'description': 'This is item 7', 'price': 170},
+        {'id': 8, 'name': 'Item 8', 'description': 'This is item 8', 'price': 85},
+        {'id': 9, 'name': 'Item 9', 'description': 'This is item 9', 'price': 90},
     ]
     return JsonResponse(data, safe=False)
 
