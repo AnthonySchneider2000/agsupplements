@@ -17,6 +17,7 @@ import { InputClearable } from './components/input-clearable/input-clearable.com
 import { TestOutputComponent } from './components/test-output/test-output.component';
 import { AsyncTableComponent } from './components/async-table/async-table.component';
 import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 
 
 @NgModule({
@@ -36,6 +37,7 @@ import { MatInputModule } from '@angular/material/input';
     MatSortModule,
     InputClearable,
     MatInputModule,
+    MatButtonModule,
   ],
   providers: [
     provideHttpClient(),
