@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DataService } from '../../services/data.service';
+import { TableDataService } from 'src/app/services/tabledata.service';
 
 @Component({
   selector: 'app-db-manip-input-group',
@@ -9,30 +10,41 @@ import { DataService } from '../../services/data.service';
 export class DbManipInputGroupComponent {
   name: string = '';
   description: string = '';
-  price: number = 0;
-  id: number = 0;
+  price: number;
+  id: number;
+  
+  constructor(private dataService: DataService, private tableDataService: TableDataService) { }
 
-  constructor(private dataService: DataService) {}
-
-  ngOnInit(): void {
-  }
-
-
-  handleAddDataToDatabase() {
-    if(this.name) {
-      this.dataService.addDataToDatabase(this.name, this.description, this.price);
-    }else{
-      console.log("No name provided");
+  async handleAddDataToDatabase() {
+    if (this.name) {
+      try {
+        await this.dataService.addDataToDatabase(this.name, this.description, this.price).toPromise();
+        console.log('Data added successfully');
+        // Reload the table data
+        this.tableDataService.reloadTable();
+      } catch (error) {
+        console.error('Error adding data:', error);
+      }
+    } else {
+      console.log('No name provided');
     }
   }
 
-  handleDeleteDataFromDatabase() {
-    if(this.id) {
-      this.dataService.deleteDataFromDatabase(this.id);
-    }else{
-      console.log("No id provided");
+  async handleDeleteDataFromDatabase() {
+    if (this.id) {
+      try {
+        await this.dataService.deleteDataFromDatabase(this.id).toPromise();
+        console.log('Data deleted successfully');
+        // Reload the table data
+        this.tableDataService.reloadTable();
+      } catch (error) {
+        console.error('Error deleting data:', error);
+      }
+    } else {
+      console.log('No id provided');
     }
   }
+  
 
 
 }

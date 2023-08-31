@@ -1,64 +1,87 @@
-<div class="rowContainer topMargin">
-  <input-clearable
-    class="input"
-    placeholder="Name"
-    [(ngModel)]="name"
-  ></input-clearable>
-    <input-clearable
-        class="input"
-        placeholder="Description"
-        [(ngModel)]="description"
-    ></input-clearable>
-  <input-clearable
-    class="input"
-    placeholder="Price"
-    [(ngModel)]="price"
-  ></input-clearable>
-  <button
+<div class="inputContainer">
+
+  <div class="rowContainer topMargin">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input
+      matInput
+      class="input"
+      [(ngModel)]="name"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input
+      matInput
+      class="input"
+      [(ngModel)]="description"
+      >
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Price</mat-label>
+      <input
+      matInput
+      class="input"
+      [(ngModel)]="price"
+      >
+    </mat-form-field>
+    <button
     mat-raised-button
     color="primary"
     class="button"
     (click)="handleAddDataToDatabase()"
-  >
+    >
     Add to DB
-  </button>
-</div>
-<div class="rowContainer topMargin">
-  <input-clearable
-    class="input"
-    placeholder="id"
-    [(ngModel)]="id"
-  ></input-clearable>
-  <button
+    </button>
+  </div>
+  <div class="rowContainer topMargin">
+    <mat-form-field>
+      <mat-label>id</mat-label>
+      <input
+      matInput
+      class="input"
+      [(ngModel)]="id"
+      >
+    </mat-form-field>
+    
+    <button
     mat-raised-button
     color="primary"
     class="button"
     (click)="handleDeleteDataFromDatabase()"
-  >
+    >
     Delete from DB
-  </button>
+    </button>
+  </div>
 
-  <style>
-    .rowContainer {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      gap: 20px;
-    }
-    .topMargin {
-      margin-top: 20px;
-    }
-    .leftMargin {
-      margin-left: 220px;
-    }
-    .button {
-      height: 56px;
-      top: -1px;
-      width: 200px;
-    }
-    .input {
-      height: 60px; /* Set the same height as the button */
-      box-sizing: border-box; /* Use border-box for consistent box-sizing */
-    }
-  </style>
 </div>
+<style>
+  .inputContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 20px;
+  }
+  .rowContainer {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+  }
+  .topMargin {
+    margin-top: 20px;
+  }
+  .leftMargin {
+    margin-left: 220px;
+  }
+  .button {
+    height: 56px;
+    top: -10px;
+    width: 200px;
+  }
+  .input {
+    height: 60px; /* Set the same height as the button */
+    box-sizing: border-box; /* Use border-box for consistent box-sizing */
+  }
+    </style>
+  

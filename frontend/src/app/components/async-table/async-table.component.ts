@@ -1,9 +1,10 @@
-// table.component.ts
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
+import { TableDataService } from 'src/app/services/tabledata.service';
+
 @Component({
   selector: 'app-async-table',
   templateUrl: './async-table.component.html',
@@ -15,9 +16,20 @@ export class AsyncTableComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private dataService: DataService) {}
+  constructor(
+    private dataService: DataService,
+    private tableDataService: TableDataService
+  ) {}
 
   ngOnInit(): void {
+    this.loadData();
+    this.tableDataService.reloadTable$.subscribe(() => { // reload table
+      console.log("Reloading table");
+      this.loadData();
+    });
+  }
+
+  loadData() {
     this.dataService.fetchData().subscribe((data) => {
       this.dataSource = new MatTableDataSource(data);
       this.displayedColumns = this.getDisplayedColumns();
@@ -37,6 +49,4 @@ export class AsyncTableComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  
-  
 }
