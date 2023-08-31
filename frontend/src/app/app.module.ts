@@ -16,6 +16,7 @@ import { TableComponent } from './components/table/table.component';
 import { InputClearable } from './components/input-clearable/input-clearable.component';
 import { TestOutputComponent } from './components/test-output/test-output.component';
 import { AsyncTableComponent } from './components/async-table/async-table.component';
+import { MatInputModule } from '@angular/material/input';
 
 
 @NgModule({
@@ -23,7 +24,7 @@ import { AsyncTableComponent } from './components/async-table/async-table.compon
     AppComponent,
     TableComponent,
     TestOutputComponent,
-    AsyncTableComponent
+    AsyncTableComponent,
   ],
   imports: [
     BrowserModule,
@@ -34,6 +35,7 @@ import { AsyncTableComponent } from './components/async-table/async-table.compon
     MatPaginatorModule,
     MatSortModule,
     InputClearable,
+    MatInputModule,
   ],
   providers: [
     provideHttpClient(),

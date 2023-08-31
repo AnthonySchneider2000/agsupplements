@@ -1,0 +1,16 @@
+.custom-paginator {
+  display: flex;
+  align-items: center;
+  position: relative;
+}
+
+.custom-paginator mat-form-field {
+  position: absolute;
+  left: 0;
+  top: 0;
+  margin-right: 16px;
+}
+
+.custom-paginator mat-paginator {
+  flex-grow: 1;
+}
