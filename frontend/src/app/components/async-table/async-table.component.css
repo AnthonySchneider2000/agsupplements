@@ -1,6 +1,4 @@
 .custom-paginator {
-  display: flex;
-  align-items: center;
   position: relative;
 }
 
@@ -10,7 +8,4 @@
   top: -2px;
 }
 
-.custom-paginator mat-paginator {
-  flex-grow: 1;
-}
 
