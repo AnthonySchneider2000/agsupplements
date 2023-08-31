@@ -22,4 +22,9 @@ export class DataService {
     };
     return this.http.post(apiUrl, requestBody);
   }
+
+  deleteDataFromDatabase(id: number): Observable<any> {
+    const apiUrl = 'http://localhost:8000/backend/delete-item/' + id + '/';
+    return this.http.delete(apiUrl);
+  }
 }
