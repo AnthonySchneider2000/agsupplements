@@ -18,7 +18,7 @@ import { TestOutputComponent } from './components/test-output/test-output.compon
 import { AsyncTableComponent } from './components/async-table/async-table.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { AddItemInputGroupComponent } from './components/add-item-input-group/add-item-input-group.component';
+import { DbManipInputGroupComponent } from './components/db-manip-input-group/db-manip-input-group.component';
 
 
 @NgModule({
@@ -27,7 +27,7 @@ import { AddItemInputGroupComponent } from './components/add-item-input-group/ad
     TableComponent,
     TestOutputComponent,
     AsyncTableComponent,
-    AddItemInputGroupComponent,
+    DbManipInputGroupComponent,
   ],
   imports: [
     BrowserModule,
