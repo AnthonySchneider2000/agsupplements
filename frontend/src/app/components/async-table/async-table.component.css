@@ -4,8 +4,7 @@
 
 .custom-paginator mat-form-field {
   position: absolute;
-  left: 0;
+  width: 40%;
+  left: 10px;
   top: -2px;
 }
-
-
