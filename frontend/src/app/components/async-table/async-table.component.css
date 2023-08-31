@@ -7,10 +7,10 @@
 .custom-paginator mat-form-field {
   position: absolute;
   left: 0;
-  top: 0;
-  margin-right: 16px;
+  top: -2px;
 }
 
 .custom-paginator mat-paginator {
   flex-grow: 1;
 }
+
