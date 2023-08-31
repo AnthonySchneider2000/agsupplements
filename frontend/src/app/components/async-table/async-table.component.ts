@@ -53,4 +53,7 @@ export class AsyncTableComponent implements OnInit {
   onRowClick(row: any) {
     this.tableDataService.setSelectedId(row.id);
   }
+  capitalizeFirstLetter(string: string) {
+    return string.charAt(0).toUpperCase() + string.slice(1);
+  }
 }
