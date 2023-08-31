@@ -1,14 +1,26 @@
-<div class="topMargin">
-  <input-clearable></input-clearable>
-  <button mat-raised-button color="primary">Add to DB</button>
+<div class="container topMargin">
+  <input-clearable class="input" placeholder="Name"></input-clearable>
+  <input-clearable class="input" placeholder="Price"></input-clearable>
+  <button mat-raised-button color="primary" class="button">Add to DB</button>
 </div>
 
 <style>
+  .container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    gap: 20px;
+  }
   .topMargin {
     margin-top: 20px;
   }
   .button {
-    height: 40px;
-    width: 100px;
+    height: 56px;
+    top:-1px;
+    width: 200px;
+  }
+  .input {
+    height: 60px; /* Set the same height as the button */
+    box-sizing: border-box; /* Use border-box for consistent box-sizing */
   }
 </style>
