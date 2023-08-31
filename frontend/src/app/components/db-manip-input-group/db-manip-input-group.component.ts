@@ -15,6 +15,12 @@ export class DbManipInputGroupComponent {
   
   constructor(private dataService: DataService, private tableDataService: TableDataService) { }
 
+  ngOnInit(): void {
+    this.tableDataService.selectedId$.subscribe((id) => {
+      this.id = id;
+    });
+  }
+
   async handleAddDataToDatabase() {
     if (this.name) {
       try {

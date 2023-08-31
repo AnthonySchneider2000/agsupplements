@@ -23,8 +23,9 @@ export class AsyncTableComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadData();
-    this.tableDataService.reloadTable$.subscribe(() => { // reload table
-      console.log("Reloading table");
+    this.tableDataService.reloadTable$.subscribe(() => {
+      // reload table
+      console.log('Reloading table');
       this.loadData();
     });
   }
@@ -48,5 +49,8 @@ export class AsyncTableComponent implements OnInit {
   applyFilter(event: any) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
+  }
+  onRowClick(row: any) {
+    this.tableDataService.setSelectedId(row.id);
   }
 }
