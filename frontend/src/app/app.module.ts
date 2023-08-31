@@ -18,6 +18,7 @@ import { TestOutputComponent } from './components/test-output/test-output.compon
 import { AsyncTableComponent } from './components/async-table/async-table.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
+import { AddItemInputGroupComponent } from './components/add-item-input-group/add-item-input-group.component';
 
 
 @NgModule({
@@ -26,6 +27,7 @@ import { MatButtonModule } from '@angular/material/button';
     TableComponent,
     TestOutputComponent,
     AsyncTableComponent,
+    AddItemInputGroupComponent,
   ],
   imports: [
     BrowserModule,
