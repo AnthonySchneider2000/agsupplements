@@ -12,7 +12,6 @@ import { MatSortModule } from '@angular/material/sort';
 import {VERSION as MAT_VERSION, MatNativeDateModule} from '@angular/material/core';
 
 import { AppComponent } from './app.component';
-import { TableComponent } from './components/table/table.component';
 import { InputClearable } from './components/input-clearable/input-clearable.component';
 import { TestOutputComponent } from './components/test-output/test-output.component';
 import { AsyncTableComponent } from './components/async-table/async-table.component';
@@ -25,7 +24,6 @@ import { FormsModule } from '@angular/forms';
 @NgModule({
   declarations: [
     AppComponent,
-    TableComponent,
     TestOutputComponent,
     AsyncTableComponent,
     DbManipInputGroupComponent,
