@@ -10,7 +10,7 @@ export class DataService {
   constructor(private http: HttpClient) {}
 
   fetchData(): Observable<any> {
-    return this.http.get("http://localhost:8000/backend/get-data/");
+    return this.http.get("http://localhost:8000/backend/get-item/");
   }
 
   addDataToDatabase(name: string, description: string, price: number): Observable<any> {

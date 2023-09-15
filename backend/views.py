@@ -44,7 +44,7 @@ def delete_item(request, id):
 
 
 # get data from database
-def get_data(request):
+def get_item(request):
     items = Item.objects.all()
     response = []
     for item in items:
@@ -56,14 +56,3 @@ def get_data(request):
         })
     return JsonResponse(response, safe=False)
 
-
-# @api_view(['POST'])
-# def create_item(request):
-#     name = request.data.get('name')
-#     description = request.data.get('description')
-#     price = request.data.get('price')
-
-#     item = Item(name=name, description=description, price=price)
-#     item.save()
-
-#     return Response({"message": "Item created successfully"})
