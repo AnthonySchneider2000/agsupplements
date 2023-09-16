@@ -1,7 +1,7 @@
 import json
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import Item
+from .models import Item, Ingredient, ItemWithIngredients, ItemIngredient
 from django.views.decorators.csrf import csrf_exempt
 # from rest_framework.decorators import api_view
 # from rest_framework.response import Response
@@ -41,8 +41,6 @@ def delete_item(request, id):
 
     return JsonResponse({"message": "Item deleted successfully"})
 
-
-
 # get data from database
 def get_item(request):
     items = Item.objects.all()
@@ -56,3 +54,83 @@ def get_item(request):
         })
     return JsonResponse(response, safe=False)
 
+@csrf_exempt
+def create_item_with_ingredients(request):
+    data = json.loads(request.body)
+    name = data.get('name')
+    description = data.get('description')
+    price = data.get('price')
+    ingredient_data = data.get('ingredients', [])
+
+    # Create the ItemWithIngredients instance
+    item = ItemWithIngredients(name=name, description=description, price=price)
+    item.save()
+
+    # Create ItemIngredient instances for each ingredient and associate them with the item
+    for ingredient_info in ingredient_data:
+        ingredient_id = ingredient_info.get('ingredient_id')
+        mass = ingredient_info.get('mass')
+
+        ingredient = Ingredient.objects.get(id=ingredient_id)
+        item_ingredient = ItemIngredient(item=item, ingredient=ingredient, mass=mass)
+        item_ingredient.save()
+
+    return JsonResponse({"message": "Item with ingredients created successfully"})
+
+def get_item_with_ingredients(request, id):
+    try:
+        item = ItemWithIngredients.objects.get(id=id)
+    except ItemWithIngredients.DoesNotExist:
+        return JsonResponse({"message": "Item with ingredients not found"}, status=404)
+
+    # Retrieve the ingredients and their masses associated with the item
+    ingredients = item.ingredients.all()
+    ingredient_data = [{'ingredient_id': ingredient.id, 'name': ingredient.name, 'mass': item_ingredient.mass}
+                      for ingredient, item_ingredient in zip(ingredients, item.itemingredient_set.all())]
+
+    response = {
+        "id": item.id,
+        "name": item.name,
+        "description": item.description,
+        "price": item.price,
+        "ingredients": ingredient_data
+    }
+
+    return JsonResponse(response)
+
+def delete_item_with_ingredients(request, id):
+    item = ItemWithIngredients.objects.get(id=id)
+    item.delete()
+
+    return JsonResponse({"message": "Item with ingredients deleted successfully"})
+
+@csrf_exempt
+def create_ingredient(request):
+    data = json.loads(request.body)
+    name = data.get('name')
+    description = data.get('description')
+    price = data.get('price')
+
+    ingredient = Ingredient(name=name, description=description, price=price)
+    ingredient.save()
+
+    return JsonResponse({"message": "Ingredient created successfully"})
+
+@csrf_exempt
+def delete_ingredient(request, id):
+    ingredient = Ingredient.objects.get(id=id)
+    ingredient.delete()
+
+    return JsonResponse({"message": "Ingredient deleted successfully"})
+
+def get_ingredient(request):
+    ingredients = Ingredient.objects.all()
+    response = []
+    for ingredient in ingredients:
+        response.append({
+            "id": ingredient.id,
+            "name": ingredient.name,
+            "description": ingredient.description,
+            "price": ingredient.price
+        })
+    return JsonResponse(response, safe=False)
