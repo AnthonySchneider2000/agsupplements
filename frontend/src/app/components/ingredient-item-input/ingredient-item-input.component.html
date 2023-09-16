@@ -14,7 +14,7 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Ingredients</mat-label>
-      <mat-select class="inputContainer" [(ngModel)]="itemIngredients" multiple>
+      <mat-select class="inputContainer" [(ngModel)]="inputIngredients" multiple>
         <mat-option
           *ngFor="let ingredient of allIngredients"
           [value]="ingredient.id"

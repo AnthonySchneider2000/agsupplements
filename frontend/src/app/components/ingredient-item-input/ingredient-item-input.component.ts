@@ -17,6 +17,7 @@ export class IngredientItemInputComponent {
   description: string = '';
   price: number = 0;
   allIngredients: Ingredient[] = [];
+  inputIngredients: Ingredient[] = [];
   itemIngredients: ItemIngredient[] = [];
   ingredient: Ingredient = {
     id: 0,
@@ -37,6 +38,18 @@ export class IngredientItemInputComponent {
   }
 
   addItemWithIngredients() {
+    // promp user for mass of each ingredient
+    console.log(this.inputIngredients);
+
+    for (let ingredient of this.inputIngredients) {
+      const mass = prompt('Enter mass of ' + ingredient.name + ' in grams');
+      this.itemIngredients.push({
+        id: ingredient.id,
+        ingredient: ingredient,
+        mass: Number(mass),
+      });
+    }   
+
     this.dataService.addItemWithIngredientsToDatabase(this.name, this.description, this.price, this.itemIngredients).subscribe((data) => {
       this.tableDataService.reloadTable();
     });
@@ -69,13 +82,6 @@ export class IngredientItemInputComponent {
   addIngredientToItem() {
     this.itemIngredients.push({
       id: 0,
-      item: {
-        id: 0,
-        name: '',
-        description: '',
-        price: 0,
-        ingredients: [],
-      },
       ingredient: this.ingredient,
       mass: this.mass,
     });
