@@ -1,60 +1,104 @@
 <div class="inputContainer">
+  <div class="rowContainer topMargin">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput class="input" [(ngModel)]="name" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput class="input" [(ngModel)]="description" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Price</mat-label>
+      <input matInput class="input" [(ngModel)]="price" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Ingredients</mat-label>
+      <mat-select class="inputContainer" [(ngModel)]="itemIngredients" multiple>
+        <mat-option
+          *ngFor="let ingredient of allIngredients"
+          [value]="ingredient.id"
+        >
+          {{ ingredient.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
 
+    <button
+      mat-raised-button
+      color="primary"
+      class="button"
+      (click)="addItemWithIngredients()"
+    >
+      Add Item with Ingredients to DB
+    </button>
+  </div>
+  <!-- delete item with ingredients -->
+  <div class="rowContainer topMargin">
+    <mat-form-field>
+      <mat-label>id</mat-label>
+      <input matInput class="input" [(ngModel)]="id" />
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      class="button"
+      (click)="deleteItemWithIngredients()"
+    >
+      Delete Item with Ingredients from DB
+    </button>
+  </div>
+  <!-- add ingredient -->
+  <div class="rowContainer topMargin">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
+      <input matInput class="input" [(ngModel)]="ingredient.name" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput class="input" [(ngModel)]="ingredient.description" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Price / Gram</mat-label>
+      <input matInput class="input" [(ngModel)]="ingredient.price" />
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      class="button"
+      (click)="addIngredient()"
+    >
+      Add Ingredient to DB
+    </button>
+  </div>
+
+    <!-- delete ingredient by id -->
     <div class="rowContainer topMargin">
       <mat-form-field>
         <mat-label>Name</mat-label>
-        <input
-        matInput
-        class="input"
-        [(ngModel)]="name"
-        >
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Description</mat-label>
-        <input
-        matInput
-        class="input"
-        [(ngModel)]="description"
-        >
-      </mat-form-field>
-      <mat-form-field>
-        <mat-label>Price</mat-label>
-        <input
-        matInput
-        class="input"
-        [(ngModel)]="price"
-        >
+        
+        <mat-select class="inputContainer" [(ngModel)]="ingredient.id">
+          <mat-option
+            *ngFor="let ingredient of allIngredients"
+            [value]="ingredient.id"
+          >
+            {{ ingredient.name }}
+          </mat-option>
+        </mat-select>
+
       </mat-form-field>
       <button
-      mat-raised-button
-      color="primary"
-      class="button"
-      (click)="handleAddDataToDatabase()"
+        mat-raised-button
+        color="primary"
+        class="button"
+        (click)="deleteIngredient()"
       >
-      Add to DB
+        Delete Ingredient from DB
       </button>
     </div>
-    <div class="rowContainer topMargin">
-      <mat-form-field>
-        <mat-label>id</mat-label>
-        <input
-        matInput
-        class="input"
-        [(ngModel)]="id"
-        >
-      </mat-form-field>
-      
-      <button
-      mat-raised-button
-      color="primary"
-      class="button"
-      (click)="handleDeleteDataFromDatabase()"
-      >
-      Delete from DB
-      </button>
-    </div>
-  
-  </div>
+
+    
   <style>
     .inputContainer {
       display: flex;
@@ -83,5 +127,5 @@
       height: 60px; /* Set the same height as the button */
       box-sizing: border-box; /* Use border-box for consistent box-sizing */
     }
-      </style>
-    
+  </style>
+</div>

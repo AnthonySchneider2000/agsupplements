@@ -20,6 +20,7 @@ import { MatButtonModule } from '@angular/material/button';
 import { DbManipInputGroupComponent } from './components/db-manip-input-group/db-manip-input-group.component';
 import { FormsModule } from '@angular/forms';
 import { IngredientItemInputComponent } from './components/ingredient-item-input/ingredient-item-input.component';
+import { MatSelectModule } from '@angular/material/select';
 
 
 @NgModule({
@@ -42,6 +43,7 @@ import { IngredientItemInputComponent } from './components/ingredient-item-input
     MatInputModule,
     MatButtonModule,
     FormsModule,
+    MatSelectModule,
   ],
   providers: [
     provideHttpClient(),

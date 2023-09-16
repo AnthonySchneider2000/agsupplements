@@ -77,26 +77,28 @@ def create_item_with_ingredients(request):
 
     return JsonResponse({"message": "Item with ingredients created successfully"})
 
-def get_item_with_ingredients(request, id):
-    try:
-        item = ItemWithIngredients.objects.get(id=id)
-    except ItemWithIngredients.DoesNotExist:
-        return JsonResponse({"message": "Item with ingredients not found"}, status=404)
+def get_item_with_ingredients(request): # get data from database
+    items = ItemWithIngredients.objects.all()
+    response = []
+    for item in items:
+        response.append({
+            "id": item.id,
+            "name": item.name,
+            "description": item.description,
+            "price": item.price,
+            "ingredients": [
+                {
+                    "id": ingredient.id,
+                    "name": ingredient.name,
+                    "description": ingredient.description,
+                    "price": ingredient.price,
+                    "mass": item_ingredient.mass
+                }
+                for ingredient, item_ingredient in item.ingredients.through.objects.filter(item=item).select_related('ingredient').all().iterator()
+            ]
+        })
+    return JsonResponse(response, safe=False)
 
-    # Retrieve the ingredients and their masses associated with the item
-    ingredients = item.ingredients.all()
-    ingredient_data = [{'ingredient_id': ingredient.id, 'name': ingredient.name, 'mass': item_ingredient.mass}
-                      for ingredient, item_ingredient in zip(ingredients, item.itemingredient_set.all())]
-
-    response = {
-        "id": item.id,
-        "name": item.name,
-        "description": item.description,
-        "price": item.price,
-        "ingredients": ingredient_data
-    }
-
-    return JsonResponse(response)
 
 def delete_item_with_ingredients(request, id):
     item = ItemWithIngredients.objects.get(id=id)
@@ -122,6 +124,14 @@ def delete_ingredient(request, id):
     ingredient.delete()
 
     return JsonResponse({"message": "Ingredient deleted successfully"})
+
+@csrf_exempt
+def delete_ingredient_by_name(request, name):
+    ingredient = Ingredient.objects.get(name=name)
+    ingredient.delete()
+
+    return JsonResponse({"message": "Ingredient deleted successfully"})
+
 
 def get_ingredient(request):
     ingredients = Ingredient.objects.all()

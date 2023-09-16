@@ -24,7 +24,7 @@ export class DbManipInputGroupComponent {
   async handleAddDataToDatabase() {
     if (this.name) {
       try {
-        await this.dataService.addDataToDatabase(this.name, this.description, this.price).toPromise();
+        await this.dataService.addItemToDatabase(this.name, this.description, this.price).toPromise();
         console.log('Data added successfully');
         // Reload the table data
         this.tableDataService.reloadTable();
@@ -39,7 +39,7 @@ export class DbManipInputGroupComponent {
   async handleDeleteDataFromDatabase() {
     if (this.id) {
       try {
-        await this.dataService.deleteDataFromDatabase(this.id).toPromise();
+        await this.dataService.deleteItemFromDatabase(this.id).toPromise();
         console.log('Data deleted successfully');
         // Reload the table data
         this.tableDataService.reloadTable();
