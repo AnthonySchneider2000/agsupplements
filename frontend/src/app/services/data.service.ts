@@ -9,9 +9,20 @@ import { Observable } from 'rxjs';
 export class DataService {
   constructor(private http: HttpClient) {}
 
-  fetchData(): Observable<any> {
+  fetchData(): Observable<any> { //to be removed, replaced by fetchItemBaseData
     return this.http.get("http://localhost:8000/backend/get-item/");
   }
+
+
+  fetchItemBaseData(): Observable<any> {
+    return this.http.get('http://localhost:8000/backend/get-item/');
+  }
+
+  fetchItemWithIngredientsData(): Observable<any> {
+    return this.http.get('http://localhost:8000/backend/get-item-with-ingredients/');
+  }
+
+
 
   addDataToDatabase(name: string, description: string, price: number): Observable<any> {
     const apiUrl = 'http://localhost:8000/backend/create-item/';

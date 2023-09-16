@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, OnInit, ViewChild, Input } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { MatTableDataSource } from '@angular/material/table';
 import { MatPaginator } from '@angular/material/paginator';
@@ -11,6 +11,7 @@ import { TableDataService } from 'src/app/services/tabledata.service';
   styleUrls: ['./async-table.component.css'],
 })
 export class AsyncTableComponent implements OnInit {
+  @Input() data: string = 'ItemBase';
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -31,12 +32,21 @@ export class AsyncTableComponent implements OnInit {
   }
 
   loadData() {
+    if (this.data === 'ItemBase') {
     this.dataService.fetchData().subscribe((data) => {
       this.dataSource = new MatTableDataSource(data);
       this.displayedColumns = this.getDisplayedColumns();
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
     });
+    } else if (this.data === 'ItemWithIngredients') {
+      this.dataService.fetchItemWithIngredientsData().subscribe((data) => {
+        this.dataSource = new MatTableDataSource(data);
+        this.displayedColumns = this.getDisplayedColumns();
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+      });
+    }
   }
 
   getDisplayedColumns(): string[] {
