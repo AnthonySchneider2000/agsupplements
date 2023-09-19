@@ -17,7 +17,7 @@
       <mat-select class="inputContainer" [(ngModel)]="inputIngredients" multiple>
         <mat-option
           *ngFor="let ingredient of allIngredients"
-          [value]="ingredient.id"
+          [value]="ingredient"
         >
           {{ ingredient.name }}
         </mat-option>

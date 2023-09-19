@@ -100,6 +100,7 @@ def get_item_with_ingredients(request): # get data from database
     return JsonResponse(response, safe=False)
 
 
+@csrf_exempt
 def delete_item_with_ingredients(request, id):
     item = ItemWithIngredients.objects.get(id=id)
     item.delete()

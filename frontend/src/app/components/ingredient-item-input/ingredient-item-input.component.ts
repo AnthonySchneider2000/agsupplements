@@ -42,6 +42,7 @@ export class IngredientItemInputComponent {
     console.log(this.inputIngredients);
 
     for (let ingredient of this.inputIngredients) {
+      console.log(ingredient);
       const mass = prompt('Enter mass of ' + ingredient.name + ' in grams');
       this.itemIngredients.push({
         id: ingredient.id,
