@@ -20,6 +20,7 @@ export class IngredientItemTableComponent implements OnInit {
   selectedIngredients: Ingredient[] = [];
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['name', 'description', 'price'];
+  baseColumns: string[] = ['name', 'description', 'price'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -81,7 +82,6 @@ export class IngredientItemTableComponent implements OnInit {
       const itemIngredientIds = item.ingredients.map((itemIngredient: ItemIngredient) =>
         itemIngredient.ingredient ? itemIngredient.ingredient.id : null
       );
-      console.log('Item ' + item.name + ' has ingredients ' + itemIngredientIds);
   
       // If the item doesn't have any valid ingredient IDs, consider it as not containing the selected ingredients
       if (!itemIngredientIds.some(id => id !== null)) {
