@@ -1,0 +1,19 @@
+<mat-form-field>
+  <mat-label>Ingredients</mat-label>
+  <mat-select
+    multiple
+    [(ngModel)]="selectedIngredients"
+    (selectionChange)="onIngredientSelectionChange($event)"
+  >
+    <mat-option *ngFor="let ingredient of allIngredients" [value]="ingredient">
+      {{ ingredient.name }}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<mat-checkbox
+  [(ngModel)]="showCostRatio"
+  (change)="onShowCostRatioChange($event)"
+>
+  Show Cost Ratio
+</mat-checkbox>

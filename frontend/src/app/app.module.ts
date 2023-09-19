@@ -22,7 +22,8 @@ import { FormsModule } from '@angular/forms';
 import { IngredientItemInputComponent } from './components/ingredient-item-input/ingredient-item-input.component';
 import { MatSelectModule } from '@angular/material/select';
 import { IngredientItemTableComponent } from './components/ingredient-item-table/ingredient-item-table.component';
-
+import { MatCheckboxModule } from '@angular/material/checkbox';
+import { TableOptionsComponent } from './components/table-options/table-options.component';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { IngredientItemTableComponent } from './components/ingredient-item-table
     DbManipInputGroupComponent,
     IngredientItemInputComponent,
     IngredientItemTableComponent,
+    TableOptionsComponent,
   ],
   imports: [
     BrowserModule,
@@ -46,6 +48,7 @@ import { IngredientItemTableComponent } from './components/ingredient-item-table
     MatButtonModule,
     FormsModule,
     MatSelectModule,
+    MatCheckboxModule,
   ],
   providers: [
     provideHttpClient(),

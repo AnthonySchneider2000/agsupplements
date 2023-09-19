@@ -1,20 +1,6 @@
-<div>
-  <mat-form-field>
-    <mat-label>Ingredients</mat-label>
-    <mat-select
-      multiple
-      [(ngModel)]="selectedIngredients"
-      (selectionChange)="onIngredientSelectionChange($event)"
-    >
-      <mat-option
-        *ngFor="let ingredient of allIngredients"
-        [value]="ingredient"
-      >
-        {{ ingredient.name }}
-      </mat-option>
-    </mat-select>
-  </mat-form-field>
 
+  
+  
   <table mat-table [dataSource]="dataSource" matSort>
     <!-- name description and price columns, then ingredient columns -->
 
@@ -66,4 +52,3 @@
     >
     </mat-paginator>
   </div>
-</div>

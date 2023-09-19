@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { Subject } from 'rxjs';
+import { Subject, BehaviorSubject } from 'rxjs';
+import { Ingredient } from './models.service';
 
 @Injectable({
   providedIn: 'root',
@@ -23,4 +24,23 @@ export class TableDataService {
   setSelectedId(id: number) {
     this.selectedIdSubject.next(id);
   }
+
+  private selectedIngredientsSubject = new BehaviorSubject<Ingredient[]>([]);
+
+  // Observable for getting the selected ingredients
+  selectedIngredients$ = this.selectedIngredientsSubject.asObservable();
+
+  setSelectedIngredients(selectedIngredients: Ingredient[]) {
+    this.selectedIngredientsSubject.next(selectedIngredients);
+  }
+
+  private showCostRatioSubject = new BehaviorSubject<boolean>(false);
+
+  // Observable for getting the showCostRatio
+  showCostRatio$ = this.showCostRatioSubject.asObservable();
+
+  setShowCostRatio(showCostRatio: boolean) {
+    this.showCostRatioSubject.next(showCostRatio);
+  }
+  
 }
