@@ -41,6 +41,7 @@ export class IngredientItemTableComponent implements OnInit {
     this.tableDataService.showCostRatio$.subscribe((costRatio) => {
       this.showCostRatio = costRatio;
       // When showCostRatio changes, reload the data
+      this.filterData();
     });
   }
 
@@ -65,6 +66,7 @@ export class IngredientItemTableComponent implements OnInit {
   }
 
   filterData() {
+   
     let filteredData = this.originalData;
 
     // Apply selectedIngredients filter
@@ -81,13 +83,51 @@ export class IngredientItemTableComponent implements OnInit {
 
     // Apply showCostRatio filter
     if (this.showCostRatio) {
-      // Add logic here to filter based on cost ratio if needed
-      // Example: filteredData = filteredData.filter((item) => item.someCondition);
+      this.displayedColumns = [
+        ...this.baseColumns,
+        ...this.selectedIngredients.map((ingredient) => ingredient.name),
+      ];
+
+    }else{
+      this.displayedColumns = [
+        ...this.baseColumns,
+        ...this.selectedIngredients.map((ingredient) => ingredient.name),
+      ];
     }
 
-    this.dataSource.data = filteredData;
-    this.displayedColumns = [...this.baseColumns, ...this.selectedIngredients.map((ingredient) => ingredient.name)];
+    if (this.dataSource) {
+      this.dataSource.data = filteredData;
+    }
+  }
 
+  getIngredientCostRatio(
+    item: ItemWithIngredients,
+    ingredient: Ingredient
+  ): number {
+    // You should implement the logic to calculate the cost/mass ratio here
+    // For example, you can retrieve the cost and mass of the ingredient from your data
+    // and then calculate the ratio.
+
+    // For demonstration, let's assume you have cost and mass properties in your data model.
+    const itemIngredient = item.ingredients.find(
+      (itemIngredient) => itemIngredient.ingredient.id === ingredient.id
+    );
+
+    if (itemIngredient) {
+      const cost = item.price; // Replace with the actual property name
+      const mass = itemIngredient.mass; // Replace with the actual property name
+
+      // Avoid division by zero
+      if (mass !== 0) {
+        return cost / mass;
+      }
+    }
+
+    return 0; // Default value if there is no valid ratio
+  }
+
+  getCostRatio(item: ItemWithIngredients) {
+    return 0;
   }
 
   getIngredientMass(item: ItemWithIngredients, ingredient: Ingredient) {
