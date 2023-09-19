@@ -19,6 +19,7 @@ export class IngredientItemTableComponent implements OnInit {
   allIngredients: Ingredient[] = [];
   selectedIngredients: Ingredient[] = [];
   dataSource: MatTableDataSource<any>;
+  baseColumns: string[] = ['name', 'description', 'price'];
   displayedColumns: string[] = ['name', 'description', 'price'];
   showCostRatio: boolean = false; // Initialize with default value
   @ViewChild(MatPaginator) paginator: MatPaginator;
@@ -57,6 +58,8 @@ export class IngredientItemTableComponent implements OnInit {
     this.dataService.fetchItemWithIngredientsData().subscribe((data) => {
       this.dataSource = new MatTableDataSource(data);
       this.originalData = data; // Store the original data
+      this.dataSource.paginator = this.paginator;
+      this.dataSource.sort = this.sort;
       this.filterData(); // Apply filters after loading data
     });
   }
@@ -83,6 +86,8 @@ export class IngredientItemTableComponent implements OnInit {
     }
 
     this.dataSource.data = filteredData;
+    this.displayedColumns = [...this.baseColumns, ...this.selectedIngredients.map((ingredient) => ingredient.name)];
+
   }
 
   getIngredientMass(item: ItemWithIngredients, ingredient: Ingredient) {
