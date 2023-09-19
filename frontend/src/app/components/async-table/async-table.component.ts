@@ -33,7 +33,7 @@ export class AsyncTableComponent implements OnInit {
 
   loadData() {
     if (this.data === 'ItemBase') {
-    this.dataService.fetchData().subscribe((data) => {
+    this.dataService.fetchItemBaseData().subscribe((data) => {
       this.dataSource = new MatTableDataSource(data);
       this.displayedColumns = this.getDisplayedColumns();
       this.dataSource.paginator = this.paginator;
@@ -41,6 +41,7 @@ export class AsyncTableComponent implements OnInit {
     });
     } else if (this.data === 'ItemWithIngredients') {
       this.dataService.fetchItemWithIngredientsData().subscribe((data) => {
+        console.log(data);
         this.dataSource = new MatTableDataSource(data);
         this.displayedColumns = this.getDisplayedColumns();
         this.dataSource.paginator = this.paginator;

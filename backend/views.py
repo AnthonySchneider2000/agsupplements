@@ -68,16 +68,18 @@ def create_item_with_ingredients(request):
 
     # Create ItemIngredient instances for each ingredient and associate them with the item
     for ingredient_info in ingredient_data:
-        ingredient_id = ingredient_info.get('ingredient_id')
+        ingredient_id = ingredient_info.get('id')
         mass = ingredient_info.get('mass')
-
+        # print the ingredient_id and mass
+        print("ingredient_id and mass")
+        print(ingredient_id, mass)
         ingredient = Ingredient.objects.get(id=ingredient_id)
         item_ingredient = ItemIngredient(item=item, ingredient=ingredient, mass=mass)
         item_ingredient.save()
 
     return JsonResponse({"message": "Item with ingredients created successfully"})
 
-def get_item_with_ingredients(request): # get data from database
+def get_item_with_ingredients(request): 
     items = ItemWithIngredients.objects.all()
     response = []
     for item in items:
@@ -88,16 +90,20 @@ def get_item_with_ingredients(request): # get data from database
             "price": item.price,
             "ingredients": [
                 {
-                    "id": ingredient.id,
-                    "name": ingredient.name,
-                    "description": ingredient.description,
-                    "price": ingredient.price,
+                    "id": item_ingredient.ingredient.id,
+                    "ingredient": {
+                        "id": item_ingredient.ingredient.id,
+                        "name": item_ingredient.ingredient.name,
+                        "description": item_ingredient.ingredient.description,
+                        "price": item_ingredient.ingredient.price
+                    },
                     "mass": item_ingredient.mass
                 }
-                for ingredient, item_ingredient in item.ingredients.through.objects.filter(item=item).select_related('ingredient').all().iterator()
+                for item_ingredient in item.itemingredient_set.all()
             ]
         })
     return JsonResponse(response, safe=False)
+
 
 
 @csrf_exempt

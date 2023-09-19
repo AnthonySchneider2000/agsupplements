@@ -21,6 +21,7 @@ import { DbManipInputGroupComponent } from './components/db-manip-input-group/db
 import { FormsModule } from '@angular/forms';
 import { IngredientItemInputComponent } from './components/ingredient-item-input/ingredient-item-input.component';
 import { MatSelectModule } from '@angular/material/select';
+import { IngredientItemTableComponent } from './components/ingredient-item-table/ingredient-item-table.component';
 
 
 @NgModule({
@@ -30,6 +31,7 @@ import { MatSelectModule } from '@angular/material/select';
     AsyncTableComponent,
     DbManipInputGroupComponent,
     IngredientItemInputComponent,
+    IngredientItemTableComponent,
   ],
   imports: [
     BrowserModule,

@@ -2,28 +2,23 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ItemIngredient } from './models.service';
+import { ItemIngredient, Item, ItemWithIngredients, Ingredient } from './models.service';
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
   constructor(private http: HttpClient) {}
 
-  fetchData(): Observable<any> { //to be removed, replaced by fetchItemBaseData
-    return this.http.get("http://localhost:8000/backend/get-item/");
-  }
-
-
   fetchItemBaseData(): Observable<any> {
-    return this.http.get('http://localhost:8000/backend/get-item/');
+    return this.http.get<Item[]>('http://localhost:8000/backend/get-item/');
   }
 
-  fetchItemWithIngredientsData(): Observable<any> {
-    return this.http.get('http://localhost:8000/backend/get-item-with-ingredients/');
+  fetchItemWithIngredientsData(): Observable<ItemWithIngredients[]> {
+    return this.http.get<ItemWithIngredients[]>('http://localhost:8000/backend/get-item-with-ingredients/');
   }
-
+  
   fetchIngredientData(): Observable<any> {
-    return this.http.get('http://localhost:8000/backend/get-ingredient/');
+    return this.http.get<Ingredient[]>('http://localhost:8000/backend/get-ingredient/');
   }
 
 
@@ -67,6 +62,7 @@ export class DataService {
 
   addItemWithIngredientsToDatabase(name: string, description: string, price: number, ingredients: ItemIngredient[]): Observable<any> {
     const apiUrl = 'http://localhost:8000/backend/create-item-with-ingredients/';
+    console.log(ingredients);
     const requestBody = {
       name: name,
       description: description,
