@@ -20,7 +20,6 @@ export class IngredientItemTableComponent implements OnInit {
   selectedIngredients: Ingredient[] = [];
   dataSource: MatTableDataSource<any>;
   displayedColumns: string[] = ['name', 'description', 'price'];
-  baseColumns: string[] = ['name', 'description', 'price'];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -94,6 +93,14 @@ export class IngredientItemTableComponent implements OnInit {
       );
     });
   }
+
+  getIngredientMass(item: ItemWithIngredients, ingredient: Ingredient) {
+    const itemIngredient = item.ingredients.find(
+      (itemIngredient) => itemIngredient.ingredient.id === ingredient.id
+    );
+    return itemIngredient ? itemIngredient.mass : 0;
+  }
+  
   
   getAllIngredients() {
     this.dataService.fetchIngredientData().subscribe((data) => {

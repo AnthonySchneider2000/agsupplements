@@ -62,7 +62,6 @@ export class DataService {
 
   addItemWithIngredientsToDatabase(name: string, description: string, price: number, ingredients: ItemIngredient[]): Observable<any> {
     const apiUrl = 'http://localhost:8000/backend/create-item-with-ingredients/';
-    console.log(ingredients);
     const requestBody = {
       name: name,
       description: description,
