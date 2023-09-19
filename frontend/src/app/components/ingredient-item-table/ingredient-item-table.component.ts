@@ -68,7 +68,10 @@ export class IngredientItemTableComponent implements OnInit {
   filterData() {
    
     let filteredData = this.originalData;
-
+    this.displayedColumns = [
+      ...this.baseColumns,
+      ...this.selectedIngredients.map((ingredient) => ingredient.name),
+    ];
     // Apply selectedIngredients filter
     if (this.selectedIngredients.length > 0) {
       filteredData = filteredData.filter((item) => {
@@ -80,19 +83,10 @@ export class IngredientItemTableComponent implements OnInit {
         );
       });
     }
-
+    
     // Apply showCostRatio filter
     if (this.showCostRatio) {
-      this.displayedColumns = [
-        ...this.baseColumns,
-        ...this.selectedIngredients.map((ingredient) => ingredient.name),
-      ];
-
-    }else{
-      this.displayedColumns = [
-        ...this.baseColumns,
-        ...this.selectedIngredients.map((ingredient) => ingredient.name),
-      ];
+      
     }
 
     if (this.dataSource) {
@@ -140,7 +134,6 @@ export class IngredientItemTableComponent implements OnInit {
   getAllIngredients() {
     this.dataService.fetchIngredientData().subscribe((data) => {
       this.allIngredients = data;
-      console.log(this.allIngredients);
     });
   }
 
