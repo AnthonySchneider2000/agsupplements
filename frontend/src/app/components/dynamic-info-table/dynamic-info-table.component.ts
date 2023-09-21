@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { TableDataService } from 'src/app/services/tabledata.service';
 import {
-  ItemWithIngredients,
+  ItemWithIngredients as Item,
   ItemIngredient,
   Ingredient,
 } from '../../services/models.service';
@@ -19,16 +19,12 @@ export class DynamicInfoTableComponent implements OnInit {
   allIngredients: Ingredient[] = [];
   selectedIngredients: Ingredient[] = [];
   dataSource: MatTableDataSource<any>;
+  ItemData: Item[] = [];
   baseColumns: string[] = ['name', 'description', 'price'];
   displayedColumns: string[] = ['name', 'description', 'price'];
   showCostRatio: boolean = false; // Initialize with default value
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
-  originalData: any[] = [];
-
-  ItemData: ItemWithIngredients[] = [];
-
 
 
   constructor(
@@ -64,7 +60,6 @@ export class DynamicInfoTableComponent implements OnInit {
 
   loadData() {
     this.dataService.fetchFilteredTableData(this.selectedIngredients, this.showCostRatio).subscribe((data) => {
-      this.originalData = data;
       this.dataSource = new MatTableDataSource(data);
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
@@ -76,7 +71,6 @@ export class DynamicInfoTableComponent implements OnInit {
 
   filterData() {
     this.loadData();
-    let filteredData = this.originalData;
     this.displayedColumns = [
       ...this.baseColumns,
       ...this.selectedIngredients.map((ingredient) => ingredient.name),
@@ -94,15 +88,13 @@ export class DynamicInfoTableComponent implements OnInit {
       ];
     }
   
-    if (this.dataSource) {
-      this.dataSource.data = filteredData;
-    }
+
   }
   
   
 
   getIngredientCostRatio(
-    item: ItemWithIngredients,
+    item: Item,
     ingredient: Ingredient
   ): number {
     // You should implement the logic to calculate the cost/mass ratio here
@@ -127,11 +119,11 @@ export class DynamicInfoTableComponent implements OnInit {
     return 0; // Default value if there is no valid ratio
   }
 
-  getCostRatio(item: ItemWithIngredients) {
+  getCostRatio(item: Item) {
     return 0;
   }
 
-  getIngredientMass(item: ItemWithIngredients, ingredient: Ingredient) {
+  getIngredientMass(item: Item, ingredient: Ingredient) {
     const itemIngredient = item.ingredients.find(
       (itemIngredient) => itemIngredient.ingredient.id === ingredient.id
     );

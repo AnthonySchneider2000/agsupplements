@@ -1,7 +1,7 @@
 import json
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import Ingredient, ItemWithIngredients, ItemIngredient
+from .models import Ingredient, Item, ItemIngredient
 from django.views.decorators.csrf import csrf_exempt
 # from rest_framework.decorators import api_view
 # from rest_framework.response import Response
@@ -34,7 +34,7 @@ def create_item_with_ingredients(request):
     ingredient_data = data.get('ingredients', [])
 
     # Create the ItemWithIngredients instance
-    item = ItemWithIngredients(name=name, description=description, price=price)
+    item = Item(name=name, description=description, price=price)
     item.save()
 
     # Create ItemIngredient instances for each ingredient and associate them with the item
@@ -48,7 +48,7 @@ def create_item_with_ingredients(request):
     return JsonResponse({"message": "Item with ingredients created successfully"})
 
 def get_item_with_ingredients(request): 
-    items = ItemWithIngredients.objects.all()
+    items = Item.objects.all()
     response = []
     for item in items:
         response.append({
@@ -127,7 +127,7 @@ def get_filtered_table_data(request): #takes a list of selectedIngredients and a
         ingredient = Ingredient.objects.get(id=ingredient_id)
         selected_ingredients.append(ingredient)
     
-    for item in ItemWithIngredients.objects.all():
+    for item in Item.objects.all():
         contains_all_ingredients = True
         item_data = {
             "id": item.id,
@@ -152,7 +152,7 @@ def get_filtered_table_data(request): #takes a list of selectedIngredients and a
     return JsonResponse(response, safe=False)
     
 def get_all_table_data(request):
-    items = ItemWithIngredients.objects.all()
+    items = Item.objects.all()
     response = []
     for item in items:
         response.append({
@@ -181,7 +181,7 @@ def get_all_table_data(request):
 
 @csrf_exempt
 def delete_item_with_ingredients(request, id):
-    item = ItemWithIngredients.objects.get(id=id)
+    item = Item.objects.get(id=id)
     item.delete()
 
     return JsonResponse({"message": "Item with ingredients deleted successfully"})
