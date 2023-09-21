@@ -155,10 +155,9 @@ def get_filtered_table_data(request): #takes a list of selectedIngredients and a
         ingredient_id = ingredient_data.get('id')
         ingredient = Ingredient.objects.get(id=ingredient_id)
         selected_ingredients.append(ingredient)
-        print("ingredient added: " + ingredient.name)
-        
     
     for item in ItemWithIngredients.objects.all():
+        contains_all_ingredients = True
         item_data = {
             "id": item.id,
             "name": item.name,
@@ -174,14 +173,11 @@ def get_filtered_table_data(request): #takes a list of selectedIngredients and a
                 if show_cost_ratio:
                     item_data[ingredient.name + "CostRatio"] = item.price / ingredientMass
             except ItemIngredient.DoesNotExist:
-                # If the item doesn't have the ingredient, set the mass to 0
-                item_data[ingredient.name] = 0
-                if show_cost_ratio:
-                    item_data[ingredient.name + "CostRatio"] = 0
-                
+                contains_all_ingredients = False
+                break
+        if contains_all_ingredients:
+            response.append(item_data)
         
-        response.append(item_data)
-        print(item_data)
     return JsonResponse(response, safe=False)
     
 def get_all_table_data(request):

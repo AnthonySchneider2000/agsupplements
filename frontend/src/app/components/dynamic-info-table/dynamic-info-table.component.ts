@@ -25,7 +25,11 @@ export class DynamicInfoTableComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  originalData: ItemWithIngredients[] = [];
+  originalData: any[] = [];
+
+  ItemData: ItemWithIngredients[] = [];
+
+
 
   constructor(
     private dataService: DataService,
@@ -46,6 +50,8 @@ export class DynamicInfoTableComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.getAllIngredients();
+    this.getItemData();
     this.loadData();
     this.tableDataService.reloadTable$.subscribe(() => {
       // Reload table when needed
@@ -55,54 +61,43 @@ export class DynamicInfoTableComponent implements OnInit {
   }
 
   loadData() {
-    this.getAllIngredients();
-    this.dataService.fetchItemWithIngredientsData().subscribe((data) => {
+    this.dataService.fetchFilteredTableData(this.selectedIngredients, this.showCostRatio).subscribe((data) => {
+      this.originalData = data;
       this.dataSource = new MatTableDataSource(data);
-      this.originalData = data; // Store the original data
       this.dataSource.paginator = this.paginator;
       this.dataSource.sort = this.sort;
-      this.filterData(); // Apply filters after loading data
-      console.log(this.dataSource.data);
-      this.getFilteredTableData();
+      console.log(data);
     });
+
   }
 
-  getFilteredTableData() {
-    this.dataService
-      .fetchFilteredTableData(this.selectedIngredients, this.showCostRatio)
-      .subscribe((data) => {
-        console.log('Filtered table data')
-        console.log(data);
-      });
-  }
 
   filterData() {
+    this.loadData();
     let filteredData = this.originalData;
     this.displayedColumns = [
       ...this.baseColumns,
       ...this.selectedIngredients.map((ingredient) => ingredient.name),
     ];
-    // Apply selectedIngredients filter
-    if (this.selectedIngredients.length > 0) {
-      filteredData = filteredData.filter((item) => {
-        const itemIngredientIds = item.ingredients.map((itemIngredient) =>
-          itemIngredient.ingredient ? itemIngredient.ingredient.id : null
-        );
-        return this.selectedIngredients.every((ingredient) =>
-          itemIngredientIds.includes(ingredient.id)
-        );
-      });
-    }
+  
 
     // Apply showCostRatio filter
     if (this.showCostRatio) {
+      this.displayedColumns = [
+        ...this.baseColumns,
+        ...this.selectedIngredients.map((ingredient) => ingredient.name),
+        ...this.selectedIngredients.map(
+          (ingredient) => ingredient.name + 'CostRatio'
+        ),
+      ];
     }
-
+  
     if (this.dataSource) {
       this.dataSource.data = filteredData;
     }
-    this.getFilteredTableData();
   }
+  
+  
 
   getIngredientCostRatio(
     item: ItemWithIngredients,
@@ -146,6 +141,13 @@ export class DynamicInfoTableComponent implements OnInit {
       this.allIngredients = data;
     });
   }
+
+  getItemData() {
+    this.dataService.fetchItemWithIngredientsData().subscribe((data) => {
+      this.ItemData = data;
+    });
+  }
+
 
   applyFilter(event: any) {
     const filterValue = (event.target as HTMLInputElement).value;
