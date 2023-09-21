@@ -14,10 +14,8 @@ import {VERSION as MAT_VERSION, MatNativeDateModule} from '@angular/material/cor
 import { AppComponent } from './app.component';
 import { InputClearable } from './components/input-clearable/input-clearable.component';
 import { TestOutputComponent } from './components/test-output/test-output.component';
-import { AsyncTableComponent } from './components/async-table/async-table.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { DbManipInputGroupComponent } from './components/db-manip-input-group/db-manip-input-group.component';
 import { FormsModule } from '@angular/forms';
 import { IngredientItemInputComponent } from './components/ingredient-item-input/ingredient-item-input.component';
 import { MatSelectModule } from '@angular/material/select';
@@ -30,8 +28,6 @@ import { DynamicInfoTableComponent } from './components/dynamic-info-table/dynam
   declarations: [
     AppComponent,
     TestOutputComponent,
-    AsyncTableComponent,
-    DbManipInputGroupComponent,
     IngredientItemInputComponent,
     IngredientItemTableComponent,
     TableOptionsComponent,

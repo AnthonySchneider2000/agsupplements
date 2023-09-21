@@ -2,17 +2,13 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ItemIngredient, Item, ItemWithIngredients, Ingredient } from './models.service';
+import { ItemIngredient, ItemWithIngredients, Ingredient } from './models.service';
 import { HttpHeaders } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
 })
 export class DataService {
   constructor(private http: HttpClient) {}
-
-  fetchItemBaseData(): Observable<any> {
-    return this.http.get<Item[]>('http://localhost:8000/backend/get-item/');
-  }
 
   fetchItemWithIngredientsData(): Observable<ItemWithIngredients[]> {
     return this.http.get<ItemWithIngredients[]>('http://localhost:8000/backend/get-item-with-ingredients/');
@@ -53,20 +49,7 @@ export class DataService {
 
 
 
-  addItemToDatabase(name: string, description: string, price: number): Observable<any> {
-    const apiUrl = 'http://localhost:8000/backend/create-item/';
-    const requestBody = {
-      name: name,
-      description: description,
-      price: price,
-    };
-    return this.http.post(apiUrl, requestBody);
-  }
 
-  deleteItemFromDatabase(id: number): Observable<any> {
-    const apiUrl = 'http://localhost:8000/backend/delete-item/' + id + '/';
-    return this.http.delete(apiUrl);
-  }
 
   addIngredientToDatabase(name: string, description: string, price: number): Observable<any> {
     const apiUrl = 'http://localhost:8000/backend/create-ingredient/';
