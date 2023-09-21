@@ -24,6 +24,7 @@ import { MatSelectModule } from '@angular/material/select';
 import { IngredientItemTableComponent } from './components/ingredient-item-table/ingredient-item-table.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TableOptionsComponent } from './components/table-options/table-options.component';
+import { DynamicInfoTableComponent } from './components/dynamic-info-table/dynamic-info-table.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +35,7 @@ import { TableOptionsComponent } from './components/table-options/table-options.
     IngredientItemInputComponent,
     IngredientItemTableComponent,
     TableOptionsComponent,
+    DynamicInfoTableComponent,
   ],
   imports: [
     BrowserModule,

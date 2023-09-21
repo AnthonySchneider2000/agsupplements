@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { ItemIngredient, Item, ItemWithIngredients, Ingredient } from './models.service';
+import { HttpHeaders } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
 })
@@ -21,6 +22,33 @@ export class DataService {
     return this.http.get<Ingredient[]>('http://localhost:8000/backend/get-ingredient/');
   }
 
+  fetchCurrentTableData(currentTableData: any[], selectedIngredients: Ingredient[], showCostRatio: boolean): Observable<any> {
+    const apiUrl = 'http://localhost:8000/backend/get-current-table-data/';
+    const requestBody = {
+      currentTableData: currentTableData, //possibly use original table data instead
+      selectedIngredients: selectedIngredients,
+      showCostRatio: showCostRatio,
+    };
+    
+    console.log('Sending request to backend');
+    console.log(requestBody);
+  
+    return this.http.post(apiUrl, requestBody);
+  
+  }
+
+  fetchFilteredTableData(selectedIngredients: Ingredient[], showCostRatio: boolean): Observable<any> {
+    const apiUrl = 'http://localhost:8000/backend/get-filtered-table-data/';
+    const requestBody = {
+      selectedIngredients: selectedIngredients,
+      showCostRatio: showCostRatio,
+    };
+
+    console.log('Sending request to backend - filtered table data');
+    console.log(requestBody);
+
+    return this.http.post(apiUrl, requestBody);
+  }
 
 
 
@@ -76,5 +104,14 @@ export class DataService {
     return this.http.delete(apiUrl);
   }
 
+  //send a list of item ingredients to the backend and receive a list of cost ratios
+  getIngredientCostRatioList(ingredients: ItemIngredient[]): Observable<any> {
+    const apiUrl = 'http://localhost:8000/backend/get-ingredient-cost-ratio-list/';
+    const requestBody = {
+      ingredients: ingredients,
+    };
+    return this.http.post(apiUrl, requestBody);
+  }
 
+  
 }
