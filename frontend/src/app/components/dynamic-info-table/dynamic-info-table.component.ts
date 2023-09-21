@@ -89,7 +89,7 @@ export class DynamicInfoTableComponent implements OnInit {
         ...this.baseColumns,
         ...this.selectedIngredients.map((ingredient) => ingredient.name),
         ...this.selectedIngredients.map(
-          (ingredient) => ingredient.name + 'CostRatio'
+          (ingredient) => ingredient.name + ' Cost Ratio'
         ),
       ];
     }

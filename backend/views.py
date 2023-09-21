@@ -171,7 +171,7 @@ def get_filtered_table_data(request): #takes a list of selectedIngredients and a
                 ingredientMass = item_ingredient.mass
                 item_data[ingredient.name] = ingredientMass
                 if show_cost_ratio:
-                    item_data[ingredient.name + "CostRatio"] = item.price / ingredientMass
+                    item_data[ingredient.name + " Cost Ratio"] = item.price / ingredientMass
             except ItemIngredient.DoesNotExist:
                 contains_all_ingredients = False
                 break
