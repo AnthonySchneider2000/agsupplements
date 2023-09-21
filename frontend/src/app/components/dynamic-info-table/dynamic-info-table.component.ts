@@ -45,7 +45,9 @@ export class DynamicInfoTableComponent implements OnInit {
     this.tableDataService.showCostRatio$.subscribe((costRatio) => {
       this.showCostRatio = costRatio;
       // When showCostRatio changes, reload the data
-      this.filterData();
+      if(this.selectedIngredients.length > 0){
+        this.filterData();
+      }
     });
   }
 
