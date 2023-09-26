@@ -20,8 +20,8 @@ export class DynamicInfoTableComponent implements OnInit {
   selectedIngredients: Ingredient[] = [];
   dataSource: MatTableDataSource<any>;
   ItemData: Item[] = [];
-  baseColumns: string[] = ['name', 'description', 'price'];
-  displayedColumns: string[] = ['name', 'description', 'price'];
+  baseColumns: string[] = ['name', 'price'];
+  displayedColumns: string[] = ['name', 'price'];
   showCostRatio: boolean = false; // Initialize with default value
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
