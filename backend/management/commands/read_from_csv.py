@@ -42,6 +42,10 @@ class Command(BaseCommand):
             for row in reader:
                 name = row[2]
                 
+                if Item.objects.filter(name=name).exists():
+                    print('Item with name ' + name + ' already exists')
+                    continue
+                
                 price = row[4][1:].strip() #trim dollar sign and space, price per pound
                 
                 #if the servingSize2 is not empty, use that, otherwise use servingSize
