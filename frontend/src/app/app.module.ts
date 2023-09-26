@@ -12,7 +12,6 @@ import { MatSortModule } from '@angular/material/sort';
 import {VERSION as MAT_VERSION, MatNativeDateModule} from '@angular/material/core';
 
 import { AppComponent } from './app.component';
-import { InputClearable } from './components/input-clearable/input-clearable.component';
 import { TestOutputComponent } from './components/test-output/test-output.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
@@ -23,6 +22,10 @@ import { IngredientItemTableComponent } from './components/ingredient-item-table
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TableOptionsComponent } from './components/table-options/table-options.component';
 import { DynamicInfoTableComponent } from './components/dynamic-info-table/dynamic-info-table.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { DropzoneCdkModule } from '@ngx-dropzone/cdk';
+import { DropzoneMaterialModule } from '@ngx-dropzone/material';
+
 
 @NgModule({
   declarations: [
@@ -41,12 +44,14 @@ import { DynamicInfoTableComponent } from './components/dynamic-info-table/dynam
     MatTableModule,
     MatPaginatorModule,
     MatSortModule,
-    InputClearable,
     MatInputModule,
     MatButtonModule,
     FormsModule,
     MatSelectModule,
     MatCheckboxModule,
+    MatFormFieldModule,
+    DropzoneCdkModule,
+    DropzoneMaterialModule,
   ],
   providers: [
     provideHttpClient(),
