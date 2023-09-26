@@ -59,10 +59,9 @@ export class DynamicInfoTableComponent implements OnInit {
 
     this.tableDataService.customConditions$.subscribe((customConditions) => {
       this.customConditions = customConditions;
+      console.log(this.customConditions);
       // When customConditions change, reload the data
-      if (this.selectedIngredients.length > 0) {
         this.filterData();
-      }
     });
   }
 

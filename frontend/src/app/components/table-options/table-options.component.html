@@ -82,6 +82,9 @@
       </mat-select>
     </mat-form-field>
 
+
+
+
     <mat-form-field>
       <mat-label>Operator</mat-label>
       <mat-select [(ngModel)]="operator">
@@ -92,7 +95,7 @@
       </mat-select>
     </mat-form-field>
 
-    <mat-form-field>
+    <!-- <mat-form-field>
       <mat-label>Var2</mat-label>
       <mat-select [(ngModel)]="conditionVar2">
         <mat-option value="price">Price</mat-option>
@@ -102,7 +105,14 @@
           >{{ ingredient.name }}</mat-option
         >
       </mat-select>
+    </mat-form-field> -->
+
+    <!-- textbox -->
+    <mat-form-field>
+      <mat-label>Var2</mat-label>
+      <input matInput [(ngModel)]="conditionVar2" />
     </mat-form-field>
+
     <button
       mat-raised-button
       color="primary"

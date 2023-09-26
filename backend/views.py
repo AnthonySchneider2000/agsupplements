@@ -115,19 +115,13 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
             "description": item.description,
             "price": item.price
         }
-        if(len(selected_ingredients) == 2):
-            print(selected_ingredients[0].name)
-            print(selected_ingredients[1].name)
         for ingredient in selected_ingredients:
-            print ("ingredient: " + ingredient.name)
             try:
                 # Fetch the related ItemIngredient object
                 item_ingredient = item.itemingredient_set.get(ingredient=ingredient)
                 ingredientMass = item_ingredient.mass
                 item_data[ingredient.name] = ingredientMass
-                print("Added " + ingredient.name + " to item_data")
             except ItemIngredient.DoesNotExist:
-                print("Item does not contain " + ingredient.name)
                 itemMeetsAllConditions = False
                 break
             
@@ -141,20 +135,33 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
                     operator = char
             var1 = condition.split(operator)[0]
             var2 = condition.split(operator)[1]
+            
+            #if var1 is numeric, set var1Comparison to var1, otherwise set var1Comparison to item_data[var1]
+            try:
+                var1Comparison = float(var1)
+            except ValueError:
+                var1Comparison = item_data[var1]
+                
+            try:
+                var2Comparison = float(var2)
+            except ValueError:
+                var2Comparison = item_data[var2]
+            
+            
             if operator == ">":
-                if item_data[var1] <= item_data[var2]:
+                if var1Comparison <= var2Comparison:
                     itemMeetsAllConditions = False
                     break
             elif operator == "<":
-                if item_data[var1] >= item_data[var2]:
+                if var1Comparison >= var2Comparison:
                     itemMeetsAllConditions = False
                     break
             elif operator == "=":
-                if item_data[var1] != item_data[var2]:
+                if var1Comparison != var2Comparison:
                     itemMeetsAllConditions = False
                     break
             elif operator == "!":
-                if item_data[var1] == item_data[var2]:
+                if var1Comparison == var2Comparison:
                     itemMeetsAllConditions = False
                     break
                 
@@ -165,8 +172,6 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
             operator = "/"
             var1 = column.split(operator)[0]
             var2 = column.split(operator)[1]
-            #print the contents of item_data
-            print(item_data)
             item_data[column] = item_data[var1] / item_data[var2]
                 
         if itemMeetsAllConditions:
