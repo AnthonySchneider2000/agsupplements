@@ -52,13 +52,14 @@ class Command(BaseCommand):
                 servingSize = row[6] if row[6] else row[5]
                 #trim the serving size to just the number (oz)
                 servingSize = servingSize.split()[0] # split on space and take first element
+
+                link = row[3]
                 
                 servingsPerPound = 16 / float(servingSize) # 16 oz in a pound
                 
-                item = Item.objects.create(name=name, price=price, description=name)
+                item = Item.objects.create(name=name, price=price, description=name, link=link)
                 
                 calories = row[7]
-                
                 
                 calorie_ingredient = Ingredient.objects.get(name='Calories')
                 calorie_item_ingredient = ItemIngredient.objects.create(item=item, ingredient=calorie_ingredient, mass=calories)

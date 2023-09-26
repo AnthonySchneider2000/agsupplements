@@ -32,9 +32,10 @@ def create_item_with_ingredients(request):
     description = data.get('description')
     price = data.get('price')
     ingredient_data = data.get('ingredients', [])
+    link = data.get('link', '') # optional
 
     # Create the ItemWithIngredients instance
-    item = Item(name=name, description=description, price=price)
+    item = Item(name=name, description=description, price=price, link=link)
     item.save()
 
     # Create ItemIngredient instances for each ingredient and associate them with the item
@@ -68,7 +69,8 @@ def get_item_with_ingredients(request):
                     "mass": item_ingredient.mass,
                 }
                 for item_ingredient in item.itemingredient_set.all()
-            ]
+            ],
+            "link": item.link
         })
     return JsonResponse(response, safe=False)
 

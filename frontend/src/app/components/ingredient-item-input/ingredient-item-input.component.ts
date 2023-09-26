@@ -16,6 +16,7 @@ export class IngredientItemInputComponent {
   name: string = '';
   description: string = '';
   price: number = 0;
+  link: string = '';
   allIngredients: Ingredient[] = [];
   inputIngredients: Ingredient[] = [];
   itemIngredients: ItemIngredient[] = [];
@@ -51,7 +52,7 @@ export class IngredientItemInputComponent {
       });
     }   
 
-    this.dataService.addItemWithIngredientsToDatabase(this.name, this.description, this.price, this.itemIngredients).subscribe((data) => {
+    this.dataService.addItemWithIngredientsToDatabase(this.name, this.description, this.price, this.itemIngredients, this.link).subscribe((data) => {
       this.tableDataService.reloadTable();
     });
   }
