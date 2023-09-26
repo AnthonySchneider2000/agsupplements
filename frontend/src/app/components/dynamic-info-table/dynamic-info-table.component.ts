@@ -22,10 +22,12 @@ export class DynamicInfoTableComponent implements OnInit {
   ItemData: Item[] = [];
   baseColumns: string[] = ['name', 'price'];
   displayedColumns: string[] = ['name', 'price'];
+  ingredientColumns: string[] = [];
+  customColumns: string[] = [];
+  customConditions: string[] = [];
   showCostRatio: boolean = false; // Initialize with default value
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
-
 
   constructor(
     private dataService: DataService,
@@ -41,7 +43,24 @@ export class DynamicInfoTableComponent implements OnInit {
     this.tableDataService.showCostRatio$.subscribe((costRatio) => {
       this.showCostRatio = costRatio;
       // When showCostRatio changes, reload the data
-      if(this.selectedIngredients.length > 0){
+      if (this.selectedIngredients.length > 0) {
+        this.filterData();
+      }
+    });
+
+    this.tableDataService.customColumns$.subscribe((customColumns) => {
+      this.customColumns = customColumns;
+      // When customColumns change, reload the data
+      if (this.selectedIngredients.length > 0) {
+        this.filterData();
+      }
+      
+    });
+
+    this.tableDataService.customConditions$.subscribe((customConditions) => {
+      this.customConditions = customConditions;
+      // When customConditions change, reload the data
+      if (this.selectedIngredients.length > 0) {
         this.filterData();
       }
     });
@@ -59,29 +78,33 @@ export class DynamicInfoTableComponent implements OnInit {
   }
 
   loadData() {
-    this.dataService.fetchFilteredTableData(this.selectedIngredients, this.showCostRatio).subscribe((data) => {
-      this.dataSource = new MatTableDataSource(data);
-      this.dataSource.paginator = this.paginator;
-      this.dataSource.sort = this.sort;
-      console.log(data);
-    });
-
+    this.dataService
+      .fetchCurrentTableData(this.selectedIngredients, this.customConditions, this.customColumns)
+      .subscribe((data) => {
+        this.dataSource = new MatTableDataSource(data);
+        this.dataSource.paginator = this.paginator;
+        this.dataSource.sort = this.sort;
+        console.log(data);
+      });
   }
-
 
   filterData() {
     this.loadData();
+    this.ingredientColumns = this.selectedIngredients.map(
+      (ingredient) => ingredient.name
+    );
+
     this.displayedColumns = [
       ...this.baseColumns,
-      ...this.selectedIngredients.map((ingredient) => ingredient.name),
+      ...this.ingredientColumns,
+      ...this.customColumns,
     ];
-  
 
     // Apply showCostRatio filter
     if (this.showCostRatio) {
       this.displayedColumns = [
         ...this.baseColumns,
-        ...this.selectedIngredients.map((ingredient) => ingredient.name),
+        ...this.ingredientColumns,
         ...this.selectedIngredients.map(
           (ingredient) => ingredient.name + ' Cost Ratio'
         ),
@@ -92,6 +115,7 @@ export class DynamicInfoTableComponent implements OnInit {
   getAllIngredients() {
     this.dataService.fetchIngredientData().subscribe((data) => {
       this.allIngredients = data;
+      this.tableDataService.setAllIngredients(this.allIngredients);
     });
   }
 
@@ -100,7 +124,6 @@ export class DynamicInfoTableComponent implements OnInit {
       this.ItemData = data;
     });
   }
-
 
   applyFilter(event: any) {
     const filterValue = (event.target as HTMLInputElement).value;

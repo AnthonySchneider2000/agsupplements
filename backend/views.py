@@ -91,30 +91,92 @@ def get_ingredient_cost_ratio_columns(request):
     return 0
 
 @csrf_exempt
-def get_current_table_data(request): #takes the current table data, a list of selectedIngredients, and a boolean of showCostRatio and returns the new table data
+def get_current_table_data(request): #takes a list of selectedIngredients, an array of "conditions" strings, an array of "columns" strings, and returns the new table data
+    #a condition may be "ingredient1>ingredient2" etc, "ingredient1>x" etc, "ingredient1=x", "ingredient1!x" 
+    #a column may be "ingredient1/ingredient2", "ingredient1/x", "ingredient1/price", etc
+    
     data = json.loads(request.body)
-    current_table_data = data.get('currentTableData', [])
-    selected_ingredients = data.get('selectedIngredients', [])
-    show_cost_ratio = data.get('showCostRatio', False)
+    selected_ingredients_data = data.get('selectedIngredients', [])
+    selected_ingredients = []
+    conditions = data.get('conditions', [])
+    columns = data.get('columns', [])
     response = []
-    for item in current_table_data:
-        # list of current item's ingredients
-        item_ingredients = item.get('ingredients', [])
+    
+    for ingredient_data in selected_ingredients_data:
+        ingredient_id = ingredient_data.get('id')
+        ingredient = Ingredient.objects.get(id=ingredient_id)
+        selected_ingredients.append(ingredient)
+        
+    for item in Item.objects.all():
+        itemMeetsAllConditions = True
         item_data = {
-            "id": item.get('id'),
-            "name": item.get('name'),
-            "description": item.get('description'),
-            "price": item.get('price')
+            "id": item.id,
+            "name": item.name,
+            "description": item.description,
+            "price": item.price
         }
+        if(len(selected_ingredients) == 2):
+            print(selected_ingredients[0].name)
+            print(selected_ingredients[1].name)
         for ingredient in selected_ingredients:
-            ingredientMass = item.itemingredient_set.get(ingredient=ingredient).mass
-            item_data[ingredient.name] = ingredientMass
-            if show_cost_ratio:
-                item_data[ingredient.name + "CostRatio"] = item.price / ingredientMass
-        response.append(item_data)
-        print(item_data)
+            print ("ingredient: " + ingredient.name)
+            try:
+                # Fetch the related ItemIngredient object
+                item_ingredient = item.itemingredient_set.get(ingredient=ingredient)
+                ingredientMass = item_ingredient.mass
+                item_data[ingredient.name] = ingredientMass
+                print("Added " + ingredient.name + " to item_data")
+            except ItemIngredient.DoesNotExist:
+                print("Item does not contain " + ingredient.name)
+                itemMeetsAllConditions = False
+                break
+            
+        if not itemMeetsAllConditions:
+            continue
+            
+        for condition in conditions:
+            #finds the operator
+            for char in condition:
+                if char == ">" or char == "<" or char == "=" or char == "!":
+                    operator = char
+            var1 = condition.split(operator)[0]
+            var2 = condition.split(operator)[1]
+            if operator == ">":
+                if item_data[var1] <= item_data[var2]:
+                    itemMeetsAllConditions = False
+                    break
+            elif operator == "<":
+                if item_data[var1] >= item_data[var2]:
+                    itemMeetsAllConditions = False
+                    break
+            elif operator == "=":
+                if item_data[var1] != item_data[var2]:
+                    itemMeetsAllConditions = False
+                    break
+            elif operator == "!":
+                if item_data[var1] == item_data[var2]:
+                    itemMeetsAllConditions = False
+                    break
+                
+        if not itemMeetsAllConditions:
+            continue
+                
+        for column in columns:
+            operator = "/"
+            var1 = column.split(operator)[0]
+            var2 = column.split(operator)[1]
+            #print the contents of item_data
+            print(item_data)
+            item_data[column] = item_data[var1] / item_data[var2]
+                
+        if itemMeetsAllConditions:
+            response.append(item_data)
         
     return JsonResponse(response, safe=False)
+        
+
+
+    
     
 @csrf_exempt
 def get_filtered_table_data(request): #takes a list of selectedIngredients and a boolean of showCostRatio and returns the new table data

@@ -59,7 +59,7 @@ class Command(BaseCommand):
                 
                 item = Item.objects.create(name=name, price=price, description=name, link=link)
                 
-                calories = row[7]
+                calories = float(row[7]) * servingsPerPound # multiply by servings per pound
                 
                 calorie_ingredient = Ingredient.objects.get(name='Calories')
                 calorie_item_ingredient = ItemIngredient.objects.create(item=item, ingredient=calorie_ingredient, mass=calories)

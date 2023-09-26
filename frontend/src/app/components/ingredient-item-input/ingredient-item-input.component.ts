@@ -35,7 +35,12 @@ export class IngredientItemInputComponent {
     this.tableDataService.selectedId$.subscribe((id) => {
       this.id = id;
     });
-    this.getAllIngredients();
+    this.tableDataService.allIngredients$.subscribe((ingredients) => {
+      this.allIngredients = ingredients;
+    }
+    );
+
+
   }
 
   addItemWithIngredients() {
@@ -66,13 +71,15 @@ export class IngredientItemInputComponent {
   addIngredient() {
     this.dataService.addIngredientToDatabase(this.ingredient.name, this.ingredient.description, this.ingredient.price).subscribe((data) => {
       this.getAllIngredients();
+      this.tableDataService.setAllIngredients(this.allIngredients);
       this.resetIngredient();
     });
   }
   
   deleteIngredient() {
     this.dataService.deleteIngredientFromDatabase(this.ingredient.id).subscribe((data) => {
-      this.getAllIngredients();
+      this.allIngredients = this.allIngredients.filter((ingredient) => ingredient.id !== this.ingredient.id);
+      this.tableDataService.setAllIngredients(this.allIngredients);
       this.resetIngredient();
     });
   }

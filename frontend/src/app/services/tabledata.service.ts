@@ -42,5 +42,30 @@ export class TableDataService {
   setShowCostRatio(showCostRatio: boolean) {
     this.showCostRatioSubject.next(showCostRatio);
   }
+
+  private customColumnsSubject = new BehaviorSubject<string[]>([]);
+  // Observable for getting the customColumns
+  customColumns$ = this.customColumnsSubject.asObservable();
+
+  setCustomColumns(customColumns: string[]) {
+    this.customColumnsSubject.next(customColumns);
+  }
+
+  private customConditionsSubject = new BehaviorSubject<string[]>([]);
+  // Observable for getting the customConditions
+  customConditions$ = this.customConditionsSubject.asObservable();
+
+  setCustomConditions(customConditions: string[]) {
+    this.customConditionsSubject.next(customConditions);
+  }
+
+  private allIngredientsSubject = new BehaviorSubject<Ingredient[]>([]);
+  // Observable for getting the allIngredients
+  allIngredients$ = this.allIngredientsSubject.asObservable();
+
+  setAllIngredients(allIngredients: Ingredient[]) {
+    this.allIngredientsSubject.next(allIngredients);
+  }
+  
   
 }

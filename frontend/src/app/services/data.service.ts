@@ -18,19 +18,18 @@ export class DataService {
     return this.http.get<Ingredient[]>('http://localhost:8000/backend/get-ingredient/');
   }
 
-  fetchCurrentTableData(currentTableData: any[], selectedIngredients: Ingredient[], showCostRatio: boolean): Observable<any> {
+  fetchCurrentTableData(selectedIngredients: Ingredient[], conditions: string[], columns: string[]): Observable<any> {
     const apiUrl = 'http://localhost:8000/backend/get-current-table-data/';
     const requestBody = {
-      currentTableData: currentTableData, //possibly use original table data instead
       selectedIngredients: selectedIngredients,
-      showCostRatio: showCostRatio,
+      conditions: conditions,
+      columns: columns,
     };
-    
-    console.log('Sending request to backend');
+
+    console.log('Sending request to backend - current table data');
     console.log(requestBody);
-  
+
     return this.http.post(apiUrl, requestBody);
-  
   }
 
   fetchFilteredTableData(selectedIngredients: Ingredient[], showCostRatio: boolean): Observable<any> {
