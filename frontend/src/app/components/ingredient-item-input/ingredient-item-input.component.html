@@ -14,7 +14,11 @@
     </mat-form-field>
     <mat-form-field>
       <mat-label>Ingredients</mat-label>
-      <mat-select class="inputContainer" [(ngModel)]="inputIngredients" multiple>
+      <mat-select
+        class="inputContainer"
+        [(ngModel)]="inputIngredients"
+        multiple
+      >
         <mat-option
           *ngFor="let ingredient of allIngredients"
           [value]="ingredient"
@@ -73,32 +77,36 @@
     </button>
   </div>
 
-    <!-- delete ingredient by id -->
-    <div class="rowContainer topMargin">
-      <mat-form-field>
-        <mat-label>Name</mat-label>
-        
-        <mat-select class="inputContainer" [(ngModel)]="ingredient.id">
-          <mat-option
-            *ngFor="let ingredient of allIngredients"
-            [value]="ingredient.id"
-          >
-            {{ ingredient.name }}
-          </mat-option>
-        </mat-select>
+  <!-- delete ingredient by id -->
+  <div class="rowContainer topMargin">
+    <mat-form-field>
+      <mat-label>Name</mat-label>
 
-      </mat-form-field>
-      <button
-        mat-raised-button
-        color="primary"
-        class="button"
-        (click)="deleteIngredient()"
-      >
-        Delete Ingredient from DB
-      </button>
-    </div>
+      <mat-select class="inputContainer" [(ngModel)]="ingredient.id">
+        <mat-option
+          *ngFor="let ingredient of allIngredients"
+          [value]="ingredient.id"
+        >
+          {{ ingredient.name }}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <button
+      mat-raised-button
+      color="primary"
+      class="button"
+      (click)="deleteIngredient()"
+    >
+      Delete Ingredient from DB
+    </button>
+  </div>
 
-    
+  <mat-form-field appearance="fill">
+    <ngx-mat-dropzone>
+      <input type="file" fileInput />
+    </ngx-mat-dropzone>
+  </mat-form-field>
+
   <style>
     .inputContainer {
       display: flex;
