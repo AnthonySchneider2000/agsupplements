@@ -87,47 +87,6 @@ export class DynamicInfoTableComponent implements OnInit {
         ),
       ];
     }
-  
-
-  }
-  
-  
-
-  getIngredientCostRatio(
-    item: Item,
-    ingredient: Ingredient
-  ): number {
-    // You should implement the logic to calculate the cost/mass ratio here
-    // For example, you can retrieve the cost and mass of the ingredient from your data
-    // and then calculate the ratio.
-
-    // For demonstration, let's assume you have cost and mass properties in your data model.
-    const itemIngredient = item.ingredients.find(
-      (itemIngredient) => itemIngredient.ingredient.id === ingredient.id
-    );
-
-    if (itemIngredient) {
-      const cost = item.price; // Replace with the actual property name
-      const mass = itemIngredient.mass; // Replace with the actual property name
-
-      // Avoid division by zero
-      if (mass !== 0) {
-        return cost / mass;
-      }
-    }
-
-    return 0; // Default value if there is no valid ratio
-  }
-
-  getCostRatio(item: Item) {
-    return 0;
-  }
-
-  getIngredientMass(item: Item, ingredient: Ingredient) {
-    const itemIngredient = item.ingredients.find(
-      (itemIngredient) => itemIngredient.ingredient.id === ingredient.id
-    );
-    return itemIngredient ? itemIngredient.mass : 0;
   }
 
   getAllIngredients() {
