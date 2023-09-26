@@ -64,13 +64,15 @@ export class IngredientItemInputComponent {
 
   addIngredient() {
     this.dataService.addIngredientToDatabase(this.ingredient.name, this.ingredient.description, this.ingredient.price).subscribe((data) => {
-      this.tableDataService.reloadTable();
+      this.getAllIngredients();
+      this.resetIngredient();
     });
   }
-
+  
   deleteIngredient() {
     this.dataService.deleteIngredientFromDatabase(this.ingredient.id).subscribe((data) => {
-      this.tableDataService.reloadTable();
+      this.getAllIngredients();
+      this.resetIngredient();
     });
   }
 
@@ -78,6 +80,12 @@ export class IngredientItemInputComponent {
     this.dataService.fetchIngredientData().subscribe((data) => {
       this.allIngredients = data;
     });
+  }
+
+  resetIngredient() {
+    this.ingredient.name = '';
+    this.ingredient.description = '';
+    this.ingredient.price = 1.0;
   }
 
   addIngredientToItem() {
