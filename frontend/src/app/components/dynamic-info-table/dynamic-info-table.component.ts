@@ -54,14 +54,13 @@ export class DynamicInfoTableComponent implements OnInit {
       if (this.selectedIngredients.length > 0) {
         this.filterData();
       }
-      
     });
 
     this.tableDataService.customConditions$.subscribe((customConditions) => {
       this.customConditions = customConditions;
       console.log(this.customConditions);
       // When customConditions change, reload the data
-        this.filterData();
+      this.filterData();
     });
   }
 
@@ -78,7 +77,11 @@ export class DynamicInfoTableComponent implements OnInit {
 
   loadData() {
     this.dataService
-      .fetchCurrentTableData(this.selectedIngredients, this.customConditions, this.customColumns)
+      .fetchCurrentTableData(
+        this.selectedIngredients,
+        this.customConditions,
+        this.customColumns
+      )
       .subscribe((data) => {
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.paginator = this.paginator;
@@ -128,8 +131,12 @@ export class DynamicInfoTableComponent implements OnInit {
     const filterValue = (event.target as HTMLInputElement).value;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
-  onRowClick(row: any) {
-    this.tableDataService.setSelectedId(row.id);
+  onRowClick(row: any, event: MouseEvent) {
+    if (event.ctrlKey) {
+      window.open(row.link, '_blank');
+    } else {
+      this.tableDataService.setSelectedId(row.id);
+    }
   }
   capitalizeFirstLetter(string: string) {
     return string.charAt(0).toUpperCase() + string.slice(1);

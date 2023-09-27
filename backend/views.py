@@ -113,7 +113,8 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
             "id": item.id,
             "name": item.name,
             "description": item.description,
-            "price": item.price
+            "price": item.price,
+            "link": item.link
         }
         for ingredient in selected_ingredients:
             try:
