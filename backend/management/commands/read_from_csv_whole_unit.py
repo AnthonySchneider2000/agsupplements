@@ -62,7 +62,7 @@ class Command(BaseCommand):
                 if price == '':
                     print('Item ' + name + ' does not have a price')
                     continue
-                price = price.split('$')[1].strip()
+                price = re.sub("[^0-9.]", "", price) # remove non-numeric characters
                 
                 
                 #if the servingSize is not empty, use that, otherwise use servingSize2
@@ -112,10 +112,10 @@ class Command(BaseCommand):
                             # numeric value of the ingredient
                             match = re.match(r'(\d+\.?\d*)\s*(\w+)', afterIngredientName) # match a number followed by a word
                             if match:
-                                ingredientAmount = match.group(1)
+                                ingredientAmount = match.group(1) # get the first group, which is the number
                                 ingredientAmount = re.sub("[^0-9.]", "", ingredientAmount) # remove non-numeric characters
                                 ingredientAmount = float(ingredientAmount)
-                                ingredientUnits = match.group(2)
+                                ingredientUnits = match.group(2) # get the second group, which is the units
                             else:
                                 ingredientAmount = None
                                 ingredientUnits = None
