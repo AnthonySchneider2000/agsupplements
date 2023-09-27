@@ -34,10 +34,7 @@ class Command(BaseCommand):
         
         with open(csv_file) as f:
             reader = csv.reader(f)
-            # example data
-            # web-scraper-order,web-scraper-start-url,category-link,category-link-href,price,servingSize,servingSize2,Calories,Macros
-            # 1695697305-1,https://www.walmart.com/search?q=steak,"Beef Choice Angus Tomahawk Ribeye Steak Bone-In, 1.68 - 3.22 lb Tray",https://www.walmart.com/ip/Beef-Choice-Angus-Tomahawk-Ribeye-Steak-Bone-In-1-68-3-22-lb-Tray/331823702?from=/search,$12.47 ,5  Servings Per Container,3.95 oz (112 g),290,Total Fat 23g35%Saturated Fat9g45%Cholesterol 85mg28%Sodium 55mg2%Total Carbohydrate 0g0%Protein 21g0%
-            
+
             offset = 0
             # if the 3rd column is not category-link, set the header offset to 2
             # this is because this csv is from scraping multiple pages, and the csv contains 2 additional columns
@@ -60,12 +57,16 @@ class Command(BaseCommand):
                 if '/lb' in price:
                     price = price.split('/lb')[0].strip()
                     price = price.split('$')[1].strip()
+                elif '/oz' in price:
+                    price = price.split('/oz')[0].strip()
+                    price = price.split('$')[1].strip()
+                    price = float(price) * 16 # convert to price per pound
                 else:
                     print('Item ' + name + ' does not have /lb in price')
                     continue
                 
-                #if the servingSize2 is not empty, use that, otherwise use servingSize
-                servingSize = row[6 + offset] if row[6 + offset] else row[5 + offset]
+                #if the servingSize is not empty, use that, otherwise use servingSize2
+                servingSize = row[5 + offset] if row[5 + offset] else row[6 + offset]
                 # remove oz; if oz is not in the string, continue
                 if 'oz' not in servingSize:
                     print('Item ' + name + ' does not have oz in serving size')
