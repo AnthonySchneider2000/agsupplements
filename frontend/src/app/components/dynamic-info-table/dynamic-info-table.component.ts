@@ -25,7 +25,6 @@ export class DynamicInfoTableComponent implements OnInit {
   ingredientColumns: string[] = [];
   customColumns: string[] = [];
   customConditions: string[] = [];
-  showCostRatio: boolean = false; // Initialize with default value
   filterValue: string = '';
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
@@ -34,19 +33,11 @@ export class DynamicInfoTableComponent implements OnInit {
     private dataService: DataService,
     private tableDataService: TableDataService
   ) {
-    // Subscribe to selectedIngredients$ and showCostRatio$ observables
+    // Subscribe to selectedIngredients$ observable
     this.tableDataService.selectedIngredients$.subscribe((ingredients) => {
       this.selectedIngredients = ingredients;
       // When selectedIngredients change, update the columns and filter data
       this.filterData();
-    });
-
-    this.tableDataService.showCostRatio$.subscribe((costRatio) => {
-      this.showCostRatio = costRatio;
-      // When showCostRatio changes, reload the data
-      if (this.selectedIngredients.length > 0) {
-        this.filterData();
-      }
     });
 
     this.tableDataService.customColumns$.subscribe((customColumns) => {
@@ -103,16 +94,6 @@ export class DynamicInfoTableComponent implements OnInit {
       ...this.customColumns,
     ];
 
-    // Apply showCostRatio filter
-    if (this.showCostRatio) {
-      this.displayedColumns = [
-        ...this.baseColumns,
-        ...this.ingredientColumns,
-        ...this.selectedIngredients.map(
-          (ingredient) => ingredient.name + ' Cost Ratio'
-        ),
-      ];
-    }
   }
 
   getAllIngredients() {
