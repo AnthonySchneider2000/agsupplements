@@ -3,18 +3,15 @@
 from django.core.management.base import BaseCommand
 from backend.models import Ingredient, ItemIngredient, Item
 
-# This command will delete all items from the database which contain the ingredient "Calories"
+# This command will delete all items from the database whose id is greater than 204
 class Command(BaseCommand):
-    help = 'Deletes all items from the database which contain the ingredient "Calories"'
+    help = 'Deletes all items from the database whose id is greater than 204'
     
     def handle(self, *args, **kwargs):
-        # get the ingredient object for "Calories"
-        calories = Ingredient.objects.get(name="Calories")
+        # get all items whose id is greater than 204
+        items = Item.objects.filter(id__gt=204)
         
-        # get all items which contain the ingredient "Calories"
-        items = Item.objects.filter(ingredients=calories)
-        
-        # delete all items which contain the ingredient "Calories"
+        # delete all items whose id is greater than 204
         items.delete()
         
-        print('Deleted ' + str(len(items)) + ' items from the database which contained the ingredient "Calories"')
+        print('Deleted ' + str(len(items)) + ' items from the database whose id is greater than 204')
