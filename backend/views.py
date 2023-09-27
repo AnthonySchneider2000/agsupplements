@@ -1,7 +1,7 @@
 import json
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import Ingredient, Item, ItemIngredient
+from .models import Ingredient, Item, ItemIngredient, BlacklistedItem
 from django.views.decorators.csrf import csrf_exempt
 # from rest_framework.decorators import api_view
 # from rest_framework.response import Response
@@ -27,6 +27,7 @@ def get_dummy_data(request):
 
 @csrf_exempt
 def create_item_with_ingredients(request):
+    #get blacklisted items
     data = json.loads(request.body)
     name = data.get('name')
     description = data.get('description')
@@ -34,6 +35,10 @@ def create_item_with_ingredients(request):
     ingredient_data = data.get('ingredients', [])
     link = data.get('link', '') # optional
 
+    # Check if the item is blacklisted
+    if BlacklistedItem.objects.filter(item__name=name).exists():
+        return JsonResponse({"message": "Item is blacklisted"})
+    
     # Create the ItemWithIngredients instance
     item = Item(name=name, description=description, price=price, link=link)
     item.save()
@@ -294,3 +299,13 @@ def get_ingredient(request):
             "price": ingredient.price
         })
     return JsonResponse(response, safe=False)
+
+
+@csrf_exempt
+def blacklist_item(request, id):
+    item = Item.objects.get(id=id)
+    reason = json.loads(request.body).get('reason', '')
+    blacklisted_item = BlacklistedItem(item=item, reason=reason)
+    blacklisted_item.save()
+    item.delete() # delete the item from the database
+    return JsonResponse({"message": "Item blacklisted successfully"})

@@ -1,4 +1,4 @@
-# backend/management/commands/read_from_csv.py
+# backend/management/commands/read_from_csv_whole_unit.py
 
 from django.core.management.base import BaseCommand
 from backend.models import Ingredient, ItemIngredient, Item, BlacklistedItem
@@ -57,42 +57,35 @@ class Command(BaseCommand):
                     print('Item ' + name + ' already exists')
                     continue
                 
-                # may be of the form $12.47/ea or $12.47/lb, remove $ and /lb, and continue if /lb is not in the string
+                # in the form $12.47
                 price = row[4 + offset]
-                if '/lb' in price:
-                    price = price.split('/lb')[0].strip()
-                    price = price.split('$')[1].strip()
-                elif '/oz' in price:
-                    price = price.split('/oz')[0].strip()
-                    price = price.split('$')[1].strip()
-                    price = float(price) * 16 # convert to price per pound
-                else:
-                    print('Item ' + name + ' does not have /lb in price')
+                if price == '':
+                    print('Item ' + name + ' does not have a price')
                     continue
+                price = price.split('$')[1].strip()
+                
                 
                 #if the servingSize is not empty, use that, otherwise use servingSize2
-                servingSize = row[5 + offset] if row[5 + offset] else row[6 + offset]
-                # remove oz; if oz is not in the string, continue
-                if 'oz' not in servingSize:
-                    print('Item ' + name + ' does not have oz in serving size')
+                servingCount = row[5 + offset] if row[5 + offset] else row[6 + offset]
+                if " Servings" not in servingCount:
+                    print('Item ' + name + ' does not have Servings')
                     continue
-                servingSize = servingSize.split('oz')[0].strip() # split on oz and take the first element
-                
-                
+                #remove non-numeric characters
+                servingCount = re.sub("[^0-9.]", "", servingCount)
+                servingCount = float(servingCount)
 
                 link = row[3 + offset]
                 
-                servingsPerPound = 16 / float(servingSize) # 16 oz in a pound
                 
                 calories = row[7 + offset]
                 
-                if calories == '':
+                if calories == '' or calories == '0':
                     print('Item ' + name + ' does not have calories')
                     continue
                 
-                calories = float(calories) * servingsPerPound # multiply by servings per pound
+                calories = float(calories) * servingCount # multiply by servings per pound
                 
-                print("\nCreating item " + name + " with price " + price + " description " + name + " link " + link + " and calories " + str(calories) + " and servings per pound " + str(servingsPerPound))
+                print("\nCreating item " + name + " with price " + price + " description " + name + " link " + link + " and calories " + str(calories) + " and servings per pound " + str(servingCount))
                 item = Item.objects.create(name=name, price=price, description=name, link=link)
 
                 calorie_ingredient = Ingredient.objects.get(name='Calories')
@@ -132,10 +125,9 @@ class Command(BaseCommand):
                                 ingredientAmount /= 1000
                                 ingredientUnits = 'g'
                                 
-                            
                             if ingredientAmount is not None:
                                 if ingredientAmount > 0: # if the ingredient amount is 0, skip it
-                                    ingredientAmount *= servingsPerPound # multiply by servings per pound
+                                    ingredientAmount *= servingCount # multiply by servings per pound
                                     print("    Item " + name + " has " + str(ingredientAmount) + " grams of " + ingredientName)
                                     ingredient = Ingredient.objects.get(name=ingredientName) # get the ingredient object
                                     item_ingredient = ItemIngredient.objects.create(item=item, ingredient=ingredient, mass=ingredientAmount) # create the item ingredient         

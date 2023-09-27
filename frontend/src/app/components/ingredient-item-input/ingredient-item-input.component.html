@@ -57,6 +57,25 @@
       Delete Item with Ingredients from DB
     </button>
   </div>
+
+  <!-- blacklist item by id -->
+
+  <div class="rowContainer topMargin">
+    <mat-form-field>
+      <mat-label>id</mat-label>
+      <input matInput class="input" [(ngModel)]="id" />
+    </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      class="button"
+      (click)="blacklistItem()"
+    >
+      Blacklist Item from DB
+    </button>
+  </div>
+
   <!-- add ingredient -->
   <div class="rowContainer topMargin">
     <mat-form-field>

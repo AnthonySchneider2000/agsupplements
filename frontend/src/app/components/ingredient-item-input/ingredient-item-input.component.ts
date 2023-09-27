@@ -68,6 +68,13 @@ export class IngredientItemInputComponent {
     });
   }
 
+  blacklistItem() {
+    this.dataService.blacklistItem(this.id).subscribe((data) => {
+      this.tableDataService.reloadTable();
+    });
+  }
+  
+
   addIngredient() {
     this.dataService.addIngredientToDatabase(this.ingredient.name, this.ingredient.description, this.ingredient.price).subscribe((data) => {
       this.getAllIngredients();

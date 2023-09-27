@@ -16,3 +16,7 @@ class ItemIngredient(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     ingredient = models.ForeignKey(Ingredient, on_delete=models.CASCADE)
     mass = models.DecimalField(max_digits=10, decimal_places=2)
+    
+class BlacklistedItem(models.Model):
+    item = models.ForeignKey(Item, on_delete=models.CASCADE)
+    reason = models.TextField(blank=True)

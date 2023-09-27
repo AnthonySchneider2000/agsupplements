@@ -95,5 +95,10 @@ export class DataService {
     return this.http.post(apiUrl, requestBody);
   }
 
+
+  blacklistItem(id: number): Observable<any> {
+    const apiUrl = 'http://localhost:8000/backend/blacklist-item/' + id + '/';
+    return this.http.post(apiUrl, {});
+  }
   
 }
