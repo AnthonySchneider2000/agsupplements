@@ -10,7 +10,6 @@ import { TableDataService } from 'src/app/services/tabledata.service';
 })
 export class TableOptionsComponent {
   selectedIngredients: Ingredient[] = [];
-  showCostRatio: boolean = false;
   allIngredients: Ingredient[] = [];
   customColumns: string[] = [];
   customConditions: string[] = [];
@@ -40,11 +39,6 @@ export class TableOptionsComponent {
     // Update the selected ingredients directly in the TableDataService
     this.tableDataService.setSelectedIngredients(this.selectedIngredients);
     this.customColumnOptions = ["Price", ...this.selectedIngredients.map((ingredient) => ingredient.name)];
-  }
-
-  onShowCostRatioChange(event: any) {
-    // Update the showCostRatio directly in the TableDataService
-    this.tableDataService.setShowCostRatio(this.showCostRatio);
   }
 
   getAllIngredients() {
