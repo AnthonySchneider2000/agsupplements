@@ -32,3 +32,6 @@ static/
 frontend/node_modules/
 
 agsupplements/settings.py
+
+# .csv files
+*.csv
