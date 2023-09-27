@@ -124,12 +124,13 @@ class Command(BaseCommand):
                                 ingredientAmount /= 1000
                                 ingredientUnits = 'g'
                                 
-                            if ingredientAmount is None:
-                                print("    Item " + name + " has 0 grams of " + ingredientName)
-                                
-                            
                             ingredientAmount *= servingsPerPound # multiply by servings per pound
                             print("    Item " + name + " has " + str(ingredientAmount) + " grams of " + ingredientName)
-                            ingredient = Ingredient.objects.get(name=ingredientName)
-                            item_ingredient = ItemIngredient.objects.create(item=item, ingredient=ingredient, mass=ingredientAmount)         
+                            
+                            if ingredientAmount <= 0: # if the ingredient amount is 0, skip it
+                                ingredient = Ingredient.objects.get(name=ingredientName) # get the ingredient object
+                                item_ingredient = ItemIngredient.objects.create(item=item, ingredient=ingredient, mass=ingredientAmount) # create the item ingredient         
+                                
+                                
+                            
         print('Done')
