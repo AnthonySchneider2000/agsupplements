@@ -26,6 +26,7 @@ export class DynamicInfoTableComponent implements OnInit {
   customColumns: string[] = [];
   customConditions: string[] = [];
   showCostRatio: boolean = false; // Initialize with default value
+  filterValue: string = '';
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -86,7 +87,7 @@ export class DynamicInfoTableComponent implements OnInit {
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        console.log(data);
+        this.dataSource.filter = this.filterValue.trim().toLowerCase();
       });
   }
 
@@ -129,6 +130,7 @@ export class DynamicInfoTableComponent implements OnInit {
 
   applyFilter(event: any) {
     const filterValue = (event.target as HTMLInputElement).value;
+    this.filterValue = filterValue;
     this.dataSource.filter = filterValue.trim().toLowerCase();
   }
   onRowClick(row: any, event: MouseEvent) {
