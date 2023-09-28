@@ -149,7 +149,9 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
             if "/" in var1:
                 part1 = var1.split("/")[0]
                 part2 = var1.split("/")[1]
-                var1Comparison = item_data[part1] / item_data[part2]                
+                var1Comparison = item_data[part1] / item_data[part2]
+            else:
+                var1Comparison = item_data[var1]
                 
             try:
                 var2Comparison = float(var2)
