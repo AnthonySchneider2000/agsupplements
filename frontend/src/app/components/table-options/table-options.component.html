@@ -1,5 +1,5 @@
 <div class="flex flex-col">
-  <div>
+  <div class="flex flex-row items-center gap-4">
     <mat-form-field>
       <mat-label>Ingredients</mat-label>
       <mat-select
@@ -15,6 +15,15 @@
         </mat-option>
       </mat-select>
     </mat-form-field>
+
+    <button
+      mat-raised-button
+      color="primary"
+      class="button"
+      (click)="usePlaceholderData()"
+    >
+      Use Placeholder Data
+    </button>
   </div>
 
   <div class="flex flex-row items-center gap-4">
@@ -60,6 +69,12 @@
     >
       Clear Custom Columns
     </button>
+  </div>
+
+  <div class="flex flex-row items-center gap-4">
+    <div *ngFor="let column of customColumns" class=" h-12 w-12 text-ellipsis bg-slate-500">
+      {{ column }}
+    </div>
   </div>
 
   <div class="flex flex-row items-center gap-4">

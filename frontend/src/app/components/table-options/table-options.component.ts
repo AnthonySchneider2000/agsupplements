@@ -34,6 +34,23 @@ export class TableOptionsComponent {
     });
   }
 
+  usePlaceholderData() {
+    //sets selected ingredients to calories and protein, sets custom columns to calories/protein, and sets custom conditions to calories > 100
+    //get the ingredients from allIngredients
+    this.selectedIngredients = this.allIngredients.filter((ingredient) => {
+      return ingredient.name == 'Calories' || ingredient.name == 'Protein';
+    });
+    this.customColumns = ['Protein/Calories'];
+    this.customConditions = ['Protein/Calories>0.1'];
+    this.tableDataService.setSelectedIngredients(this.selectedIngredients);
+    this.tableDataService.setCustomColumns(this.customColumns);
+    this.tableDataService.setCustomConditions(this.customConditions);
+    this.tableDataService.reloadTable();
+    console.log('Placeholder data used');
+    console.log(this.selectedIngredients);
+  }
+
+
   filterColumns() { 
     // remove any columns that are no longer in the selected ingredients
     this.customColumns = this.customColumns.filter((column) => {
