@@ -16,7 +16,6 @@ import {
   styleUrls: ['./dynamic-info-table.component.css'],
 })
 export class DynamicInfoTableComponent implements OnInit {
-  allIngredients: Ingredient[] = [];
   selectedIngredients: Ingredient[] = [];
   dataSource: MatTableDataSource<any>;
   ItemData: Item[] = [];
@@ -36,29 +35,18 @@ export class DynamicInfoTableComponent implements OnInit {
     // Subscribe to selectedIngredients$ observable
     this.tableDataService.selectedIngredients$.subscribe((ingredients) => {
       this.selectedIngredients = ingredients;
-      // console.log('selectedIngredients changed');
-      // When selectedIngredients change, update the columns and filter data
-      // this.loadData();
     });
 
     this.tableDataService.customColumns$.subscribe((customColumns) => {
       this.customColumns = customColumns;
-      // console.log('customColumns changed');
-      // console.log(this.customColumns);
-      // When customColumns change, reload the data
-      // this.loadData();
     });
 
     this.tableDataService.customConditions$.subscribe((customConditions) => {
       this.customConditions = customConditions;
-      // console.log(this.customConditions);
-      // When customConditions change, reload the data
-      // this.loadData();
     });
   }
 
   ngOnInit(): void {
-    this.getAllIngredients();
     this.getItemData();
     this.loadData();
     this.tableDataService.reloadTable$.subscribe(() => {
@@ -90,13 +78,6 @@ export class DynamicInfoTableComponent implements OnInit {
           ...this.customColumns,
         ];
       });
-  }
-
-  getAllIngredients() {
-    this.dataService.fetchIngredientData().subscribe((data) => {
-      this.allIngredients = data;
-      this.tableDataService.setAllIngredients(this.allIngredients);
-    });
   }
 
   getItemData() {

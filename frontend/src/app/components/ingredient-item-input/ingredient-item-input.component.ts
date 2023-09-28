@@ -39,8 +39,6 @@ export class IngredientItemInputComponent {
       this.allIngredients = ingredients;
     }
     );
-
-
   }
 
   addItemWithIngredients() {
