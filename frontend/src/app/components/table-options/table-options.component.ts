@@ -91,15 +91,21 @@ export class TableOptionsComponent {
   }
 
   setCustomColumns() {
-    this.customColumns.push(this.columnVar1 + '/' + this.columnVar2);
+    const customColumn = this.columnVar1 + '/' + this.columnVar2;
+    if (this.customColumns.includes(customColumn)) { // don't add duplicate columns
+      return;
+    }
+    this.customColumns.push(customColumn);
     this.tableDataService.setCustomColumns(this.customColumns);
     this.tableDataService.reloadTable();
   }
 
   setCustomConditions() {
-    this.customConditions.push(
-      this.conditionVar1 + this.operator + this.conditionVar2
-    );
+    const customCondition = this.conditionVar1 + this.operator + this.conditionVar2;
+    if (this.customConditions.includes(customCondition)) { // don't add duplicate conditions
+      return;
+    }
+    this.customConditions.push(customCondition);
     this.tableDataService.setCustomConditions(this.customConditions);
     this.tableDataService.reloadTable();
   }
