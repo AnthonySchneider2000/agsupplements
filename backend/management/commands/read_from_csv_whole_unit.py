@@ -79,7 +79,8 @@ class Command(BaseCommand):
                 
                 calories = row[7 + offset]
                 
-                if calories == '' or calories == '0':
+                # if calories is non numeric or 0, skip it
+                if not calories or not calories.isnumeric() or float(calories) == 0:
                     print('Item ' + name + ' does not have calories')
                     continue
                 
