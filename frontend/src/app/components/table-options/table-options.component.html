@@ -71,8 +71,12 @@
     </button>
   </div>
 
-  <div class="flex flex-row items-center gap-4">
-    <div *ngFor="let column of customColumns" class=" h-12 w-12 text-ellipsis bg-slate-500">
+  <div class="flex flex-row items-center gap-4 h-32 w-full">
+    <div
+      *ngFor="let column of customColumns; let i = index"
+      class="h-32 w-32 p-2 text-ellipsis bg-slate-500 flex flex-col justify-center break-all"
+      (click)="removeColumn(i)"
+    >
       {{ column }}
     </div>
   </div>
@@ -89,15 +93,11 @@
           >{{ ingredient.name }}</mat-option
         >
         <!-- columns for every index in customColumns -->
-        <mat-option
-          *ngFor="let column of customColumns"
-          [value]="column"
-          >{{ column }}</mat-option>
+        <mat-option *ngFor="let column of customColumns" [value]="column">{{
+          column
+        }}</mat-option>
       </mat-select>
     </mat-form-field>
-
-
-
 
     <mat-form-field>
       <mat-label>Operator</mat-label>
@@ -144,6 +144,15 @@
     >
       Clear Custom Condition
     </button>
+  </div>
 
+  <div class="flex flex-row items-center gap-4 h-32 w-full">
+    <div
+      *ngFor="let condition of customConditions; let i = index"
+      class="h-32 w-32 p-2 text-ellipsis bg-slate-500 flex flex-col justify-center break-all"
+      (click)="removeCondition(i)"
+    >
+      {{ condition }}
+    </div>
   </div>
 </div>

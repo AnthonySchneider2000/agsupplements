@@ -46,8 +46,6 @@ export class TableOptionsComponent {
     this.tableDataService.setCustomColumns(this.customColumns);
     this.tableDataService.setCustomConditions(this.customConditions);
     this.tableDataService.reloadTable();
-    console.log('Placeholder data used');
-    console.log(this.selectedIngredients);
   }
 
 
@@ -119,7 +117,18 @@ export class TableOptionsComponent {
     this.tableDataService.reloadTable();
   }
   
+  removeColumn(index: number) {
+    this.customColumns.splice(index, 1);
+    this.tableDataService.setCustomColumns(this.customColumns);
+    this.filterConditions(); // remove any conditions that are no longer in the columns
+    this.tableDataService.reloadTable();
+  }
 
-  // TODO: possibly include methods to remove custom columns and conditions
-  // adding a new col/con visibly adds it to the page, and clicking it removes it
+  removeCondition(index: number) {
+    this.customConditions.splice(index, 1);
+    this.tableDataService.setCustomConditions(this.customConditions);
+    this.tableDataService.reloadTable();
+  }
+
+
 }
