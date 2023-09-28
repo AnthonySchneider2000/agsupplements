@@ -18,9 +18,7 @@ export class TableOptionsComponent {
   conditionVar1: string = '';
   conditionVar2: string = '';
   operator: string = '';
-  customColumnOptions: string[] = [
-    'Price',
-  ];
+
 
 
   constructor(
@@ -36,9 +34,19 @@ export class TableOptionsComponent {
   }
 
   onIngredientSelectionChange(event: any) {
+    // remove any columns that are no longer in the selected ingredients
+    this.customColumns = this.customColumns.filter((column) => {
+      return this.selectedIngredients.some((ingredient) => {
+        return column.includes(ingredient.name);
+      });
+    });
+    
+    this.tableDataService.setCustomColumns(this.customColumns);
+
     // Update the selected ingredients directly in the TableDataService
     this.tableDataService.setSelectedIngredients(this.selectedIngredients);
-    this.customColumnOptions = ["Price", ...this.selectedIngredients.map((ingredient) => ingredient.name)];
+
+    this.tableDataService.reloadTable();
   }
 
   getAllIngredients() {
@@ -50,6 +58,7 @@ export class TableOptionsComponent {
   setCustomColumns() {
     this.customColumns.push(this.columnVar1 + '/' + this.columnVar2);
     this.tableDataService.setCustomColumns(this.customColumns);
+    this.tableDataService.reloadTable();
   }
 
   setCustomConditions() {
@@ -57,16 +66,19 @@ export class TableOptionsComponent {
       this.conditionVar1 + this.operator + this.conditionVar2
     );
     this.tableDataService.setCustomConditions(this.customConditions);
+    this.tableDataService.reloadTable();
   }
 
   clearCustomColumns() {
     this.customColumns = [];
     this.tableDataService.setCustomColumns(this.customColumns);
+    this.tableDataService.reloadTable();
   }
 
   clearCustomConditions() {
     this.customConditions = [];
     this.tableDataService.setCustomConditions(this.customConditions);
+    this.tableDataService.reloadTable();
   }
   
 
