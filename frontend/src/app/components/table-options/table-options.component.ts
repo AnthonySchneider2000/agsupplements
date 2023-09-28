@@ -87,7 +87,6 @@ export class TableOptionsComponent {
   getAllIngredients() {
     this.dataService.fetchIngredientData().subscribe((data) => {
       this.allIngredients = data;
-      this.tableDataService.setAllIngredients(this.allIngredients);
     });
   }
 

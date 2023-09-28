@@ -1,8 +1,12 @@
 import { Component } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { TableDataService } from 'src/app/services/tabledata.service';
-import {MatSelectModule} from '@angular/material/select';
-import { ItemWithIngredients, ItemIngredient, Ingredient } from '../../services/models.service';
+import { MatSelectModule } from '@angular/material/select';
+import {
+  ItemWithIngredients,
+  ItemIngredient,
+  Ingredient,
+} from '../../services/models.service';
 
 @Component({
   selector: 'app-ingredient-item-input',
@@ -27,18 +31,19 @@ export class IngredientItemInputComponent {
     price: 1.0,
   };
   mass: number = 0;
-  
-  
-  constructor(private dataService: DataService, private tableDataService: TableDataService) { }
+
+  constructor(
+    private dataService: DataService,
+    private tableDataService: TableDataService
+  ) {}
 
   ngOnInit(): void {
     this.tableDataService.selectedId$.subscribe((id) => {
       this.id = id;
     });
-    this.tableDataService.allIngredients$.subscribe((ingredients) => {
-      this.allIngredients = ingredients;
-    }
-    );
+    this.dataService.fetchIngredientData().subscribe((data) => {
+      this.allIngredients = data;
+    });
   }
 
   addItemWithIngredients() {
@@ -53,17 +58,27 @@ export class IngredientItemInputComponent {
         ingredient: ingredient,
         mass: Number(mass),
       });
-    }   
+    }
 
-    this.dataService.addItemWithIngredientsToDatabase(this.name, this.description, this.price, this.itemIngredients, this.link).subscribe((data) => {
-      this.tableDataService.reloadTable();
-    });
+    this.dataService
+      .addItemWithIngredientsToDatabase(
+        this.name,
+        this.description,
+        this.price,
+        this.itemIngredients,
+        this.link
+      )
+      .subscribe((data) => {
+        this.tableDataService.reloadTable();
+      });
   }
 
   deleteItemWithIngredients() {
-    this.dataService.deleteItemWithIngredientsFromDatabase(this.id).subscribe((data) => {
-      this.tableDataService.reloadTable();
-    });
+    this.dataService
+      .deleteItemWithIngredientsFromDatabase(this.id)
+      .subscribe((data) => {
+        this.tableDataService.reloadTable();
+      });
   }
 
   blacklistItem() {
@@ -71,22 +86,31 @@ export class IngredientItemInputComponent {
       this.tableDataService.reloadTable();
     });
   }
-  
 
   addIngredient() {
-    this.dataService.addIngredientToDatabase(this.ingredient.name, this.ingredient.description, this.ingredient.price).subscribe((data) => {
-      this.getAllIngredients();
-      this.tableDataService.setAllIngredients(this.allIngredients);
-      this.resetIngredient();
-    });
+    this.dataService
+      .addIngredientToDatabase(
+        this.ingredient.name,
+        this.ingredient.description,
+        this.ingredient.price
+      )
+      .subscribe((data) => {
+        this.getAllIngredients();
+        this.tableDataService.setAllIngredients(this.allIngredients);
+        this.resetIngredient();
+      });
   }
-  
+
   deleteIngredient() {
-    this.dataService.deleteIngredientFromDatabase(this.ingredient.id).subscribe((data) => {
-      this.allIngredients = this.allIngredients.filter((ingredient) => ingredient.id !== this.ingredient.id);
-      this.tableDataService.setAllIngredients(this.allIngredients);
-      this.resetIngredient();
-    });
+    this.dataService
+      .deleteIngredientFromDatabase(this.ingredient.id)
+      .subscribe((data) => {
+        this.allIngredients = this.allIngredients.filter(
+          (ingredient) => ingredient.id !== this.ingredient.id
+        );
+        this.tableDataService.setAllIngredients(this.allIngredients);
+        this.resetIngredient();
+      });
   }
 
   getAllIngredients() {
@@ -108,5 +132,4 @@ export class IngredientItemInputComponent {
       mass: this.mass,
     });
   }
-
 }
