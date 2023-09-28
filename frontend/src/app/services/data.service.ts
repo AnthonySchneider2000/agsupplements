@@ -27,7 +27,7 @@ export class DataService {
     };
 
     console.log('Sending request to backend - current table data');
-    console.log(requestBody);
+    // console.log(requestBody);
 
     return this.http.post(apiUrl, requestBody);
   }
@@ -40,7 +40,7 @@ export class DataService {
     };
 
     console.log('Sending request to backend - filtered table data');
-    console.log(requestBody);
+    // console.log(requestBody);
 
     return this.http.post(apiUrl, requestBody);
   }

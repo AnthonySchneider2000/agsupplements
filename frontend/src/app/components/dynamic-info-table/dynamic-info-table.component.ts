@@ -36,23 +36,24 @@ export class DynamicInfoTableComponent implements OnInit {
     // Subscribe to selectedIngredients$ observable
     this.tableDataService.selectedIngredients$.subscribe((ingredients) => {
       this.selectedIngredients = ingredients;
+      // console.log('selectedIngredients changed');
       // When selectedIngredients change, update the columns and filter data
-      this.filterData();
+      // this.loadData();
     });
 
     this.tableDataService.customColumns$.subscribe((customColumns) => {
       this.customColumns = customColumns;
+      // console.log('customColumns changed');
+      // console.log(this.customColumns);
       // When customColumns change, reload the data
-      if (this.selectedIngredients.length > 0) {
-        this.filterData();
-      }
+      // this.loadData();
     });
 
     this.tableDataService.customConditions$.subscribe((customConditions) => {
       this.customConditions = customConditions;
-      console.log(this.customConditions);
+      // console.log(this.customConditions);
       // When customConditions change, reload the data
-      this.filterData();
+      // this.loadData();
     });
   }
 
@@ -79,21 +80,16 @@ export class DynamicInfoTableComponent implements OnInit {
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
         this.dataSource.filter = this.filterValue.trim().toLowerCase();
+        this.ingredientColumns = this.selectedIngredients.map(
+          (ingredient) => ingredient.name
+        );
+    
+        this.displayedColumns = [
+          ...this.baseColumns,
+          ...this.ingredientColumns,
+          ...this.customColumns,
+        ];
       });
-  }
-
-  filterData() {
-    this.loadData();
-    this.ingredientColumns = this.selectedIngredients.map(
-      (ingredient) => ingredient.name
-    );
-
-    this.displayedColumns = [
-      ...this.baseColumns,
-      ...this.ingredientColumns,
-      ...this.customColumns,
-    ];
-
   }
 
   getAllIngredients() {
