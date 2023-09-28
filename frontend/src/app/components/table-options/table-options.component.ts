@@ -2,6 +2,7 @@ import { Component, Input } from '@angular/core';
 import { Ingredient } from '../../services/models.service';
 import { DataService } from 'src/app/services/data.service';
 import { TableDataService } from 'src/app/services/tabledata.service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-table-options',
@@ -33,7 +34,7 @@ export class TableOptionsComponent {
     });
   }
 
-  onIngredientSelectionChange(event: any) {
+  filterColumns() { 
     // remove any columns that are no longer in the selected ingredients
     this.customColumns = this.customColumns.filter((column) => {
       return this.selectedIngredients.some((ingredient) => {
@@ -42,6 +43,25 @@ export class TableOptionsComponent {
     });
     
     this.tableDataService.setCustomColumns(this.customColumns);
+  }
+
+  filterConditions() {
+    // remove any conditions that are no longer in the selected ingredients or columns
+    this.customConditions = this.customConditions.filter((condition) => {
+      return this.selectedIngredients.some((ingredient) => {
+        return condition.includes(ingredient.name);
+      }) && this.customColumns.some((column) => {
+        return condition.includes(column);
+      });
+    });
+
+    this.tableDataService.setCustomConditions(this.customConditions);
+  }
+
+  onIngredientSelectionChange(event: any) {
+    
+    this.filterColumns(); // remove any columns that are no longer in the selected ingredients
+    this.filterConditions(); // remove any conditions that are no longer in the selected ingredients or columns
 
     // Update the selected ingredients directly in the TableDataService
     this.tableDataService.setSelectedIngredients(this.selectedIngredients);
@@ -70,6 +90,7 @@ export class TableOptionsComponent {
   }
 
   clearCustomColumns() {
+    this.filterConditions(); // remove any conditions that are no longer in the selected ingredients or columns
     this.customColumns = [];
     this.tableDataService.setCustomColumns(this.customColumns);
     this.tableDataService.reloadTable();
