@@ -73,6 +73,11 @@
           [value]="ingredient.name"
           >{{ ingredient.name }}</mat-option
         >
+        <!-- columns for every index in customColumns -->
+        <mat-option
+          *ngFor="let column of customColumns"
+          [value]="column"
+          >{{ column }}</mat-option>
       </mat-select>
     </mat-form-field>
 

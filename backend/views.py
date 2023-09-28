@@ -142,11 +142,14 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
             var1 = condition.split(operator)[0]
             var2 = condition.split(operator)[1]
             
-            #if var1 is numeric, set var1Comparison to var1, otherwise set var1Comparison to item_data[var1]
-            try:
-                var1Comparison = float(var1)
-            except ValueError:
-                var1Comparison = item_data[var1]
+            
+            
+            #if var1 contains a "/", then it is a column, so we need to find the value of the column
+            #else, set var1Comparison to item_data[var1]
+            if "/" in var1:
+                part1 = var1.split("/")[0]
+                part2 = var1.split("/")[1]
+                var1Comparison = item_data[part1] / item_data[part2]                
                 
             try:
                 var2Comparison = float(var2)
