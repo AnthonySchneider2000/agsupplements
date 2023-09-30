@@ -79,21 +79,66 @@ def get_item_with_ingredients(request):
         })
     return JsonResponse(response, safe=False)
 
-def get_ingredient_cost_ratio_list(request): # finds the cost ratio of list of ingredients passed in
-    data = json.loads(request.body)
-    item_ingredient_array = data.get('ingredients', [])
-    response = []
-    for item_ingredient in item_ingredient_array:
-        ingredient_id = item_ingredient.get('id')
-        mass = item_ingredient.get('mass')
-        ingredient = Ingredient.objects.get(id=ingredient_id)
-        response.append({
-            "costRatio": ingredient.price / mass
-        })
+def get_item_by_id(request, id):
+    item = Item.objects.get(id=id)
+    response = {
+        "id": item.id,
+        "name": item.name,
+        "description": item.description,
+        "price": item.price,
+        "ingredients": [
+            {
+                "id": item_ingredient.ingredient.id,
+                "ingredient": {
+                    "id": item_ingredient.ingredient.id,
+                    "name": item_ingredient.ingredient.name,
+                    "description": item_ingredient.ingredient.description,
+                    "price": item_ingredient.ingredient.price
+                },
+                "mass": item_ingredient.mass,
+            }
+            for item_ingredient in item.itemingredient_set.all()
+        ],
+        "link": item.link
+    }
     return JsonResponse(response, safe=False)
 
-def get_ingredient_cost_ratio_columns(request):
-    return 0
+@csrf_exempt
+def update_item(request, id):
+    data = json.loads(request.body)
+    name = data.get('name')
+    description = data.get('description')
+    price = data.get('price')
+    ingredient_data = data.get('ingredients', [])
+    link = data.get('link', '') # optional
+    
+    # retrieve the Item instance
+    item = Item.objects.get(id=id)
+    
+    item_ingredients = item.itemingredient_set.all()
+    
+    # for all ingredients in the request, modify the ItemIngredient instance
+    # if the ItemIngredient instance does not exist, create it
+    for ingredient_info in ingredient_data:
+        ingredient_id = ingredient_info.get('id')
+        mass = ingredient_info.get('mass')
+        ingredient = Ingredient.objects.get(id=ingredient_id)
+        try:
+            item_ingredient = item_ingredients.get(ingredient=ingredient)
+            item_ingredient.mass = mass
+            item_ingredient.save()
+        except ItemIngredient.DoesNotExist:
+            item_ingredient = ItemIngredient(item=item, ingredient=ingredient, mass=mass)
+            item_ingredient.save()
+    
+    # modify the Item instance
+    item.name = name
+    item.description = description
+    item.price = price
+    item.link = link
+    item.save()
+    
+    return JsonResponse({"message": "Item updated successfully"})
 
 @csrf_exempt
 def get_current_table_data(request): #takes a list of selectedIngredients, an array of "conditions" strings, an array of "columns" strings, and returns the new table data

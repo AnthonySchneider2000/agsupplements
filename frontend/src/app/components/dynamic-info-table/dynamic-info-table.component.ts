@@ -96,6 +96,9 @@ export class DynamicInfoTableComponent implements OnInit {
       window.open(row.link, '_blank');
     } else {
       this.tableDataService.setSelectedId(row.id);
+      this.dataService.fetchItemById(row.id).subscribe((data) => { // fetch the item data from the backend
+        this.tableDataService.setSelectedItem(data); // set the selected item in the TableDataService
+      } );
     }
   }
   capitalizeFirstLetter(string: string) {

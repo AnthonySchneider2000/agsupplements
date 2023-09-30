@@ -16,21 +16,23 @@ import {
 // manipulates data for the ItemWithIngredients table
 // can create and delete items and ingredients
 export class IngredientItemInputComponent {
-  id: number = 0;
-  name: string = '';
-  description: string = '';
-  price: number = 0;
-  link: string = '';
   allIngredients: Ingredient[] = [];
   inputIngredients: Ingredient[] = [];
-  itemIngredients: ItemIngredient[] = [];
   ingredient: Ingredient = {
     id: 0,
     name: '',
     description: '',
     price: 1.0,
   };
-  mass: number = 0;
+  item: ItemWithIngredients = {
+    id: 0,
+    name: '',
+    description: '',
+    price: 0,
+    link: '',
+    ingredients: [],
+  };
+  servings: number = 1;
 
   constructor(
     private dataService: DataService,
@@ -39,50 +41,66 @@ export class IngredientItemInputComponent {
 
   ngOnInit(): void {
     this.tableDataService.selectedId$.subscribe((id) => {
-      this.id = id;
+      this.item.id = id;
+    });
+    this.tableDataService.selectedItem$.subscribe((item) => {
+      this.item = item;
     });
     this.dataService.fetchIngredientData().subscribe((data) => {
       this.allIngredients = data;
     });
   }
 
-  addItemWithIngredients() {
-    // promp user for mass of each ingredient
-    console.log(this.inputIngredients);
-
-    for (let ingredient of this.inputIngredients) {
-      console.log(ingredient);
-      const mass = prompt('Enter mass of ' + ingredient.name + ' in grams');
-      this.itemIngredients.push({
-        id: ingredient.id,
-        ingredient: ingredient,
-        mass: Number(mass),
-      });
+  addItem() {
+    if (this.inputIngredients.length > 0) {
+      for (let ingredient of this.inputIngredients) {
+        const mass = prompt('Enter mass of ' + ingredient.name + ' in grams');
+        this.item.ingredients.push({
+          id: ingredient.id,
+          ingredient: ingredient,
+          mass: Number(mass) * this.servings,
+        });
+      }
     }
 
     this.dataService
-      .addItemWithIngredientsToDatabase(
-        this.name,
-        this.description,
-        this.price,
-        this.itemIngredients,
-        this.link
-      )
+      .addItemWithIngredientsToDatabase(this.item)
       .subscribe((data) => {
         this.tableDataService.reloadTable();
       });
+    this.resetData();
   }
 
-  deleteItemWithIngredients() {
+  updateItem() {
+    if (this.inputIngredients.length > 0) {
+      for (let ingredient of this.inputIngredients) {
+        const mass = prompt('Enter mass of ' + ingredient.name + ' in grams');
+        this.item.ingredients.push({
+          id: ingredient.id,
+          ingredient: ingredient,
+          mass: Number(mass) * this.servings,
+        });
+      }
+    }
+
+    this.dataService.updateItem(this.item).subscribe((data) => {
+      this.tableDataService.reloadTable();
+    });
+
+    this.resetData();
+  }
+
+  deleteItem() {
     this.dataService
-      .deleteItemWithIngredientsFromDatabase(this.id)
+      .deleteItemWithIngredientsFromDatabase(this.item.id)
       .subscribe((data) => {
         this.tableDataService.reloadTable();
       });
+    this.resetData();
   }
 
   blacklistItem() {
-    this.dataService.blacklistItem(this.id).subscribe((data) => {
+    this.dataService.blacklistItem(this.item.id).subscribe((data) => {
       this.tableDataService.reloadTable();
     });
   }
@@ -97,7 +115,7 @@ export class IngredientItemInputComponent {
       .subscribe((data) => {
         this.getAllIngredients();
         this.tableDataService.setAllIngredients(this.allIngredients);
-        this.resetIngredient();
+        this.resetData();
       });
   }
 
@@ -109,7 +127,7 @@ export class IngredientItemInputComponent {
           (ingredient) => ingredient.id !== this.ingredient.id
         );
         this.tableDataService.setAllIngredients(this.allIngredients);
-        this.resetIngredient();
+        this.resetData();
       });
   }
 
@@ -119,17 +137,17 @@ export class IngredientItemInputComponent {
     });
   }
 
-  resetIngredient() {
-    this.ingredient.name = '';
+  resetData() {
     this.ingredient.description = '';
+    this.ingredient.name = '';
     this.ingredient.price = 1.0;
-  }
-
-  addIngredientToItem() {
-    this.itemIngredients.push({
-      id: 0,
-      ingredient: this.ingredient,
-      mass: this.mass,
-    });
+    this.ingredient.id = 0;
+    this.item.name = '';
+    this.item.description = '';
+    this.item.price = 0;
+    this.item.link = '';
+    this.item.ingredients = [];
+    this.inputIngredients = [];
+    this.servings = 1;
   }
 }
