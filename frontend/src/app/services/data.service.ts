@@ -45,7 +45,22 @@ export class DataService {
     return this.http.post(apiUrl, requestBody);
   }
 
+  fetchItemById(id: number): Observable<ItemWithIngredients> {
+    const apiUrl = 'http://localhost:8000/backend/get-item-by-id/' + id + '/';
+    return this.http.get<ItemWithIngredients>(apiUrl);
+  }
 
+
+  updateItemInDatabase(id: number, name: string, description: string, price: number, link: string, ingredients: ItemIngredient[]): Observable<any> {
+    const apiUrl = 'http://localhost:8000/backend/update-item/' + id + '/';
+    const requestBody = {
+      name: name,
+      description: description,
+      price: price,
+      link: link,
+    };
+    return this.http.put(apiUrl, requestBody);
+  }
 
 
 
@@ -70,13 +85,14 @@ export class DataService {
     return this.http.delete(apiUrl);
   }
 
-  addItemWithIngredientsToDatabase(name: string, description: string, price: number, ingredients: ItemIngredient[], link: string): Observable<any> {
+  addItemWithIngredientsToDatabase(item: ItemWithIngredients): Observable<any> {
     const apiUrl = 'http://localhost:8000/backend/create-item-with-ingredients/';
     const requestBody = {
-      name: name,
-      description: description,
-      price: price,
-      ingredients: ingredients,
+      name: item.name,
+      description: item.description,
+      price: item.price,
+      link: item.link,
+      ingredients: item.ingredients,
     };
     return this.http.post(apiUrl, requestBody);
   }
@@ -86,15 +102,17 @@ export class DataService {
     return this.http.delete(apiUrl);
   }
 
-  //send a list of item ingredients to the backend and receive a list of cost ratios
-  getIngredientCostRatioList(ingredients: ItemIngredient[]): Observable<any> {
-    const apiUrl = 'http://localhost:8000/backend/get-ingredient-cost-ratio-list/';
+  updateItem(item: ItemWithIngredients): Observable<any> {
+    const apiUrl = 'http://localhost:8000/backend/update-item/' + item.id + '/';
     const requestBody = {
-      ingredients: ingredients,
+      name: item.name,
+      description: item.description,
+      price: item.price,
+      link: item.link,
+      ingredients: item.ingredients,
     };
-    return this.http.post(apiUrl, requestBody);
+    return this.http.put(apiUrl, requestBody);
   }
-
 
   blacklistItem(id: number): Observable<any> {
     const apiUrl = 'http://localhost:8000/backend/blacklist-item/' + id + '/';

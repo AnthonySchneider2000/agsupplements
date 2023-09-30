@@ -59,7 +59,7 @@
       class="button"
       (click)="setCustomColumns()"
     >
-      Set Custom Columns
+      Add Custom Column
     </button>
     <button
       mat-raised-button
@@ -109,18 +109,6 @@
       </mat-select>
     </mat-form-field>
 
-    <!-- <mat-form-field>
-      <mat-label>Var2</mat-label>
-      <mat-select [(ngModel)]="conditionVar2">
-        <mat-option value="price">Price</mat-option>
-        <mat-option
-          *ngFor="let ingredient of selectedIngredients"
-          [value]="ingredient.name"
-          >{{ ingredient.name }}</mat-option
-        >
-      </mat-select>
-    </mat-form-field> -->
-
     <!-- textbox -->
     <mat-form-field>
       <mat-label>Var2</mat-label>
@@ -133,7 +121,7 @@
       class="button"
       (click)="setCustomConditions()"
     >
-      Set Custom Condition
+      Add Custom Condition
     </button>
 
     <button
