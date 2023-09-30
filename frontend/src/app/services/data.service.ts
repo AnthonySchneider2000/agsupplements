@@ -32,19 +32,6 @@ export class DataService {
     return this.http.post(apiUrl, requestBody);
   }
 
-  fetchFilteredTableData(selectedIngredients: Ingredient[], showCostRatio: boolean): Observable<any> {
-    const apiUrl = 'http://localhost:8000/backend/get-filtered-table-data/';
-    const requestBody = {
-      selectedIngredients: selectedIngredients,
-      showCostRatio: showCostRatio,
-    };
-
-    console.log('Sending request to backend - filtered table data');
-    // console.log(requestBody);
-
-    return this.http.post(apiUrl, requestBody);
-  }
-
   fetchItemById(id: number): Observable<ItemWithIngredients> {
     const apiUrl = 'http://localhost:8000/backend/get-item-by-id/' + id + '/';
     return this.http.get<ItemWithIngredients>(apiUrl);

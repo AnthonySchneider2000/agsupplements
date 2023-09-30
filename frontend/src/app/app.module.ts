@@ -12,13 +12,11 @@ import { MatSortModule } from '@angular/material/sort';
 import {VERSION as MAT_VERSION, MatNativeDateModule} from '@angular/material/core';
 
 import { AppComponent } from './app.component';
-import { TestOutputComponent } from './components/test-output/test-output.component';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { FormsModule } from '@angular/forms';
 import { IngredientItemInputComponent } from './components/ingredient-item-input/ingredient-item-input.component';
 import { MatSelectModule } from '@angular/material/select';
-import { IngredientItemTableComponent } from './components/ingredient-item-table/ingredient-item-table.component';
 import { MatCheckboxModule } from '@angular/material/checkbox';
 import { TableOptionsComponent } from './components/table-options/table-options.component';
 import { DynamicInfoTableComponent } from './components/dynamic-info-table/dynamic-info-table.component';
@@ -30,9 +28,7 @@ import { DropzoneMaterialModule } from '@ngx-dropzone/material';
 @NgModule({
   declarations: [
     AppComponent,
-    TestOutputComponent,
     IngredientItemInputComponent,
-    IngredientItemTableComponent,
     TableOptionsComponent,
     DynamicInfoTableComponent,
   ],

@@ -13,6 +13,5 @@ urlpatterns = [
     path('delete-ingredient/<int:id>/', views.delete_ingredient, name='delete_ingredient'),
     path('delete-ingredient-by-name/<str:name>/', views.delete_ingredient_by_name, name='delete_ingredient_by_name'),
     path('get-current-table-data/', views.get_current_table_data, name='get_current_table_data'),
-    path('get-filtered-table-data/', views.get_filtered_table_data, name='get_filtered_table_data'),
     path('blacklist-item/<int:id>/', views.blacklist_item, name='blacklist_item'),
 ]
