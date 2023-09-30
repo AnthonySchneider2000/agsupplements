@@ -236,46 +236,7 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
     return JsonResponse(response, safe=False)
         
 
-
-    
-    
 @csrf_exempt
-def get_filtered_table_data(request): #takes a list of selectedIngredients and a boolean of showCostRatio and returns the new table data
-    data = json.loads(request.body)
-    selected_ingredients_data = data.get('selectedIngredients', [])
-    selected_ingredients = []
-    show_cost_ratio = data.get('showCostRatio', False)
-    response = []
-    
-    for ingredient_data in selected_ingredients_data:
-        ingredient_id = ingredient_data.get('id')
-        ingredient = Ingredient.objects.get(id=ingredient_id)
-        selected_ingredients.append(ingredient)
-    
-    for item in Item.objects.all():
-        contains_all_ingredients = True
-        item_data = {
-            "id": item.id,
-            "name": item.name,
-            "description": item.description,
-            "price": item.price
-        }
-        for ingredient in selected_ingredients:
-            try:
-                # Fetch the related ItemIngredient object
-                item_ingredient = item.itemingredient_set.get(ingredient=ingredient)
-                ingredientMass = item_ingredient.mass
-                item_data[ingredient.name] = ingredientMass
-                if show_cost_ratio:
-                    item_data[ingredient.name + " Cost Ratio"] = item.price / ingredientMass
-            except ItemIngredient.DoesNotExist:
-                contains_all_ingredients = False
-                break
-        if contains_all_ingredients:
-            response.append(item_data)
-        
-    return JsonResponse(response, safe=False)
-    
 def get_all_table_data(request):
     items = Item.objects.all()
     response = []
