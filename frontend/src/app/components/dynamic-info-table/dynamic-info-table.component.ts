@@ -67,7 +67,7 @@ export class DynamicInfoTableComponent implements OnInit {
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
-        this.dataSource.filter = this.filterValue.trim().toLowerCase();
+        this.applyFilter({ target: { value: this.filterValue } });
         this.ingredientColumns = this.selectedIngredients.map(
           (ingredient) => ingredient.name
         );
