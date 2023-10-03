@@ -120,14 +120,17 @@ def update_item(request, id):
     # for all ingredients in the request, modify the ItemIngredient instance
     # if the ItemIngredient instance does not exist, create it
     for ingredient_info in ingredient_data:
+        print(ingredient_info)
         ingredient_id = ingredient_info.get('id')
         mass = ingredient_info.get('mass')
         ingredient = Ingredient.objects.get(id=ingredient_id)
         try:
+            print("ItemIngredient exists, modifying item_ingredient: " + str(ingredient.name) +" in item: " + str(item.name) + " from " + str(item_ingredients.get(ingredient=ingredient).mass) + " to " + str(mass) + " grams")
             item_ingredient = item_ingredients.get(ingredient=ingredient)
             item_ingredient.mass = mass
             item_ingredient.save()
         except ItemIngredient.DoesNotExist:
+            print("ItemIngredient does not exist, creating item_ingredient: " + str(ingredient.name) +" in item: " + str(item.name))
             item_ingredient = ItemIngredient(item=item, ingredient=ingredient, mass=mass)
             item_ingredient.save()
     

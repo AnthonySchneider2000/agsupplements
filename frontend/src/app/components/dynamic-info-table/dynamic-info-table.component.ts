@@ -104,6 +104,7 @@ export class DynamicInfoTableComponent implements OnInit {
         return data.name.toLowerCase().includes(filterValueWithoutExclamation);
       };
     }
+    // BUG?: the default filter searches all values, whereas this only searches the name  
     this.dataSource.filter = filterValueWithoutExclamation.trim().toLowerCase();
 
   }
