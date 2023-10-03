@@ -71,7 +71,7 @@ export class DynamicInfoTableComponent implements OnInit {
         this.ingredientColumns = this.selectedIngredients.map(
           (ingredient) => ingredient.name
         );
-    
+
         this.displayedColumns = [
           ...this.baseColumns,
           ...this.ingredientColumns,
@@ -89,16 +89,29 @@ export class DynamicInfoTableComponent implements OnInit {
   applyFilter(event: any) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.filterValue = filterValue;
-    this.dataSource.filter = filterValue.trim().toLowerCase();
+    const startsWithExclamation = filterValue.startsWith('!');
+    const filterValueWithoutExclamation = filterValue.substring(1);
+    if (startsWithExclamation){
+      // Filter with negation
+      this.dataSource.filterPredicate = (data, filter) => {
+        return !data.name.toLowerCase().includes(filterValueWithoutExclamation);
+      };
+      this.dataSource.filter = filterValueWithoutExclamation.trim().toLowerCase();
+
+    }
+    else{
+      this.dataSource.filter = filterValue.trim().toLowerCase();  
+    } 
   }
   onRowClick(row: any, event: MouseEvent) {
     if (event.ctrlKey) {
       window.open(row.link, '_blank');
     } else {
       this.tableDataService.setSelectedId(row.id);
-      this.dataService.fetchItemById(row.id).subscribe((data) => { // fetch the item data from the backend
+      this.dataService.fetchItemById(row.id).subscribe((data) => {
+        // fetch the item data from the backend
         this.tableDataService.setSelectedItem(data); // set the selected item in the TableDataService
-      } );
+      });
     }
   }
   capitalizeFirstLetter(string: string) {
