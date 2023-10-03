@@ -96,12 +96,16 @@ export class DynamicInfoTableComponent implements OnInit {
       this.dataSource.filterPredicate = (data, filter) => {
         return !data.name.toLowerCase().includes(filterValueWithoutExclamation);
       };
-      this.dataSource.filter = filterValueWithoutExclamation.trim().toLowerCase();
 
     }
     else{
-      this.dataSource.filter = filterValue.trim().toLowerCase();  
-    } 
+      // Filter without negation
+      this.dataSource.filterPredicate = (data, filter) => {
+        return data.name.toLowerCase().includes(filterValueWithoutExclamation);
+      };
+    }
+    this.dataSource.filter = filterValueWithoutExclamation.trim().toLowerCase();
+
   }
   onRowClick(row: any, event: MouseEvent) {
     if (event.ctrlKey) {
