@@ -54,7 +54,7 @@ export class IngredientItemInputComponent {
   addItem() {
     if (this.inputIngredients.length > 0) {
       for (let ingredient of this.inputIngredients) {
-        const mass = prompt('Enter mass of ' + ingredient.name + ' in grams');
+        const mass = prompt('Enter mass of ' + ingredient.name + ' in ' + ingredient.units);
         this.item.ingredients.push({
           id: ingredient.id,
           ingredient: ingredient,
@@ -72,7 +72,7 @@ export class IngredientItemInputComponent {
   updateItem() {
     if (this.inputIngredients.length > 0) {
       for (let ingredient of this.inputIngredients) {
-        const mass = prompt('Enter mass of ' + ingredient.name + ' in grams');
+        const mass = prompt('Enter mass of ' + ingredient.name + ' in ' + ingredient.units);
         this.item.ingredients.push({
           id: ingredient.id,
           ingredient: ingredient,
