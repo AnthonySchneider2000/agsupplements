@@ -10,8 +10,8 @@ export interface ItemWithIngredients {
   name: string;
   description: string;
   price: number;
-  ingredients: ItemIngredient[];
   link: string;
+  ingredients: ItemIngredient[];
 }
 
 export interface ItemIngredient {
