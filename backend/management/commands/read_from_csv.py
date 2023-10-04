@@ -69,6 +69,9 @@ class Command(BaseCommand):
                 else:
                     print('Item ' + name + ' does not have /lb in price')
                     continue
+                if price <= 0: # if the price is 0, skip it
+                    print('Item ' + name + ' has price 0')
+                    continue
                 
                 #if the servingSize is not empty, use that, otherwise use servingSize2
                 servingSize = row[5 + offset] if row[5 + offset] else row[6 + offset]
