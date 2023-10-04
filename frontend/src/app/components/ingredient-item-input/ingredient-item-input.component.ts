@@ -30,9 +30,9 @@ export class IngredientItemInputComponent {
     description: '',
     price: 0,
     link: '',
+    servings: 1,
     ingredients: [],
   };
-  servings: number = 1;
 
   constructor(
     private dataService: DataService,
@@ -58,7 +58,7 @@ export class IngredientItemInputComponent {
         this.item.ingredients.push({
           id: ingredient.id,
           ingredient: ingredient,
-          mass: Number(mass) * this.servings,
+          mass: Number(mass),
         });
       }
     }
@@ -78,7 +78,7 @@ export class IngredientItemInputComponent {
         this.item.ingredients.push({
           id: ingredient.id,
           ingredient: ingredient,
-          mass: Number(mass) * this.servings,
+          mass: Number(mass),
         });
       }
     }
@@ -147,7 +147,7 @@ export class IngredientItemInputComponent {
     this.item.price = 0;
     this.item.link = '';
     this.item.ingredients = [];
+    this.item.servings = 1;
     this.inputIngredients = [];
-    this.servings = 1;
   }
 }

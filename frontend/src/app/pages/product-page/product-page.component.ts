@@ -14,6 +14,7 @@ export class ProductPageComponent {
     description: '',
     price: 0,
     link: '',
+    servings: 0,
     ingredients: [],
   };
 

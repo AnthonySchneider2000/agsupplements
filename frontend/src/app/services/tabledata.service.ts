@@ -12,6 +12,7 @@ export class TableDataService {
     description: '',
     price: 0,
     link: '',
+    servings: 0,
     ingredients: [],
   };
 

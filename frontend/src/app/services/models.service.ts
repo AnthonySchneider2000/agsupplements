@@ -11,6 +11,7 @@ export interface ItemWithIngredients {
   description: string;
   price: number;
   link: string;
+  servings: number;
   ingredients: ItemIngredient[];
 }
 

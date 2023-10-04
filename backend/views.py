@@ -34,6 +34,7 @@ def create_item_with_ingredients(request):
     price = data.get('price')
     ingredient_data = data.get('ingredients', [])
     link = data.get('link', '') # optional
+    servings = data.get('servings', None) # optional
 
     # Check if the item is blacklisted
     if BlacklistedItem.objects.filter(item__name=name).exists():
@@ -64,6 +65,7 @@ def get_item_with_ingredients(request):
             "name": item.name,
             "description": item.description,
             "price": item.price,
+            "servings": item.servings,
             "ingredients": [
                 {
                     "id": item_ingredient.ingredient.id,
@@ -88,6 +90,7 @@ def get_item_by_id(request, id):
         "name": item.name,
         "description": item.description,
         "price": item.price,
+        "servings": item.servings,
         "ingredients": [
             {
                 "id": item_ingredient.ingredient.id,
@@ -113,6 +116,7 @@ def update_item(request, id):
     price = data.get('price')
     ingredient_data = data.get('ingredients', [])
     link = data.get('link', '') # optional
+    servings = data.get('servings', None) # optional
     
     # retrieve the Item instance
     item = Item.objects.get(id=id)
@@ -124,7 +128,7 @@ def update_item(request, id):
     for ingredient_info in ingredient_data:
         print(ingredient_info)
         ingredient_id = ingredient_info.get('id')
-        mass = ingredient_info.get('mass')
+        mass = ingredient_info.get('mass') * item.servings
         ingredient = Ingredient.objects.get(id=ingredient_id)
         try:
             print("ItemIngredient exists, modifying item_ingredient: " + str(ingredient.name) +" in item: " + str(item.name) + " from " + str(item_ingredients.get(ingredient=ingredient).mass) + " to " + str(mass) + " grams")
@@ -140,10 +144,16 @@ def update_item(request, id):
             item_ingredient.delete()
     
     # modify the Item instance
-    item.name = name
-    item.description = description
-    item.price = price
-    item.link = link
+    if name:
+        item.name = name
+    if description:
+        item.description = description
+    if price:
+        item.price = price
+    if link:
+        item.link = link
+    if servings:
+        item.servings = servings
     item.save()
     
     return JsonResponse({"message": "Item updated successfully"})
@@ -172,7 +182,8 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
             "name": item.name,
             "description": item.description,
             "price": item.price,
-            "link": item.link
+            "link": item.link,
+            "servings": item.servings
         }
         for ingredient in selected_ingredients:
             try:

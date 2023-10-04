@@ -38,20 +38,6 @@ export class DataService {
   }
 
 
-  updateItemInDatabase(id: number, name: string, description: string, price: number, link: string, ingredients: ItemIngredient[]): Observable<any> {
-    const apiUrl = 'http://localhost:8000/backend/update-item/' + id + '/';
-    const requestBody = {
-      name: name,
-      description: description,
-      price: price,
-      link: link,
-    };
-    return this.http.put(apiUrl, requestBody);
-  }
-
-
-
-
   addIngredientToDatabase(name: string, description: string, price: number): Observable<any> {
     const apiUrl = 'http://localhost:8000/backend/create-ingredient/';
     const requestBody = {
@@ -80,6 +66,7 @@ export class DataService {
       price: item.price,
       link: item.link,
       ingredients: item.ingredients,
+      servings: item.servings,
     };
     return this.http.post(apiUrl, requestBody);
   }
@@ -97,6 +84,7 @@ export class DataService {
       price: item.price,
       link: item.link,
       ingredients: item.ingredients,
+      servings: item.servings,
     };
     return this.http.put(apiUrl, requestBody);
   }
