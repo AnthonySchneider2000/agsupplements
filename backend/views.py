@@ -47,6 +47,8 @@ def create_item_with_ingredients(request):
     for ingredient_info in ingredient_data:
         ingredient_id = ingredient_info.get('id')
         mass = ingredient_info.get('mass')
+        if mass == 0: # if the mass is 0, don't create an ItemIngredient instance
+            continue
         ingredient = Ingredient.objects.get(id=ingredient_id)
         item_ingredient = ItemIngredient(item=item, ingredient=ingredient, mass=mass)
         item_ingredient.save()
@@ -133,6 +135,9 @@ def update_item(request, id):
             print("ItemIngredient does not exist, creating item_ingredient: " + str(ingredient.name) +" in item: " + str(item.name))
             item_ingredient = ItemIngredient(item=item, ingredient=ingredient, mass=mass)
             item_ingredient.save()
+        # if the mass of the ItemIngredient instance is 0, delete it
+        if item_ingredient.mass == 0:
+            item_ingredient.delete()
     
     # modify the Item instance
     item.name = name
