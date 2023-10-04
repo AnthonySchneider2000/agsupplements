@@ -2,7 +2,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
-import { ItemIngredient, ItemWithIngredients, Ingredient } from './models.service';
+import { ItemIngredient, Item, Ingredient } from './models.service';
 import { HttpHeaders } from '@angular/common/http';
 @Injectable({
   providedIn: 'root',
@@ -10,8 +10,8 @@ import { HttpHeaders } from '@angular/common/http';
 export class DataService {
   constructor(private http: HttpClient) {}
 
-  fetchItemWithIngredientsData(): Observable<ItemWithIngredients[]> {
-    return this.http.get<ItemWithIngredients[]>('http://localhost:8000/backend/get-item-with-ingredients/');
+  fetchItemData(): Observable<Item[]> {
+    return this.http.get<Item[]>('http://localhost:8000/backend/get-item/');
   }
   
   fetchIngredientData(): Observable<any> {
@@ -32,9 +32,9 @@ export class DataService {
     return this.http.post(apiUrl, requestBody);
   }
 
-  fetchItemById(id: number): Observable<ItemWithIngredients> {
+  fetchItemById(id: number): Observable<Item> {
     const apiUrl = 'http://localhost:8000/backend/get-item-by-id/' + id + '/';
-    return this.http.get<ItemWithIngredients>(apiUrl);
+    return this.http.get<Item>(apiUrl);
   }
 
 
@@ -58,8 +58,8 @@ export class DataService {
     return this.http.delete(apiUrl);
   }
 
-  addItemWithIngredientsToDatabase(item: ItemWithIngredients): Observable<any> {
-    const apiUrl = 'http://localhost:8000/backend/create-item-with-ingredients/';
+  addItemToDatabase(item: Item): Observable<any> {
+    const apiUrl = 'http://localhost:8000/backend/create-item/';
     const requestBody = {
       name: item.name,
       description: item.description,
@@ -71,12 +71,12 @@ export class DataService {
     return this.http.post(apiUrl, requestBody);
   }
 
-  deleteItemWithIngredientsFromDatabase(id: number): Observable<any> {
-    const apiUrl = 'http://localhost:8000/backend/delete-item-with-ingredients/' + id + '/';
+  deleteItemFromDatabase(id: number): Observable<any> {
+    const apiUrl = 'http://localhost:8000/backend/delete-item/' + id + '/';
     return this.http.delete(apiUrl);
   }
 
-  updateItem(item: ItemWithIngredients): Observable<any> {
+  updateItem(item: Item): Observable<any> {
     const apiUrl = 'http://localhost:8000/backend/update-item/' + item.id + '/';
     const requestBody = {
       name: item.name,

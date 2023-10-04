@@ -5,7 +5,7 @@ import { MatPaginator } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { TableDataService } from 'src/app/services/tabledata.service';
 import {
-  ItemWithIngredients as Item,
+  Item,
   ItemIngredient,
   Ingredient,
 } from '../../services/models.service';
@@ -81,7 +81,7 @@ export class DynamicInfoTableComponent implements OnInit {
   }
 
   getItemData() {
-    this.dataService.fetchItemWithIngredientsData().subscribe((data) => {
+    this.dataService.fetchItemData().subscribe((data) => {
       this.ItemData = data;
     });
   }

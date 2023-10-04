@@ -1,9 +1,8 @@
 import { Component } from '@angular/core';
 import { DataService } from '../../services/data.service';
 import { TableDataService } from 'src/app/services/tabledata.service';
-import { MatSelectModule } from '@angular/material/select';
 import {
-  ItemWithIngredients,
+  Item,
   ItemIngredient,
   Ingredient,
 } from '../../services/models.service';
@@ -13,7 +12,7 @@ import {
   templateUrl: './ingredient-item-input.component.html',
   styleUrls: ['./ingredient-item-input.component.css'],
 })
-// manipulates data for the ItemWithIngredients table
+// manipulates data for the Item table
 // can create and delete items and ingredients
 export class IngredientItemInputComponent {
   allIngredients: Ingredient[] = [];
@@ -23,8 +22,9 @@ export class IngredientItemInputComponent {
     name: '',
     description: '',
     price: 1.0,
+    units: 'g',
   };
-  item: ItemWithIngredients = {
+  item: Item = {
     id: 0,
     name: '',
     description: '',
@@ -64,7 +64,7 @@ export class IngredientItemInputComponent {
     }
 
     this.dataService
-      .addItemWithIngredientsToDatabase(this.item)
+      .addItemToDatabase(this.item)
       .subscribe((data) => {
         this.tableDataService.reloadTable();
       });
@@ -92,7 +92,7 @@ export class IngredientItemInputComponent {
 
   deleteItem() {
     this.dataService
-      .deleteItemWithIngredientsFromDatabase(this.item.id)
+      .deleteItemFromDatabase(this.item.id)
       .subscribe((data) => {
         this.tableDataService.reloadTable();
       });

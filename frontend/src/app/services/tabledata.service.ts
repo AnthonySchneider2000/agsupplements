@@ -1,12 +1,12 @@
 import { Injectable } from '@angular/core';
 import { Subject, BehaviorSubject } from 'rxjs';
-import { Ingredient, ItemWithIngredients } from './models.service';
+import { Ingredient, Item } from './models.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class TableDataService {
-  private baseItem: ItemWithIngredients = {
+  private baseItem: Item = {
     id: 0,
     name: '',
     description: '',
@@ -37,12 +37,12 @@ export class TableDataService {
     this.selectedIdSubject.next(id);
   }
   
-  private selectedItemSubject = new BehaviorSubject<ItemWithIngredients>(this.baseItem);
+  private selectedItemSubject = new BehaviorSubject<Item>(this.baseItem);
 
   // Observable for getting the selected item
   selectedItem$ = this.selectedItemSubject.asObservable();
 
-  setSelectedItem(item: ItemWithIngredients) {
+  setSelectedItem(item: Item) {
     this.selectedItemSubject.next(item);
   }
 

@@ -9,7 +9,7 @@ from django.views.decorators.csrf import csrf_exempt
 # Create your views here.
 
 @csrf_exempt
-def create_item_with_ingredients(request):
+def create_item(request):
     #get blacklisted items
     data = json.loads(request.body)
     name = data.get('name')
@@ -23,7 +23,7 @@ def create_item_with_ingredients(request):
     if BlacklistedItem.objects.filter(item__name=name).exists():
         return JsonResponse({"message": "Item is blacklisted"})
     
-    # Create the ItemWithIngredients instance
+    # Create the Item instance
     item = Item(name=name, description=description, price=price, link=link)
     item.save()
 
@@ -37,9 +37,9 @@ def create_item_with_ingredients(request):
         item_ingredient = ItemIngredient(item=item, ingredient=ingredient, mass=mass)
         item_ingredient.save()
 
-    return JsonResponse({"message": "Item with ingredients created successfully"})
+    return JsonResponse({"message": "Item created successfully"})
 
-def get_item_with_ingredients(request): 
+def get_item(request): 
     items = Item.objects.all()
     response = []
     for item in items:
@@ -240,11 +240,11 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
 
 
 @csrf_exempt
-def delete_item_with_ingredients(request, id):
+def delete_item(request, id):
     item = Item.objects.get(id=id)
     item.delete()
 
-    return JsonResponse({"message": "Item with ingredients deleted successfully"})
+    return JsonResponse({"message": "Item deleted successfully"})
 
 @csrf_exempt
 def create_ingredient(request):

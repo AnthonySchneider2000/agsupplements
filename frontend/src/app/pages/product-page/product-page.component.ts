@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { DataService } from 'src/app/services/data.service';
-import { ItemWithIngredients as Item } from 'src/app/services/models.service';
+import { Item } from 'src/app/services/models.service';
 
 @Component({
   selector: 'app-product-page',
