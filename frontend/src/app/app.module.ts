@@ -23,6 +23,8 @@ import { DynamicInfoTableComponent } from './components/dynamic-info-table/dynam
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DropzoneCdkModule } from '@ngx-dropzone/cdk';
 import { DropzoneMaterialModule } from '@ngx-dropzone/material';
+import { ProductPageComponent } from './components/product-page/product-page.component';
+import { HomePageComponent } from './components/home-page/home-page.component';
 
 
 @NgModule({
@@ -31,6 +33,8 @@ import { DropzoneMaterialModule } from '@ngx-dropzone/material';
     IngredientItemInputComponent,
     TableOptionsComponent,
     DynamicInfoTableComponent,
+    ProductPageComponent,
+    HomePageComponent,
   ],
   imports: [
     BrowserModule,
