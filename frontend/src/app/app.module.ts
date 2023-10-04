@@ -25,6 +25,7 @@ import { DropzoneCdkModule } from '@ngx-dropzone/cdk';
 import { DropzoneMaterialModule } from '@ngx-dropzone/material';
 import { ProductPageComponent } from './components/product-page/product-page.component';
 import { HomePageComponent } from './components/home-page/home-page.component';
+import { CalculatorPageComponent } from './components/calculator-page/calculator-page.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { HomePageComponent } from './components/home-page/home-page.component';
     DynamicInfoTableComponent,
     ProductPageComponent,
     HomePageComponent,
+    CalculatorPageComponent,
   ],
   imports: [
     BrowserModule,
