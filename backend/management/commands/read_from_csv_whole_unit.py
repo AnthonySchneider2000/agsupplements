@@ -63,6 +63,10 @@ class Command(BaseCommand):
                     print('Item ' + name + ' does not have a price')
                     continue
                 price = re.sub("[^0-9.]", "", price) # remove non-numeric characters
+                if float(price) <= 0:
+                    print('Item ' + name + ' has a price of 0')
+                    continue
+                price = float(price)
                 
                 
                 #if the servingSize is not empty, use that, otherwise use servingSize2
