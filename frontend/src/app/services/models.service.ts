@@ -14,6 +14,7 @@ export interface Item {
   link: string;
   servings: number;
   ingredients: ItemIngredient[];
+  tags: string[];
 }
 
 export interface ItemIngredient {

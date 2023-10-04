@@ -32,6 +32,7 @@ export class IngredientItemInputComponent {
     link: '',
     servings: 1,
     ingredients: [],
+    tags: [],
   };
 
   constructor(

@@ -77,6 +77,7 @@ export class DataService {
       link: item.link,
       ingredients: item.ingredients,
       servings: item.servings,
+      tags: item.tags,
     };
     return this.http.post(apiUrl, requestBody);
   }
@@ -95,6 +96,7 @@ export class DataService {
       link: item.link,
       ingredients: item.ingredients,
       servings: item.servings,
+      tags: item.tags,
     };
     return this.http.put(apiUrl, requestBody);
   }

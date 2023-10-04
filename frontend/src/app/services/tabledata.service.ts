@@ -14,6 +14,7 @@ export class TableDataService {
     link: '',
     servings: 0,
     ingredients: [],
+    tags: [],
   };
 
 
