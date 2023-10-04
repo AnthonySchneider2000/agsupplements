@@ -11,8 +11,6 @@ local_settings.py
 *.pyo
 __pycache__/
 
-# Database files
-db.sqlite3
 
 # Virtual environment
 venv/
