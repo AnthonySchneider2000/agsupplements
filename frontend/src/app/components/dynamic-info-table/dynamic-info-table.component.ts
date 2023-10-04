@@ -112,14 +112,14 @@ export class DynamicInfoTableComponent implements OnInit {
     if (event.ctrlKey) {
       window.open(row.link, '_blank');
     } else if(event.shiftKey) {
+      localStorage.setItem('selectedId', row.id.toString()); // save the selected id to localStorage
+      window.location.href = '/product-page'; // navigate the current page to /product-page
+    }else{
       this.dataService.fetchItemById(row.id).subscribe((data) => {
         // fetch the item data from the backend
         this.tableDataService.setSelectedItem(data); // set the selected item in the TableDataService
       });
       this.tableDataService.setSelectedId(row.id);
-    }else{
-      localStorage.setItem('selectedId', row.id.toString()); // save the selected id to localStorage
-      window.location.href = '/product-page'; // navigate the current page to /product-page
     }
   }
   capitalizeFirstLetter(string: string) {
