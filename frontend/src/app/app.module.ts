@@ -23,9 +23,9 @@ import { DynamicInfoTableComponent } from './components/dynamic-info-table/dynam
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { DropzoneCdkModule } from '@ngx-dropzone/cdk';
 import { DropzoneMaterialModule } from '@ngx-dropzone/material';
-import { ProductPageComponent } from './components/product-page/product-page.component';
-import { HomePageComponent } from './components/home-page/home-page.component';
-import { CalculatorPageComponent } from './components/calculator-page/calculator-page.component';
+import { ProductPageComponent } from './pages/product-page/product-page.component';
+import { HomePageComponent } from './pages/home-page/home-page.component';
+import { CalculatorPageComponent } from './pages/calculator-page/calculator-page.component';
 
 
 @NgModule({
