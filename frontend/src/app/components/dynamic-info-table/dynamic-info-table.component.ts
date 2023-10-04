@@ -109,14 +109,16 @@ export class DynamicInfoTableComponent implements OnInit {
 
   }
   onRowClick(row: any, event: MouseEvent) {
-    if (event.ctrlKey) {
-      window.open(row.link, '_blank');
-    } else {
-      this.tableDataService.setSelectedId(row.id);
+    this.tableDataService.setSelectedId(row.id);
       this.dataService.fetchItemById(row.id).subscribe((data) => {
         // fetch the item data from the backend
         this.tableDataService.setSelectedItem(data); // set the selected item in the TableDataService
       });
+    if (event.ctrlKey) {
+      window.open(row.link, '_blank');
+    } else if(event.shiftKey) {
+      // naviagate the current page to /product-page
+      window.location.href = '/product-page';
     }
   }
   capitalizeFirstLetter(string: string) {
