@@ -8,23 +8,6 @@ from django.views.decorators.csrf import csrf_exempt
 
 # Create your views here.
 
-def get_dummy_data(request):
-    data = [
-        {'id': 1, 'name': 'Item 1', 'description': 'This is item 1', 'price': 4110},
-        {'id': 2, 'name': 'Item 2', 'description': 'This is item 2', 'price': 200},
-        {'id': 3, 'name': 'Item 3', 'description': 'This is item 3', 'price': 130},
-        {'id': 4, 'name': 'Item 4', 'description': 'This is item 4', 'price': 40},
-        {'id': 5, 'name': 'Item 5', 'description': 'This is item 5', 'price': 1050},
-        {'id': 6, 'name': 'Item 6', 'description': 'This is item 6', 'price': 260},
-        {'id': 7, 'name': 'Item 7', 'description': 'This is item 7', 'price': 170},
-        {'id': 8, 'name': 'Item 8', 'description': 'This is item 8', 'price': 85},
-        {'id': 9, 'name': 'Item 9', 'description': 'This is item 9', 'price': 90},
-    ]
-    return JsonResponse(data, safe=False)
-
-
-
-
 @csrf_exempt
 def create_item_with_ingredients(request):
     #get blacklisted items
@@ -255,34 +238,6 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
     return JsonResponse(response, safe=False)
         
 
-@csrf_exempt
-def get_all_table_data(request):
-    items = Item.objects.all()
-    response = []
-    for item in items:
-        response.append({
-            "id": item.id,
-            "name": item.name,
-            "description": item.description,
-            "price": item.price,
-            "ingredients": [
-                {
-                    "id": item_ingredient.ingredient.id,
-                    "ingredient": {
-                        "id": item_ingredient.ingredient.id,
-                        "name": item_ingredient.ingredient.name,
-                        "description": item_ingredient.ingredient.description,
-                        "price": item_ingredient.ingredient.price
-                    },
-                    "mass": item_ingredient.mass,
-                    "costRatio": item_ingredient.ingredient.price / item_ingredient.mass
-                }
-                for item_ingredient in item.itemingredient_set.all()
-            ]
-        })
-    return JsonResponse(response, safe=False)
-        
-
 
 @csrf_exempt
 def delete_item_with_ingredients(request, id):
@@ -326,7 +281,7 @@ def get_ingredient(request):
             "id": ingredient.id,
             "name": ingredient.name,
             "description": ingredient.description,
-            "price": ingredient.price
+            "price": ingredient.price,
         })
     return JsonResponse(response, safe=False)
 
