@@ -91,7 +91,7 @@ class Command(BaseCommand):
                 calories = float(calories) * servingCount # multiply by servings per pound
                 
                 print("\nCreating item " + name + " with price " + price + " description " + name + " link " + link + " and calories " + str(calories) + " and servings per pound " + str(servingCount))
-                item = Item.objects.create(name=name, price=price, description=name, link=link)
+                item = Item.objects.create(name=name, price=price, description=name, link=link, servings=servingCount)
 
                 calorie_ingredient = Ingredient.objects.get(name='Calories')
                 calorie_item_ingredient = ItemIngredient.objects.create(item=item, ingredient=calorie_ingredient, mass=calories)
