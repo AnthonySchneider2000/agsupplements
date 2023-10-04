@@ -38,12 +38,13 @@ export class DataService {
   }
 
 
-  addIngredientToDatabase(name: string, description: string, price: number): Observable<any> {
+  addIngredientToDatabase(ingredient: Ingredient): Observable<any> {
     const apiUrl = 'http://localhost:8000/backend/create-ingredient/';
     const requestBody = {
-      name: name,
-      description: description,
-      price: price,
+      name: ingredient.name,
+      description: ingredient.description,
+      price: ingredient.price,
+      units: ingredient.units,
     };
     return this.http.post(apiUrl, requestBody);
   }

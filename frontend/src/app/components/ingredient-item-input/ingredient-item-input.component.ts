@@ -63,11 +63,9 @@ export class IngredientItemInputComponent {
       }
     }
 
-    this.dataService
-      .addItemToDatabase(this.item)
-      .subscribe((data) => {
-        this.tableDataService.reloadTable();
-      });
+    this.dataService.addItemToDatabase(this.item).subscribe((data) => {
+      this.tableDataService.reloadTable();
+    });
     this.resetData();
   }
 
@@ -91,11 +89,9 @@ export class IngredientItemInputComponent {
   }
 
   deleteItem() {
-    this.dataService
-      .deleteItemFromDatabase(this.item.id)
-      .subscribe((data) => {
-        this.tableDataService.reloadTable();
-      });
+    this.dataService.deleteItemFromDatabase(this.item.id).subscribe((data) => {
+      this.tableDataService.reloadTable();
+    });
     this.resetData();
   }
 
@@ -107,11 +103,7 @@ export class IngredientItemInputComponent {
 
   addIngredient() {
     this.dataService
-      .addIngredientToDatabase(
-        this.ingredient.name,
-        this.ingredient.description,
-        this.ingredient.price
-      )
+      .addIngredientToDatabase(this.ingredient)
       .subscribe((data) => {
         this.getAllIngredients();
         this.tableDataService.setAllIngredients(this.allIngredients);
@@ -142,6 +134,7 @@ export class IngredientItemInputComponent {
     this.ingredient.name = '';
     this.ingredient.price = 1.0;
     this.ingredient.id = 0;
+    this.ingredient.units = 'g';
     this.item.name = '';
     this.item.description = '';
     this.item.price = 0;
