@@ -3,6 +3,7 @@ export interface Ingredient {
   name: string;
   description: string;
   price: number;
+  units: string;
 }
 
 export interface ItemWithIngredients {
