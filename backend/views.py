@@ -1,7 +1,7 @@
 import json
 from django.shortcuts import render
 from django.http import JsonResponse
-from .models import Ingredient, Item, ItemIngredient, BlacklistedItem
+from .models import Ingredient, Item, ItemIngredient, BlacklistedItem, Tag
 from django.views.decorators.csrf import csrf_exempt
 # from rest_framework.decorators import api_view
 # from rest_framework.response import Response
@@ -18,13 +18,14 @@ def create_item(request):
     ingredient_data = data.get('ingredients', [])
     link = data.get('link', '') # optional
     servings = data.get('servings', None) # optional
+    tags = data.get('tags', []) # optional
 
     # Check if the item is blacklisted
     if BlacklistedItem.objects.filter(item__name=name).exists():
         return JsonResponse({"message": "Item is blacklisted"})
     
     # Create the Item instance
-    item = Item(name=name, description=description, price=price, link=link)
+    item = Item(name=name, description=description, price=price, link=link, servings=servings)
     item.save()
 
     # Create ItemIngredient instances for each ingredient and associate them with the item
@@ -36,10 +37,14 @@ def create_item(request):
         ingredient = Ingredient.objects.get(id=ingredient_id)
         item_ingredient = ItemIngredient(item=item, ingredient=ingredient, mass=mass)
         item_ingredient.save()
+        
+    for tag_name in tags:
+        tag = Tag.objects.get(name=tag_name)
+        item.tags.add(tag)
 
     return JsonResponse({"message": "Item created successfully"})
 
-def get_item(request): 
+def get_all_items(request): 
     items = Item.objects.all()
     response = []
     for item in items:
@@ -273,7 +278,7 @@ def delete_ingredient_by_name(request, name):
     return JsonResponse({"message": "Ingredient deleted successfully"})
 
 
-def get_ingredient(request):
+def get_all_ingredients(request):
     ingredients = Ingredient.objects.all()
     response = []
     for ingredient in ingredients:

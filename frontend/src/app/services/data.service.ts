@@ -11,14 +11,22 @@ export class DataService {
   constructor(private http: HttpClient) {}
 
   fetchItemData(): Observable<Item[]> {
-    return this.http.get<Item[]>('http://localhost:8000/backend/get-item/');
-  }
-  
-  fetchIngredientData(): Observable<any> {
-    return this.http.get<Ingredient[]>('http://localhost:8000/backend/get-ingredient/');
+    return this.http.get<Item[]>(
+      'http://localhost:8000/backend/get-all-items/'
+    );
   }
 
-  fetchCurrentTableData(selectedIngredients: Ingredient[], conditions: string[], columns: string[]): Observable<any> {
+  fetchIngredientData(): Observable<any> {
+    return this.http.get<Ingredient[]>(
+      'http://localhost:8000/backend/get-all-ingredients/'
+    );
+  }
+
+  fetchCurrentTableData(
+    selectedIngredients: Ingredient[],
+    conditions: string[],
+    columns: string[]
+  ): Observable<any> {
     const apiUrl = 'http://localhost:8000/backend/get-current-table-data/';
     const requestBody = {
       selectedIngredients: selectedIngredients,
@@ -37,7 +45,6 @@ export class DataService {
     return this.http.get<Item>(apiUrl);
   }
 
-
   addIngredientToDatabase(ingredient: Ingredient): Observable<any> {
     const apiUrl = 'http://localhost:8000/backend/create-ingredient/';
     const requestBody = {
@@ -50,12 +57,14 @@ export class DataService {
   }
 
   deleteIngredientFromDatabase(id: number): Observable<any> {
-    const apiUrl = 'http://localhost:8000/backend/delete-ingredient/' + id + '/';
+    const apiUrl =
+      'http://localhost:8000/backend/delete-ingredient/' + id + '/';
     return this.http.delete(apiUrl);
   }
 
   deleteIngredientByNameFromDatabase(name: string): Observable<any> {
-    const apiUrl = 'http://localhost:8000/backend/delete-ingredient-by-name/' + name + '/';
+    const apiUrl =
+      'http://localhost:8000/backend/delete-ingredient-by-name/' + name + '/';
     return this.http.delete(apiUrl);
   }
 
@@ -94,5 +103,4 @@ export class DataService {
     const apiUrl = 'http://localhost:8000/backend/blacklist-item/' + id + '/';
     return this.http.post(apiUrl, {});
   }
-  
 }
