@@ -1,6 +1,6 @@
 # backend/management/commands/purge_db.py
 from django.core.management.base import BaseCommand
-from backend.models import Ingredient, ItemIngredient, Item
+from backend.models import Ingredient, ItemIngredient, Item, BlacklistedItem, Tag
 
 
 class Command(BaseCommand):
@@ -10,5 +10,7 @@ class Command(BaseCommand):
         # Delete all items and itemingredients from the database
         ItemIngredient.objects.all().delete()
         Item.objects.all().delete()
+        BlacklistedItem.objects.all().delete()
+        Tag.objects.all().delete()
         
         print('Deleted all items and itemingredients from the database')
