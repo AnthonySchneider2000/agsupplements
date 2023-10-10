@@ -23,6 +23,7 @@ class Command(BaseCommand):
         "Dietary Fiber": "Fiber",
         "Sugars": "Sugars",
         "Added Sugars": "Added Sugars",
+        "Includes Added Sugars": "Added Sugars",
         "Vitamin A": "Vitamin A",
         "Vitamin C": "Vitamin C",
         "Vitamin D": "Vitamin D",
