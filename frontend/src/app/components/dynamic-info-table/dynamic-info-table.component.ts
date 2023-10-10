@@ -19,8 +19,8 @@ export class DynamicInfoTableComponent implements OnInit {
   selectedIngredients: Ingredient[] = [];
   dataSource: MatTableDataSource<any>;
   ItemData: Item[] = [];
-  baseColumns: string[] = ['name', 'price'];
-  displayedColumns: string[] = ['name', 'price'];
+  baseColumns: string[] = ['name', 'Price'];
+  displayedColumns: string[] = ['name', 'Price'];
   ingredientColumns: string[] = [];
   customColumns: string[] = [];
   customConditions: string[] = [];
@@ -57,6 +57,8 @@ export class DynamicInfoTableComponent implements OnInit {
   }
 
   loadData() {
+    const outerStartTime = performance.now();
+    console.log('Loading data from backend at ' + outerStartTime);
     this.dataService
       .fetchCurrentTableData(
         this.selectedIngredients,
@@ -64,6 +66,8 @@ export class DynamicInfoTableComponent implements OnInit {
         this.customColumns
       )
       .subscribe((data) => {
+        const startTime = performance.now();
+        console.log('Data received from backend at ' + startTime);
         this.dataSource = new MatTableDataSource(data);
         this.dataSource.paginator = this.paginator;
         this.dataSource.sort = this.sort;
@@ -77,6 +81,10 @@ export class DynamicInfoTableComponent implements OnInit {
           ...this.ingredientColumns,
           ...this.customColumns,
         ];
+        const endTime = performance.now();
+        console.log('Data loaded at ' + endTime);
+        console.log('Time to load data: ' + (endTime - startTime) + 'ms');
+        console.log('Total time: ' + (endTime - outerStartTime) + 'ms');
       });
   }
 

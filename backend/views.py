@@ -196,6 +196,8 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
     conditions = data.get('conditions', [])
     columns = data.get('columns', [])
     response = []
+    item_count = 0
+    max_items = 20
     
     for ingredient_data in selected_ingredients_data:
         ingredient_id = ingredient_data.get('id')
@@ -278,7 +280,13 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
                 
         if itemMeetsAllConditions:
             response.append(item_data)
+            item_count += 1
+            # if item_count >= max_items:
+            #     break
         
+    # if item_count >= max_items: # if the number of items is greater than or equal to the max number of items, return the first max_items items
+    #     print("item_count: " + str(item_count) + " is greater than or equal to max_items: " + str(max_items))
+    #     return JsonResponse(response[:max_items], safe=False)
     return JsonResponse(response, safe=False)
         
 
