@@ -17,6 +17,7 @@ import {
 export class IngredientItemInputComponent {
   allIngredients: Ingredient[] = [];
   inputIngredients: Ingredient[] = [];
+  inputItemIngredients: ItemIngredient[] = [];
   ingredient: Ingredient = {
     id: 0,
     name: '',
@@ -56,45 +57,50 @@ export class IngredientItemInputComponent {
     if (this.inputIngredients.length > 0) {
       for (let ingredient of this.inputIngredients) {
         const mass = prompt('Enter mass of ' + ingredient.name + ' in ' + ingredient.units);
-        this.item.ingredients.push({
+        this.inputItemIngredients.push({
           id: ingredient.id,
           ingredient: ingredient,
           mass: Number(mass),
         });
       }
     }
+    this.item.ingredients = this.inputItemIngredients;
+    console.log("this.inputIngredients:", this.inputIngredients);
+    console.log(this.item);
 
     this.dataService.addItemToDatabase(this.item).subscribe((data) => {
       this.tableDataService.reloadTable();
+      this.resetData();
     });
-    this.resetData();
   }
 
   updateItem() {
     if (this.inputIngredients.length > 0) {
       for (let ingredient of this.inputIngredients) {
         const mass = prompt('Enter mass of ' + ingredient.name + ' in ' + ingredient.units);
-        this.item.ingredients.push({
+        this.inputItemIngredients.push({
           id: ingredient.id,
           ingredient: ingredient,
           mass: Number(mass),
         });
       }
     }
+    this.item.ingredients = this.inputItemIngredients;
+    console.log("this.inputIngredients:", this.inputIngredients);
     console.log(this.item);
 
     this.dataService.updateItem(this.item).subscribe((data) => {
       this.tableDataService.reloadTable();
+      this.resetData();
     });
 
-    this.resetData();
   }
 
   deleteItem() {
     this.dataService.deleteItemFromDatabase(this.item.id).subscribe((data) => {
       this.tableDataService.reloadTable();
+      this.resetData();
     });
-    this.resetData();
   }
 
   blacklistItem() {
