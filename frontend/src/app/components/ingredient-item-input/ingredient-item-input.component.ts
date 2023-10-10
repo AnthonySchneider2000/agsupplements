@@ -150,5 +150,6 @@ export class IngredientItemInputComponent {
     this.item.ingredients = [];
     this.item.servings = 1;
     this.inputIngredients = [];
+    this.inputItemIngredients = [];
   }
 }
