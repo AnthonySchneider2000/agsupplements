@@ -116,7 +116,7 @@ def update_item(request, id):
     for ingredient_info in ingredient_data:
         print(ingredient_info)
         ingredient_id = ingredient_info.get('id')
-        mass = ingredient_info.get('mass') * float(item.servings)
+        mass = float(ingredient_info.get('mass')) * float(item.servings)
         ingredient = Ingredient.objects.get(id=ingredient_id)
         try:
             print("ItemIngredient exists, modifying item_ingredient: " + str(ingredient.name) +" in item: " + str(item.name) + " from " + str(item_ingredients.get(ingredient=ingredient).mass) + " to " + str(mass) + " grams")
