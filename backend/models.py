@@ -28,14 +28,14 @@ class ItemIngredient(models.Model):
     mass = models.DecimalField(max_digits=10, decimal_places=2)
     
     def __str__(self):
-        return "ItemIngredient: " + self.item.name + ":" + self.ingredient.name
+        return self.ingredient.name + ":" + str(self.mass)
     
 class BlacklistedItem(models.Model):
     item = models.ForeignKey(Item, on_delete=models.CASCADE)
     reason = models.TextField(blank=True)
     
     def __str__(self):
-        return "BlacklistedItem: " + self.item.name + ":" + self.reason
+        return self.item.name + ":" + self.reason
     
 class Tag(models.Model):
     name = models.CharField(max_length=50, unique=True)
