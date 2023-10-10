@@ -40,7 +40,7 @@ export class TableOptionsComponent {
     this.selectedIngredients = this.allIngredients.filter((ingredient) => {
       return ingredient.name == 'Calories' || ingredient.name == 'Protein';
     });
-    this.customColumns = ['Protein/Calories', 'Protein/price'];
+    this.customColumns = ['Protein/Calories', 'Protein/Price'];
     this.customConditions = ['Protein/Calories>0.1'];
     this.tableDataService.setSelectedIngredients(this.selectedIngredients);
     this.tableDataService.setCustomColumns(this.customColumns);
