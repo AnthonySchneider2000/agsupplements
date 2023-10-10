@@ -81,6 +81,7 @@ export class IngredientItemInputComponent {
         });
       }
     }
+    console.log(this.item);
 
     this.dataService.updateItem(this.item).subscribe((data) => {
       this.tableDataService.reloadTable();

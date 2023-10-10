@@ -130,6 +130,17 @@ def update_item(request, id):
         ingredient_id = ingredient_info.get('id')
         mass = float(ingredient_info.get('mass')) * float(servings)
         ingredient = Ingredient.objects.get(id=ingredient_id)
+        if servings is not None:
+            print("serving count changed from " + str(item.servings) + " to " + str(servings) + ", changing mass of ingredient: " + str(ingredient.name) + " in item: " + str(item.name) + " from " + str(mass) + " to " + str(float(mass) / float(item.servings) * float(servings)) + " grams")
+            try:
+                item_ingredient = item_ingredients.get(ingredient=ingredient)
+                item_ingredient.mass = float(item_ingredient.mass) / float(item.servings) * float(servings)
+                item_ingredient.save()
+            except ItemIngredient.DoesNotExist:
+                pass
+            if item_ingredient.mass == 0:
+                item_ingredient.delete()
+            continue # skip the rest of the loop
         try:
             print("ItemIngredient exists, modifying item_ingredient: " + str(ingredient.name) +" in item: " + str(item.name) + " from " + str(item_ingredient.mass) + " to " + str(mass) + " grams")
             item_ingredient = item_ingredients.get(ingredient=ingredient)
