@@ -111,12 +111,18 @@ def update_item(request, id):
     
     item_ingredients = item.itemingredient_set.all()
     
+    # if servings is not None, update the mass of each ItemIngredient instance
+    if servings is not None:
+        for item_ingredient in item_ingredients:
+            item_ingredient.mass = float(item_ingredient.mass) / float(item.servings) * float(servings)
+            item_ingredient.save()
+    
     # for all ingredients in the request, modify the ItemIngredient instance
     # if the ItemIngredient instance does not exist, create it
     for ingredient_info in ingredient_data:
         print(ingredient_info)
         ingredient_id = ingredient_info.get('id')
-        mass = float(ingredient_info.get('mass')) * float(item.servings)
+        mass = float(ingredient_info.get('mass')) * float(servings)
         ingredient = Ingredient.objects.get(id=ingredient_id)
         try:
             print("ItemIngredient exists, modifying item_ingredient: " + str(ingredient.name) +" in item: " + str(item.name) + " from " + str(item_ingredients.get(ingredient=ingredient).mass) + " to " + str(mass) + " grams")
@@ -130,6 +136,7 @@ def update_item(request, id):
         # if the mass of the ItemIngredient instance is 0, delete it
         if item_ingredient.mass == 0:
             item_ingredient.delete()
+    
     
     # modify the Item instance
     if name:
