@@ -1,6 +1,8 @@
 import json
+import time
 from django.shortcuts import render
 from django.http import JsonResponse
+from django.db.models import Q
 from .models import Ingredient, Item, ItemIngredient, BlacklistedItem, Tag
 from django.views.decorators.csrf import csrf_exempt
 # from rest_framework.decorators import api_view
@@ -192,19 +194,52 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
     
     data = json.loads(request.body)
     selected_ingredients_data = data.get('selectedIngredients', [])
+    selected_ingredient_ids = []
     selected_ingredients = []
     conditions = data.get('conditions', [])
     columns = data.get('columns', [])
     response = []
     item_count = 0
     max_items = 20
+    start_time = time.time()
+    total_1_time = 0
+    total_2_time = 0
+    total_3_time = 0
+    total_4_time = 0
+    total_5_time = 0
+    
+    if len(selected_ingredients_data) == 0:
+        for item in Item.objects.all():
+            item_data = {
+                "id": item.id,
+                "name": item.name,
+                "description": item.description,
+                "Price": item.price,
+                "link": item.link,
+                "servings": item.servings
+            }
+            response.append(item_data)
+        return JsonResponse(response, safe=False)
     
     for ingredient_data in selected_ingredients_data:
         ingredient_id = ingredient_data.get('id')
         ingredient = Ingredient.objects.get(id=ingredient_id)
         selected_ingredients.append(ingredient)
+        selected_ingredient_ids.append(ingredient_id)
         
-    for item in Item.objects.all():
+    checkpoint_1_time = time.time()
+    total_1_time += checkpoint_1_time - start_time
+        
+    filter_query = Q()
+    for ingredient_id in selected_ingredient_ids:
+        filter_query |= Q(itemingredient__ingredient__id=ingredient_id) # the |= operator is the same as the += operator for lists
+    
+    items = Item.objects.filter(filter_query).distinct()
+    
+    checkpoint_2_time = time.time()
+    total_2_time += checkpoint_2_time - checkpoint_1_time
+    
+    for item in items:
         itemMeetsAllConditions = True
         item_data = {
             "id": item.id,
@@ -214,15 +249,18 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
             "link": item.link,
             "servings": item.servings
         }
+        
+        # item_ingredients = item.itemingredient_set.all().select_related('ingredient') # get all ItemIngredient instances associated with the item
         for ingredient in selected_ingredients:
             try:
-                # Fetch the related ItemIngredient object
                 item_ingredient = item.itemingredient_set.get(ingredient=ingredient)
                 ingredientMass = item_ingredient.mass
                 item_data[ingredient.name] = ingredientMass
-            except ItemIngredient.DoesNotExist:
+            except StopIteration:
                 itemMeetsAllConditions = False
                 break
+        checkpoint_3_time = time.time()
+        total_3_time += checkpoint_3_time - checkpoint_2_time
             
         if not itemMeetsAllConditions:
             continue
@@ -232,16 +270,14 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
             for char in condition:
                 if char == ">" or char == "<" or char == "=" or char == "!":
                     operator = char
-            var1 = condition.split(operator)[0]
-            var2 = condition.split(operator)[1]
+            var1, var2 = condition.split(operator)
             
             
             
             #if var1 contains a "/", then it is a column, so we need to find the value of the column
             #else, set var1Comparison to item_data[var1]
             if "/" in var1:
-                part1 = var1.split("/")[0]
-                part2 = var1.split("/")[1]
+                part1, part2 = var1.split("/")
                 var1Comparison = item_data[part1] / item_data[part2]
             else:
                 var1Comparison = item_data[var1]
@@ -252,37 +288,60 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
                 var2Comparison = item_data[var2]
             
             
-            if operator == ">":
-                if var1Comparison <= var2Comparison:
-                    itemMeetsAllConditions = False
-                    break
-            elif operator == "<":
-                if var1Comparison >= var2Comparison:
-                    itemMeetsAllConditions = False
-                    break
-            elif operator == "=":
-                if var1Comparison != var2Comparison:
-                    itemMeetsAllConditions = False
-                    break
-            elif operator == "!":
-                if var1Comparison == var2Comparison:
-                    itemMeetsAllConditions = False
-                    break
+            # Perform comparisons
+            if operator == ">" and not (var1Comparison > var2Comparison):
+                itemMeetsAllConditions = False
+                break
+            elif operator == "<" and not (var1Comparison < var2Comparison):
+                itemMeetsAllConditions = False
+                break
+            elif operator == "==" and not (var1Comparison == var2Comparison):
+                itemMeetsAllConditions = False
+                break
+            elif operator == "!=" and not (var1Comparison != var2Comparison):
+                itemMeetsAllConditions = False
+                break
+        checkpoint_4_time = time.time()
+        total_4_time += checkpoint_4_time - checkpoint_3_time
                 
         if not itemMeetsAllConditions:
             continue
                 
         for column in columns:
-            operator = "/"
-            var1 = column.split(operator)[0]
-            var2 = column.split(operator)[1]
+            var1, operator, var2 = column.partition("/")
             item_data[column] = item_data[var1] / item_data[var2]
+        checkpoint_5_time = time.time()
+        total_5_time += checkpoint_5_time - checkpoint_4_time
+        
+        print("times for this run: ")
+        print("time to get selected ingredients: " + str(checkpoint_1_time - start_time))
+        print("time to get items: " + str(checkpoint_2_time - checkpoint_1_time))
+        print("time to get item data: " + str(checkpoint_3_time - checkpoint_2_time))
+        print("time to check conditions: " + str(checkpoint_4_time - checkpoint_3_time))
+        print("time to check columns: " + str(checkpoint_5_time - checkpoint_4_time))
+        
                 
         if itemMeetsAllConditions:
             response.append(item_data)
             item_count += 1
             # if item_count >= max_items:
             #     break
+            
+    total_time = time.time() - start_time
+    print("time to get selected ingredients: " + str(total_1_time))
+    print("time to get items: " + str(total_2_time))
+    print("time to get item data: " + str(total_3_time))
+    print("time to check conditions: " + str(total_4_time))
+    print("time to check columns: " + str(total_5_time))
+    print("total time: " + str(total_time))
+    print("time proportions: ")
+    print("time to get selected ingredients: " + str(total_1_time / total_time))
+    print("time to get items: " + str(total_2_time / total_time))
+    print("time to get item data: " + str(total_3_time / total_time))
+    print("time to check conditions: " + str(total_4_time / total_time))
+    print("time to check columns: " + str(total_5_time / total_time))
+    print("total time: " + str(total_time))
+    print("item_count: " + str(item_count))
         
     # if item_count >= max_items: # if the number of items is greater than or equal to the max number of items, return the first max_items items
     #     print("item_count: " + str(item_count) + " is greater than or equal to max_items: " + str(max_items))
