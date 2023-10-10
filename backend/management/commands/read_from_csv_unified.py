@@ -317,14 +317,6 @@ class Command(BaseCommand):
         self.price = float(self.price)
         price_units = re.sub("[^a-zA-Z]", "", price_units) # remove non-alphabetic characters
         
-        # find the amount of pounds in the price units
-        # units will be in the format: "lb", "oz", "g", "kg", "mg"
-        ureg = pint.UnitRegistry() # create a unit registry
-        price_units = ureg(price_units)
-        price_units = price_units.to('lb')
-        price_units = float(price_units.magnitude)
-        self.price = self.price * price_units
-        
         #if serving-size2 is not empty, use that, otherwise use serving-size1
         self.servingString = row['serving-size2'] if row['serving-size2'] else row['serving-size1']
         self.servingString = str(self.servingString).lower()
@@ -338,9 +330,11 @@ class Command(BaseCommand):
         for unit in self.acceptedUnits:
             if unit in self.servingString:
                 self.servingString = self.servingString.split(unit)[0].strip()
+                #include the unit in the serving string
+                self.servingString += unit
                 break
         #at this point servingString should be a number followed by a unit
-        
+        print('Item ' + self.name + ' has serving size ' + self.servingString)
         self.servingCount = re.sub("[^0-9.]", "", self.servingString) # remove non-numeric characters
         self.servingCount = float(self.servingCount)
         self.servingUnits = re.sub("[^a-zA-Z]", "", self.servingString) # remove non-alphabetic characters
@@ -362,7 +356,7 @@ class Command(BaseCommand):
         elif price_units == "g" and self.servingUnits == "g":
             servings = (1/self.servingCount)
         else:
-            print('Item ' + self.name + ' has invalid serving/price units')
+            print('Item ' + self.name + ' has invalid serving/price units: ' + str(self.servingUnits) + '/' + str(price_units))
             self.validData = False
             return
 
