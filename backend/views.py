@@ -117,7 +117,9 @@ def update_item(request, id):
     
     # if servings is not None, update the mass of each ItemIngredient instance
     if servings is not None:
+        print("changing servings from " + str(item.servings) + " to " + str(servings))
         for item_ingredient in item_ingredients:
+            print("changing mass of item_ingredient: " + str(item_ingredient.ingredient.name) + " in item: " + str(item.name) + " from " + str(item_ingredient.mass) + " to " + str(float(item_ingredient.mass) / float(item.servings) * float(servings)) + " grams")
             item_ingredient.mass = float(item_ingredient.mass) / float(item.servings) * float(servings)
             item_ingredient.save()
     
@@ -129,7 +131,7 @@ def update_item(request, id):
         mass = float(ingredient_info.get('mass')) * float(servings)
         ingredient = Ingredient.objects.get(id=ingredient_id)
         try:
-            print("ItemIngredient exists, modifying item_ingredient: " + str(ingredient.name) +" in item: " + str(item.name) + " from " + str(item_ingredients.get(ingredient=ingredient).mass) + " to " + str(mass) + " grams")
+            print("ItemIngredient exists, modifying item_ingredient: " + str(ingredient.name) +" in item: " + str(item.name) + " from " + str(item_ingredient.mass) + " to " + str(mass) + " grams")
             item_ingredient = item_ingredients.get(ingredient=ingredient)
             item_ingredient.mass = mass
             item_ingredient.save()
@@ -142,16 +144,16 @@ def update_item(request, id):
             item_ingredient.delete()
     for tag_name in tags:
         if not Tag.objects.filter(name=tag_name).exists():
+            print("Tag does not exist, creating tag: " + str(tag_name))
             tag = Tag(name=tag_name)
             tag.save()
         #if the tag is not already associated with the item, add it
         tag = Tag.objects.get(name=tag_name)
         if not item.tags.filter(name=tag_name).exists():
+            print("Tag is not already associated with item, adding tag: " + str(tag_name) + " to item: " + str(item.name))
             item.tags.add(tag)
             
-        
-    
-    
+
     # modify the Item instance
     if name:
         item.name = name
