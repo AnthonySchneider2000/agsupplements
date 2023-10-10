@@ -39,6 +39,9 @@ def create_item(request):
         item_ingredient.save()
         
     for tag_name in tags:
+        if not Tag.objects.filter(name=tag_name).exists():
+            tag = Tag(name=tag_name)
+            tag.save()
         tag = Tag.objects.get(name=tag_name)
         item.tags.add(tag)
 
@@ -105,6 +108,7 @@ def update_item(request, id):
     ingredient_data = data.get('ingredients', [])
     link = data.get('link', '') # optional
     servings = data.get('servings', None) # optional
+    tags = data.get('tags', []) # optional
     
     # retrieve the Item instance
     item = Item.objects.get(id=id)
@@ -136,6 +140,16 @@ def update_item(request, id):
         # if the mass of the ItemIngredient instance is 0, delete it
         if item_ingredient.mass == 0:
             item_ingredient.delete()
+    for tag_name in tags:
+        if not Tag.objects.filter(name=tag_name).exists():
+            tag = Tag(name=tag_name)
+            tag.save()
+        #if the tag is not already associated with the item, add it
+        tag = Tag.objects.get(name=tag_name)
+        if not item.tags.filter(name=tag_name).exists():
+            item.tags.add(tag)
+            
+        
     
     
     # modify the Item instance
