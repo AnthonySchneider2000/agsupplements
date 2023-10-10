@@ -302,6 +302,12 @@ class Command(BaseCommand):
         self.servingCount = re.sub("[^0-9.]", "", self.servingString)
         self.servingCount = float(self.servingCount)
         
+        if self.servingCount == 0:
+            print('Item ' + self.name + ' has 0 servings')
+            self.validData = False
+            return
+        
+        
         return       
     
     def parse_unit_by_weight(self, row): # THE ITEM IS PRICED BY WEIGHT
@@ -362,6 +368,10 @@ class Command(BaseCommand):
 
         self.servingCount = servings
         
+        if self.servingCount == 0:
+            print('Item ' + self.name + ' has 0 servings')
+            self.validData = False
+            return
         
         return
     
