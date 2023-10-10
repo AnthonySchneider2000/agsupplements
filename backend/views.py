@@ -200,13 +200,6 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
     columns = data.get('columns', [])
     response = []
     item_count = 0
-    max_items = 20
-    start_time = time.time()
-    total_1_time = 0
-    total_2_time = 0
-    total_3_time = 0
-    total_4_time = 0
-    total_5_time = 0
     
     if len(selected_ingredients_data) == 0:
         for item in Item.objects.all():
@@ -227,17 +220,12 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
         selected_ingredients.append(ingredient)
         selected_ingredient_ids.append(ingredient_id)
         
-    checkpoint_1_time = time.time()
-    total_1_time += checkpoint_1_time - start_time
         
     filter_query = Q()
     for ingredient_id in selected_ingredient_ids:
         filter_query |= Q(itemingredient__ingredient__id=ingredient_id) # the |= operator is the same as the += operator for lists
     
     items = Item.objects.filter(filter_query).distinct()
-    
-    checkpoint_2_time = time.time()
-    total_2_time += checkpoint_2_time - checkpoint_1_time
     
     for item in items:
         itemMeetsAllConditions = True
@@ -250,17 +238,15 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
             "servings": item.servings
         }
         
-        # item_ingredients = item.itemingredient_set.all().select_related('ingredient') # get all ItemIngredient instances associated with the item
+        item_ingredients = item.itemingredient_set.all().select_related('ingredient') # get all ItemIngredient instances associated with the item
         for ingredient in selected_ingredients:
             try:
-                item_ingredient = item.itemingredient_set.get(ingredient=ingredient)
+                item_ingredient = next(item_ingredient for item_ingredient in item_ingredients if item_ingredient.ingredient == ingredient)
                 ingredientMass = item_ingredient.mass
                 item_data[ingredient.name] = ingredientMass
             except StopIteration:
                 itemMeetsAllConditions = False
                 break
-        checkpoint_3_time = time.time()
-        total_3_time += checkpoint_3_time - checkpoint_2_time
             
         if not itemMeetsAllConditions:
             continue
@@ -301,8 +287,6 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
             elif operator == "!=" and not (var1Comparison != var2Comparison):
                 itemMeetsAllConditions = False
                 break
-        checkpoint_4_time = time.time()
-        total_4_time += checkpoint_4_time - checkpoint_3_time
                 
         if not itemMeetsAllConditions:
             continue
@@ -310,15 +294,6 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
         for column in columns:
             var1, operator, var2 = column.partition("/")
             item_data[column] = item_data[var1] / item_data[var2]
-        checkpoint_5_time = time.time()
-        total_5_time += checkpoint_5_time - checkpoint_4_time
-        
-        print("times for this run: ")
-        print("time to get selected ingredients: " + str(checkpoint_1_time - start_time))
-        print("time to get items: " + str(checkpoint_2_time - checkpoint_1_time))
-        print("time to get item data: " + str(checkpoint_3_time - checkpoint_2_time))
-        print("time to check conditions: " + str(checkpoint_4_time - checkpoint_3_time))
-        print("time to check columns: " + str(checkpoint_5_time - checkpoint_4_time))
         
                 
         if itemMeetsAllConditions:
@@ -327,21 +302,6 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
             # if item_count >= max_items:
             #     break
             
-    total_time = time.time() - start_time
-    print("time to get selected ingredients: " + str(total_1_time))
-    print("time to get items: " + str(total_2_time))
-    print("time to get item data: " + str(total_3_time))
-    print("time to check conditions: " + str(total_4_time))
-    print("time to check columns: " + str(total_5_time))
-    print("total time: " + str(total_time))
-    print("time proportions: ")
-    print("time to get selected ingredients: " + str(total_1_time / total_time))
-    print("time to get items: " + str(total_2_time / total_time))
-    print("time to get item data: " + str(total_3_time / total_time))
-    print("time to check conditions: " + str(total_4_time / total_time))
-    print("time to check columns: " + str(total_5_time / total_time))
-    print("total time: " + str(total_time))
-    print("item_count: " + str(item_count))
         
     # if item_count >= max_items: # if the number of items is greater than or equal to the max number of items, return the first max_items items
     #     print("item_count: " + str(item_count) + " is greater than or equal to max_items: " + str(max_items))
