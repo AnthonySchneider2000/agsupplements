@@ -257,8 +257,9 @@ def create_ingredient(request):
     name = data.get('name')
     description = data.get('description')
     price = data.get('price')
+    units = data.get('units', '') # optional
 
-    ingredient = Ingredient(name=name, description=description, price=price)
+    ingredient = Ingredient(name=name, description=description, price=price, units=units)
     ingredient.save()
 
     return JsonResponse({"message": "Ingredient created successfully"})
