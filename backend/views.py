@@ -37,7 +37,7 @@ def create_item(request):
         if mass == 0: # if the mass is 0, don't create an ItemIngredient instance
             continue
         ingredient = Ingredient.objects.get(id=ingredient_id)
-        item_ingredient = ItemIngredient(item=item, ingredient=ingredient, mass=mass)
+        item_ingredient = ItemIngredient(item=item, ingredient=ingredient, mass=mass*float(servings))
         item_ingredient.save()
         
     for tag_name in tags:
