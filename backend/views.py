@@ -200,6 +200,7 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
     columns = data.get('columns', [])
     response = []
     item_count = 0
+    max_items = 100
     
     if len(selected_ingredients_data) == 0:
         for item in Item.objects.all():
@@ -257,8 +258,6 @@ def get_current_table_data(request): #takes a list of selectedIngredients, an ar
                 if char == ">" or char == "<" or char == "=" or char == "!":
                     operator = char
             var1, var2 = condition.split(operator)
-            
-            
             
             #if var1 contains a "/", then it is a column, so we need to find the value of the column
             #else, set var1Comparison to item_data[var1]
