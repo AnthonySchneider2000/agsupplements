@@ -93,36 +93,55 @@ export class DynamicInfoTableComponent implements OnInit {
       this.ItemData = data;
     });
   }
-
   applyFilter(event: any) {
     const filterValue = (event.target as HTMLInputElement).value;
     this.filterValue = filterValue;
-    const startsWithExclamation = filterValue.startsWith('!');
-    const filterValueWithoutExclamation = filterValue.substring(1);
-    if (startsWithExclamation){
-      // Filter with negation
-      this.dataSource.filterPredicate = (data, filter) => {
-        return !data.name.toLowerCase().includes(filterValueWithoutExclamation);
-      };
-
+    const subFilters = filterValue.split('$');
+    const filterPredicates: any[] = [];
+  
+    subFilters.forEach((subFilter) => {
+      const startsWithExclamation = subFilter.startsWith('!');
+      const filterValueWithoutExclamation = startsWithExclamation
+        ? subFilter.substring(1)
+        : subFilter;
+  
+      const orConditions = filterValueWithoutExclamation.split('|'); // Split by |
+  
+      filterPredicates.push((data: any) => {
+        const dataValue = data.name.toLowerCase(); // Replace with the correct property you want to filter by
+        if (startsWithExclamation) {
+          // Filter with negation
+          return !orConditions.some((condition) =>
+            dataValue.includes(condition)
+          );
+        } else {
+          // Filter without negation
+          return orConditions.some((condition) =>
+            dataValue.includes(condition)
+          );
+        }
+      });
+    });
+  
+    // Combine filter predicates into a single predicate
+    this.dataSource.filterPredicate = (data: any, filter: string) => {
+      return filterPredicates.every((predicate) => predicate(data));
+    };
+  
+    if (filterValue.startsWith('!')) {
+      this.dataSource.filter = filterValue.substring(1).trim().toLowerCase();
+    } else {
+      this.dataSource.filter = filterValue.trim().toLowerCase();
     }
-    else{
-      // Filter without negation
-      this.dataSource.filterPredicate = (data, filter) => {
-        return data.name.toLowerCase().includes(filterValueWithoutExclamation);
-      };
-    }
-    // BUG?: the default filter searches all values, whereas this only searches the name  
-    this.dataSource.filter = filterValueWithoutExclamation.trim().toLowerCase();
-
   }
+  
   onRowClick(row: any, event: MouseEvent) {
     if (event.ctrlKey) {
       window.open(row.link, '_blank');
-    } else if(event.shiftKey) {
+    } else if (event.shiftKey) {
       localStorage.setItem('selectedId', row.id.toString()); // save the selected id to localStorage
       window.location.href = '/product-page'; // navigate the current page to /product-page
-    }else{
+    } else {
       this.dataService.fetchItemById(row.id).subscribe((data) => {
         // fetch the item data from the backend
         this.tableDataService.setSelectedItem(data); // set the selected item in the TableDataService
