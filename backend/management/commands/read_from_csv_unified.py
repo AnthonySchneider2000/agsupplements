@@ -141,9 +141,7 @@ class Command(BaseCommand):
                 continue
             ingredientName = self.ingredientNameMap[self.ingredientNames[i]]
             ingredientValueAndUnits = str(self.ingredientValues[i])
-            print('    Ingredient ' + ingredientName + ' has value ' + ingredientValueAndUnits)
             ingredient = Ingredient.objects.get(name=ingredientName)
-            print('    Ingredient ' + ingredient.name + ' has units ' + ingredient.units)
             ingredientValue = re.sub("[^0-9.]", "", ingredientValueAndUnits) # remove non-numeric characters
             if ingredientValue == '':
                 print('    Ingredient ' + ingredientName + ' has no value')
