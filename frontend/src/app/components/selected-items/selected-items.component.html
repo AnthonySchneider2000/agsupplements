@@ -1,0 +1,9 @@
+<div class="flex flex-row items-center gap-4 mt-8 w-full pb-4">
+    <div
+      *ngFor="let item of selectedItems; let i = index"
+      class="h-32 w-32 p-2 text-ellipsis bg-slate-500 hover:bg-slate-400 text-center rounded-md flex flex-col justify-center break-all"
+      (click)="removeItem(i)"
+    >
+      {{ item.name }}
+    </div>
+  </div>

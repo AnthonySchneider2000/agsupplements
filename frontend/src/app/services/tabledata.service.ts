@@ -88,6 +88,14 @@ export class TableDataService {
   setAllIngredients(allIngredients: Ingredient[]) {
     this.allIngredientsSubject.next(allIngredients);
   }
-  
+
+  private selectedIdsSubject = new BehaviorSubject<number[]>([]);
+  // Observable for getting the selectedIds
+  selectedIds$ = this.selectedIdsSubject.asObservable();
+
+  setSelectedIds(selectedIds: number[]) {
+    this.selectedIdsSubject.next(selectedIds);
+    console.log('selectedIds:', this.selectedIdsSubject.getValue());
+  }
   
 }

@@ -25,6 +25,7 @@ export class DynamicInfoTableComponent implements OnInit {
   customColumns: string[] = [];
   customConditions: string[] = [];
   filterValue: string = '';
+  selectedIds: number[] = [];
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
@@ -44,6 +45,11 @@ export class DynamicInfoTableComponent implements OnInit {
     this.tableDataService.customConditions$.subscribe((customConditions) => {
       this.customConditions = customConditions;
     });
+
+    this.tableDataService.selectedIds$.subscribe((ids) => {
+      this.selectedIds = ids;
+    });
+
   }
 
   ngOnInit(): void {
@@ -141,7 +147,16 @@ export class DynamicInfoTableComponent implements OnInit {
     } else if (event.shiftKey) {
       localStorage.setItem('selectedId', row.id.toString()); // save the selected id to localStorage
       window.location.href = '/product-page'; // navigate the current page to /product-page
-    } else {
+    }else if (event.altKey) { 
+      //add the id to the selectedIds array
+      if (this.selectedIds.includes(row.id)) { // if the id is already in the array, remove it
+        this.selectedIds.splice(this.selectedIds.indexOf(row.id), 1);
+      } else { // if the id is not in the array, add it
+        this.selectedIds.push(row.id);
+      }
+      this.tableDataService.setSelectedIds(this.selectedIds); // set the selected ids in the TableDataService
+      
+    }else {
       this.dataService.fetchItemById(row.id).subscribe((data) => {
         // fetch the item data from the backend
         this.tableDataService.setSelectedItem(data); // set the selected item in the TableDataService

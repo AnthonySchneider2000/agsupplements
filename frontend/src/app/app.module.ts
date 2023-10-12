@@ -26,6 +26,7 @@ import { DropzoneMaterialModule } from '@ngx-dropzone/material';
 import { ProductPageComponent } from './pages/product-page/product-page.component';
 import { HomePageComponent } from './pages/home-page/home-page.component';
 import { CalculatorPageComponent } from './pages/calculator-page/calculator-page.component';
+import { SelectedItemsComponent } from './components/selected-items/selected-items.component';
 
 
 @NgModule({
@@ -37,6 +38,7 @@ import { CalculatorPageComponent } from './pages/calculator-page/calculator-page
     ProductPageComponent,
     HomePageComponent,
     CalculatorPageComponent,
+    SelectedItemsComponent,
   ],
   imports: [
     BrowserModule,
