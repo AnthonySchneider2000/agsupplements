@@ -95,7 +95,6 @@ export class TableDataService {
 
   setSelectedIds(selectedIds: number[]) {
     this.selectedIdsSubject.next(selectedIds);
-    console.log('selectedIds:', this.selectedIdsSubject.getValue());
   }
   
 }

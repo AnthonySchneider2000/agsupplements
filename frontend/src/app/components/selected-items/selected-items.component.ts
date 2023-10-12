@@ -27,6 +27,7 @@ export class SelectedItemsComponent {
     for(let id of this.selectedIds) {
       this.dataService.fetchItemById(id).subscribe((item) => {
         this.selectedItems.push(item);
+        localStorage.setItem('selectedItems', JSON.stringify(this.selectedItems));
       });
     }
   }
@@ -34,5 +35,10 @@ export class SelectedItemsComponent {
   removeItem(id: number) {
     this.selectedIds.splice(this.selectedIds.indexOf(id), 1);
     this.tableDataService.setSelectedIds(this.selectedIds);
+  }
+
+  goToCalculator() {
+    // go to /calculator-page
+    window.location.href = '/calculator-page';
   }
 }
